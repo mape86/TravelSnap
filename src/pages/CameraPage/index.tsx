@@ -1,12 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const CamerPage = () => {
+const CameraPage = () => {
   return (
     <View>
-      <Text>CamerPage</Text>
+      <Text>CameraPage</Text>
     </View>
   )
 }
 
-export default CamerPage
+export default CameraPage
