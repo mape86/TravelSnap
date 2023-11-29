@@ -4,6 +4,7 @@ import React from "react";
 import WelcomePage from "../pages/Welcome";
 import HomeRoutes from ".";
 import LoginPage from "../pages/LoginPage";
+import CreateUserPage from "../pages/CreateUserPage";
 
 const { Navigator, Screen } = createStackNavigator();
 
@@ -16,6 +17,7 @@ const WelcomeRoutes: React.FC = () => {
         }}
       >
         <Screen name="WelcomePage" component={WelcomePage} />
+        <Screen name="CreateUserPage" component={CreateUserPage} />
         <Screen name="LoginPage" component={LoginPage} />
         <Screen name="HomeRoutes" component={HomeRoutes} />
       </Navigator>

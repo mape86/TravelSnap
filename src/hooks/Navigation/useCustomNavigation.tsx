@@ -5,6 +5,7 @@ export type RouteList = {
     //Welcome routes:
     Welcome: undefined;
     LoginPage: undefined;
+    CreateUserPage: undefined;
 
     //Shared routes:
     UserProfilePage: undefined;
