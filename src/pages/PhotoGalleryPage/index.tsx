@@ -16,10 +16,12 @@ const PhotoGalleryPage = () => {
 
   return (
     <SafeAreaView className='flex-1 justify-center items-center'>
-      <Text className='pb-6'>PhotoGalleryPage</Text>
-      <TouchableOpacity onPress={() => handleClick("CameraPage")}>
+      <View className='w-screen items-end'>
+      <TouchableOpacity className='pr-4' onPress={() => handleClick("CameraPage")}>
         <Icon source="camera" size={30} />
       </TouchableOpacity>
+      </View>
+      <Text className='pb-6'>PhotoGalleryPage</Text>
       <TouchableOpacity onPress={() => handleClick("PhotoDetailPage")}>
         <Text>PhotoDetailPage</Text>
       </TouchableOpacity>
