@@ -7,6 +7,7 @@ import {
   FIREBASE_APP_ID,
 } from "@env";
 import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import {
   getStorage,
@@ -27,6 +28,8 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const fbStorage = getStorage(app);
+const fbAuth = getAuth(app);
+const fbStore = getFirestore(app);
 
 /**
  *
@@ -37,49 +40,56 @@ const fbStorage = getStorage(app);
  */
 
 const uploadImageToFirebase = async (uri, name, onProgress) => {
-    const fetchResponse = await fetch(uri);
-    const blob = await fetchResponse.blob();
+  const fetchResponse = await fetch(uri);
+  const blob = await fetchResponse.blob();
 
-    const imageRef = ref(fbStorage, `images/${name}`);
+  const imageRef = ref(fbStorage, `images/${name}`);
 
-    const uploadTask = uploadBytesResumable(imageRef, blob);
+  const uploadTask = uploadBytesResumable(imageRef, blob);
 
-    return new Promise((resolve, reject) => {
-        uploadTask.on(
-            "state_changed",
-            (snapshot) => {
-                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                onProgress(progress);
-            },
-            (error) => {
-                reject(error);
-            },
-            async () => {
-                const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-                resolve({downloadURL, metadata: uploadTask.snapshot.metadata});
-            }
-        )
-    })
-}
+  return new Promise((resolve, reject) => {
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        onProgress(progress);
+      },
+      (error) => {
+        reject(error);
+      },
+      async () => {
+        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+        resolve({ downloadURL, metadata: uploadTask.snapshot.metadata });
+      }
+    );
+  });
+};
 
 const getAllImagesFromFirebase = async () => {
-    try {
-      const imageRef = ref(fbStorage, "images")
-  
-      const result = await listAll(imageRef);
-      const imageUrls = await Promise.all(
-        result.items.map(async (item) => {
-          const downloadUrl = await getDownloadURL(item);
-          return downloadUrl;
-        })
-      );
-      return imageUrls;
-    } catch (error) {
-      console.error("Error getting images from the firebase storage", error);
-      return [];
-    }
-  };
+  try {
+    const imageRef = ref(fbStorage, "images");
 
-  export {
-    app, fbStorage, firebaseConfig, uploadImageToFirebase, getAllImagesFromFirebase
+    const result = await listAll(imageRef);
+    const imageUrls = await Promise.all(
+      result.items.map(async (item) => {
+        const downloadUrl = await getDownloadURL(item);
+        return downloadUrl;
+      })
+    );
+    return imageUrls;
+  } catch (error) {
+    console.error("Error getting images from the firebase storage", error);
+    return [];
   }
+};
+
+export {
+  app,
+  fbStorage,
+  firebaseConfig,
+  fbStore,
+  fbAuth,
+  uploadImageToFirebase,
+  getAllImagesFromFirebase,
+};
