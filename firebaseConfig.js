@@ -6,7 +6,7 @@ import {
   FIREBASE_MESSAGING_SENDER_ID,
   FIREBASE_APP_ID,
 } from "@env";
-import { initializeApp } from "firebase/app";
+import * as firebase from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import {
   getStorage,
@@ -25,8 +25,10 @@ const firebaseConfig = {
   appId: FIREBASE_APP_ID,
 };
 
-const app = initializeApp(firebaseConfig);
-const fbStorage = getStorage(app);
+firebase.initializeApp(firebaseConfig);
+
+const fbStorage = firebase.storage();
+const firestore = firebase.firestore();
 
 /**
  *
