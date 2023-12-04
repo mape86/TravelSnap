@@ -6,7 +6,7 @@ import {
   FIREBASE_MESSAGING_SENDER_ID,
   FIREBASE_APP_ID,
 } from "@env";
-import * as firebase from "firebase/app";
+import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import {
   getStorage,
@@ -25,10 +25,8 @@ const firebaseConfig = {
   appId: FIREBASE_APP_ID,
 };
 
-firebase.initializeApp(firebaseConfig);
-
-const fbStorage = firebase.storage();
-const firestore = firebase.firestore();
+const app = initializeApp(firebaseConfig);
+const fbStorage = getStorage(app);
 
 /**
  *
@@ -38,7 +36,7 @@ const firestore = firebase.firestore();
  * @param {*} ref
  */
 
-const uploadImageToFirebase = async (uri, name, onProgress, ref) => {
+const uploadImageToFirebase = async (uri, name, onProgress) => {
     const fetchResponse = await fetch(uri);
     const blob = await fetchResponse.blob();
 
