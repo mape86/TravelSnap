@@ -1,7 +1,7 @@
 import {
   Camera,
   CameraType,
-  CameraType as ExpoCamerType,
+  CameraType as ExpoCameraType,
   FlashMode as ExpoFlashMode,
 } from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
@@ -11,13 +11,22 @@ import { Alert, Image, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { uploadImageToFirebase } from "../../../firebaseConfig";
 import CustomButton from "../../components/CustomButton";
+import * as location from "expo-location";
+import { PermissionStatus } from "expo-location";
 
 const CameraPage = () => {
-  const [hasCameraPermission, setHasCameraPermission] = useState<
+  const [cameraPermission, setCameraPermission] = useState<
     boolean | null
   >(null);
+  const [locationPermission, setLocationPermission] = useState<
+    boolean | null
+  >(null);
+  const [imageData, setImageData] = useState<{
+    uri: string | null;
+    location: Location | undefined;
+  }>({ uri: null, location: undefined });
   const [image, setImage] = useState<string | null>(null);
-  const [type, setType] = useState<ExpoCamerType>(CameraType.back);
+  const [camType, setCamType] = useState<ExpoCameraType>(CameraType.back);
   const [flashMode, setFlashMode] = useState<ExpoFlashMode>(ExpoFlashMode.off);
   const cameraRef = useRef<Camera | null>(null);
 
@@ -25,16 +34,60 @@ const CameraPage = () => {
     (async () => {
       MediaLibrary.requestPermissionsAsync();
       const cameraStatus = await Camera.requestCameraPermissionsAsync();
-      setHasCameraPermission(cameraStatus.status === "granted");
+      setCameraPermission(cameraStatus.status === "granted");
+
+      // const locationStatus = await location.requestForegroundPermissionsAsync()
+      // setLocationPermission(locationStatus.status === PermissionStatus.GRANTED);
     })();
   }, []);
+
+  // const requestLocationPermission = async () => {
+  //   const { status } = await location.requestForegroundPermissionsAsync();
+  //   if (status !== PermissionStatus.GRANTED) {
+  //     Alert.alert("Permission to access location was denied");
+  //   }
+  //   return status
+  // }
+
+  //   const getLocation = async () => {
+  //     if (hasLocationPermission) {
+  //       try {
+  //         const {status} = await location.requestForegroundPermissionsAsync();
+  //         if (status === "granted") {
+  //           const locationResult = await location.getCurrentPositionAsync({});
+  //           console.log(location)
+  //           return locationResult.coords
+  //         } else {
+  //           throw new Error("App does not have permission to access location")
+  //       }
+  //     }catch (error) {
+  //       console.log(error)
+  //     }
+  //   }
+  // }
+
+  const getLocation = async () => {
+    if (locationPermission) {
+      try {
+        const { coords } = await location.getCurrentPositionAsync({});
+        return coords; // Return the coordinates directly
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+    } else {
+      throw new Error("Location permission not granted");
+    }
+  };
 
   const takePicture = async () => {
     if (cameraRef.current) {
       try {
+        // const locationData = await getLocation();
         const data = await cameraRef.current.takePictureAsync({
           quality: 0.5,
         });
+        // setImageData({ uri: data.uri, location: locationData });
         setImage(data.uri);
       } catch (error) {
         console.log(error);
@@ -54,7 +107,7 @@ const CameraPage = () => {
     }
   };
 
-  if (hasCameraPermission === false) {
+  if (cameraPermission === false) {
     return (
       <View className="flex-1 bg-black justify-center pb-2">
         <Text>App has no access to device camera</Text>
@@ -82,7 +135,7 @@ const CameraPage = () => {
       {!image ? (
         <Camera
           style={styles.camera}
-          type={type}
+          type={camType}
           flashMode={flashMode}
           ref={cameraRef}
         >
@@ -91,8 +144,8 @@ const CameraPage = () => {
               title=""
               iconName="retweet"
               onPress={() =>
-                setType(
-                  type === CameraType.back ? CameraType.front : CameraType.back
+                setCamType(
+                  camType === CameraType.back ? CameraType.front : CameraType.back
                 )
               }
             />
