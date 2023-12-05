@@ -5,7 +5,7 @@ import Image4 from "../assets/mockdata/image-4.jpg";
 import Image5 from "../assets/mockdata/image-5.jpg";
 import Image6 from "../assets/mockdata/image-6.jpg";
 import ProfileBg from "../assets/mockdata/image-7.jpg";
-import ProfileImage from "../assets/mockdata/profile-image.jpg";
+import ProfileImage from "../assets/mockdata/imageprofile.jpg";
 
 export const Assets = {
   images: {
