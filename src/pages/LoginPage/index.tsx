@@ -5,6 +5,7 @@ import { TextInput } from "react-native-paper";
 import CustomButton from "../../components/CustomButton";
 import { fbAuth } from "../../../firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { RouteList } from "../../hooks/Navigation/useCustomNavigation";
 
 const LoginPage = () => {
   const { navigate } = useCustomNavigation();
@@ -13,6 +14,10 @@ const LoginPage = () => {
 
   const handleReturnClick = () => {
     goBack();
+  };
+
+  const handleClick = (item: keyof RouteList) => {
+    navigate(item);
   };
 
   const auth = fbAuth;
@@ -24,7 +29,7 @@ const LoginPage = () => {
     try {
       const response = await signInWithEmailAndPassword(auth, email, password);
       console.log(response);
-      alert("User logged in successfully");
+      navigate("HomeRoutes");
     } catch (error) {
       console.log(error);
     }

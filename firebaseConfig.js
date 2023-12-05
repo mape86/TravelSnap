@@ -7,9 +7,13 @@ import {
   FIREBASE_APP_ID,
 } from "@env";
 import { initializeApp } from "firebase/app";
-import { getAuth, getReactNativePersistence, initializeAuth } from "firebase/auth";
-import { getFirestore} from "firebase/firestore";
-import  ReactNativeAsyncStorage  from "@react-native-async-storage/async-storage";
+import {
+  getAuth,
+  getReactNativePersistence,
+  initializeAuth,
+} from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 import {
   getStorage,
   getDownloadURL,
@@ -41,10 +45,17 @@ const fbStore = getFirestore(app);
  */
 
 const uploadImageToFirebase = async (uri, name, onProgress) => {
+  const user = fbAuth.currentUser;
+
+  if (!user) {
+    throw new Error("You must be loggged in to upload images to firebase");
+  }
+
   const fetchResponse = await fetch(uri);
   const blob = await fetchResponse.blob();
 
-  const imageRef = ref(fbStorage, `images/${name}`);
+  const userFolder = `users/${user.uid}/images`;
+  const imageRef = ref(fbStorage, `${userFolder}/${name}`);
 
   const uploadTask = uploadBytesResumable(imageRef, blob);
 
