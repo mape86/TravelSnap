@@ -35,6 +35,7 @@ interface ButtonProps {
   iconName?: EntypoIconName;
   color?: string;
   disabled?: boolean;
+  backgroundColor?: string;
 }
 
 const CustomButton = ({
@@ -43,8 +44,14 @@ const CustomButton = ({
   iconName,
   color,
   disabled,
+  backgroundColor,
 }: ButtonProps) => (
-  <TouchableOpacity onPress={onPress} style={styles.button} disabled={disabled}>
+  <TouchableOpacity
+    onPress={onPress}
+    style={styles.button}
+    disabled={disabled}
+    className={backgroundColor || "bg-black"}
+  >
     {iconName && <Entypo name={iconName} size={24} color={color || "white"} />}
     <Text style={styles.text}>{title}</Text>
   </TouchableOpacity>
@@ -59,7 +66,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     borderRadius: 4,
     elevation: 3,
-    backgroundColor: "#000",
   },
   text: {
     marginLeft: 8,
