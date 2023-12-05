@@ -8,7 +8,7 @@ export type RouteList = {
     CreateUserPage: undefined;
 
     //Shared routes:
-    UserProfilePage: undefined;
+    ProfilePage: undefined;
     PhotoDetailPage: undefined;
 
     //Homepage routes:
@@ -20,7 +20,9 @@ export type RouteList = {
     PhotoGalleryPage: undefined;
     //Search pages:
     
-    //Profile pages:
+    //UserProfile pages:
+    UserProfilePage: undefined;
+    UserSettingsPage: undefined;
 }
 
 type TravelSnapNavigationProp = NavigationProp<RouteList>;

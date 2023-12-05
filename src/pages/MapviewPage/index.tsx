@@ -3,7 +3,7 @@ import React from 'react'
 
 const MapviewPage = () => {
   return (
-    <View>
+    <View className='flex-1 justify-center items-center'>
       <Text>MapviewPage</Text>
     </View>
   )
