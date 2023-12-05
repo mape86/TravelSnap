@@ -7,8 +7,9 @@ import {
   FIREBASE_APP_ID,
 } from "@env";
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { getAuth, getReactNativePersistence, initializeAuth } from "firebase/auth";
+import { getFirestore} from "firebase/firestore";
+import  ReactNativeAsyncStorage  from "@react-native-async-storage/async-storage";
 import {
   getStorage,
   getDownloadURL,
