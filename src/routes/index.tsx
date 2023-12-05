@@ -14,9 +14,9 @@ const HomeRoutes: React.FC = () => {
   return (
     <Tab.Navigator
       initialRouteName="Home"
-      activeColor="#fff"
-      inactiveColor="#3e2465"
-      barStyle={{ backgroundColor: "#009387" }}
+      activeColor="#121212"
+      inactiveColor="#808080"
+      barStyle={{ backgroundColor: "#ffffff" }}
     >
       <Tab.Screen
         name="Home"
