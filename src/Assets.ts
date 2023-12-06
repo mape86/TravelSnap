@@ -6,6 +6,7 @@ import Image5 from "../assets/mockdata/image-5.jpg";
 import Image6 from "../assets/mockdata/image-6.jpg";
 import ProfileBg from "../assets/mockdata/image-7.jpg";
 import ProfileImage from "../assets/mockdata/imageprofile.jpg";
+import profileImagePlaceholder from "../assets/profileImagePlaceholder.png";
 
 export const Assets = {
   images: {
@@ -17,6 +18,7 @@ export const Assets = {
     Image6,
     ProfileBg,
     ProfileImage,
+    profileImagePlaceholder,
   },
 };
 
