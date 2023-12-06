@@ -34,7 +34,7 @@ const FeedImageCard: React.FC<FeedImageCardProps> = ({
           style={{ width: 350, height: 430 }}
           className=" aspect-ratio-ratio-1 rounded-lg"
         />
-        <View className="absolute bottom-2 right-10 items-center justify-center w-12 h-12 bg-white rounded-full overflow-hidden">
+        <View className="absolute bottom-2 right-10 items-center justify-center w-12 h-12 bg-white  rounded-full overflow-hidden">
           {/* TODO: Add heart icon */}
           {/* <Image source='' className="w-5 h-5 " /> */}
         </View>

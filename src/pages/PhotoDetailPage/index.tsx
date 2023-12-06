@@ -19,18 +19,17 @@ const PhotoDetailPage = (props: any) => {
   const { navigate } = useCustomNavigation();
 
   return (
-    <SafeAreaView className="flex-1 justify-center items-center">
-      <ScrollView className="bg-white">
-        <Image source={props.route.params.feedImage} className="w-full h-80" />
-
+    <ScrollView className="bg-brandLight ">
+      <Image source={props.route.params.feedImage} className="w-full h-96" />
+      <SafeAreaView className="flex-1">
         <TouchableOpacity onPress={() => navigate("ProfilePage")}>
           <View className="flex-row items-center">
             <Image
-              className="rounded-lg m-5"
+              className="rounded-lg m-3"
               style={{ width: 60, height: 75 }}
               source={Assets.images.ProfileImage}
             />
-            <Text className="ml-2 text-lg font-bold">@susanna.winther</Text>
+            <Text className=" text-lg font-bold">@susanna.winther</Text>
           </View>
         </TouchableOpacity>
         <View className="p-4">
@@ -39,12 +38,12 @@ const PhotoDetailPage = (props: any) => {
             Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum
             dolor sit amet.
           </Text>
-          <Text className="mt-1 text-blue-500">#Dolor #Sit #Amet</Text>
+          <Text className="mt-1 text-gray-500">#Dolor #Sit #Amet</Text>
         </View>
 
         {/* Use react-native-maps */}
-      </ScrollView>
-    </SafeAreaView>
+      </SafeAreaView>
+    </ScrollView>
   );
 };
 
