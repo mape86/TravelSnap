@@ -19,16 +19,16 @@ export type RouteList = {
   HomeRoutes: undefined;
   HomePage: undefined;
 
-    //Photo/Camera pages:
-    CameraPage: undefined;
-    PhotoGalleryPage: undefined;
+  //Photo/Camera pages:
+  CameraPage: undefined;
+  PhotoGalleryPage: undefined;
     UploadLibraryPhotoPage: undefined;
-    //Search pages:
-    
-    //UserProfile pages:
-    UserProfilePage: undefined;
-    UserSettingsPage: undefined;
-}
+  //Search pages:
+
+  //UserProfile pages:
+  UserProfilePage: undefined;
+  UserSettingsPage: undefined;
+};
 
 type TravelSnapNavigationProp = NavigationProp<RouteList>;
 
