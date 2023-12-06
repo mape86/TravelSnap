@@ -35,12 +35,12 @@ const HomePage = () => {
           <FeedImageCard
             location="Bali, Indonesia"
             feedImage={Assets.images.Image1}
-            iconImage={undefined}
+            id="2"
           />
           <FeedImageCard
             location="Bali, Indonesia"
             feedImage={Assets.images.Image2}
-            iconImage={undefined}
+            id="1"
           />
         </View>
       </ScrollView>
