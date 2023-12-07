@@ -22,6 +22,7 @@ export type RouteList = {
   //Photo/Camera pages:
   CameraPage: undefined;
   PhotoGalleryPage: undefined;
+  UploadLibraryPhotoPage: { uri: string };
   //Search pages:
 
   //UserProfile pages:
