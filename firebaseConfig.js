@@ -79,8 +79,14 @@ const uploadImageToFirebase = async (uri, name, onProgress) => {
 };
 
 const getAllImagesFromFirebase = async () => {
+  const user = fbAuth.currentUser;
+
+  if (!user) {
+    throw new Error("You must be loggged in to retrieve images from firebase");
+  }
   try {
-    const imageRef = ref(fbStorage, "images");
+    const userFolder = `users/${user.uid}/images`;
+    const imageRef = ref(fbStorage, `${userFolder}`);
 
     const result = await listAll(imageRef);
     const imageUrls = await Promise.all(
