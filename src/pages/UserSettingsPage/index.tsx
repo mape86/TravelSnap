@@ -1,10 +1,16 @@
 import { View, Text, Image, Switch, ImageSourcePropType } from "react-native";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import Assets from "../../Assets";
 import CustomButton from "../../components/CustomButton";
-import { fbAuth, uploadImageToFirebase } from "../../../firebaseConfig";
+import {
+  fbAuth,
+  getProfilePicture,
+  uploadImageToFirebase,
+  uploadProfilePicture,
+} from "../../../firebaseConfig";
 import * as ImagePicker from "expo-image-picker";
+import { useFocusEffect } from "@react-navigation/native";
 
 const UserSettingsPage = () => {
   const [dislayName, setDisplayName] = useState<string>();
@@ -12,6 +18,23 @@ const UserSettingsPage = () => {
   const [toggleIsEnabled, setToggleIsEnabled] = useState<boolean>(false);
   const [profileImage, setProfileImage] = useState<string>();
   const user = fbAuth.currentUser;
+
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     const fetchProfileImage = async () => {
+  //       try {
+  //         const image = await getProfilePicture();
+  //         if (image) {
+  //           setProfileImage(image);
+  //         }
+  //       } catch (error) {
+  //         console.error("Error fetching profile image:", error);
+  //       }
+  //     };
+
+  //     fetchProfileImage();
+  //   }, [])
+  // );
 
   const toggleDarkMode = () => {
     setToggleIsEnabled((previousState) => !previousState);
@@ -26,7 +49,10 @@ const UserSettingsPage = () => {
 
     if (!response.canceled) {
       setProfileImage(response.assets[0].uri);
+    }
+    if (profileImage) {
       handleProfileImageUpload();
+      setProfileImage("");
     }
   };
 
@@ -36,7 +62,7 @@ const UserSettingsPage = () => {
         const uri = profileImage;
         const fileName = uri.split("/").pop();
 
-        uploadImageToFirebase(uri, fileName, (progress: any) =>
+        uploadProfilePicture(uri, fileName, (progress: any) =>
           console.log(progress)
         );
       } catch (error) {
