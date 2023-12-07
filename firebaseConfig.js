@@ -20,6 +20,7 @@ import {
   listAll,
   ref,
   uploadBytesResumable,
+  list,
 } from "firebase/storage";
 
 const firebaseConfig = {
@@ -78,6 +79,39 @@ const uploadImageToFirebase = async (uri, name, onProgress) => {
   });
 };
 
+const uploadProfilePicture = async (uri, name, onProgress) => {
+  const user = fbAuth.currentUser;
+
+  if (!user) {
+    throw new Error("You must be logged in to upload a profile picture");
+  }
+
+  const fetchResponse = await fetch(uri);
+  const blob = await fetchResponse.blob();
+
+  const userFolder = `users/${user.uid}/profileImage`;
+  const imageRef = ref(fbStorage, `${userFolder}/${name}`);
+
+  const uploadTask = uploadBytesResumable(imageRef, blob);
+
+  return new Promise((resolve, reject) => {
+    uploadTask.on(
+      "state_changed",
+      (image) => {
+        const progress = (image.bytesTransferred / image.totalBytes) * 100;
+        onProgress(progress);
+      },
+      (error) => {
+        reject(error);
+      },
+      async () => {
+        const downloadUrl = await getDownloadURL(uploadTask.image.ref);
+        resolve({ downloadUrl, metadata: uploadTask.image.metadata });
+      }
+    );
+  });
+};
+
 const getAllImagesFromFirebase = async () => {
   const user = fbAuth.currentUser;
 
@@ -102,6 +136,30 @@ const getAllImagesFromFirebase = async () => {
   }
 };
 
+const getProfilePicture = async () => {
+  const user = fbAuth.currentUser;
+
+  if (!user) {
+    throw new Error("You must be logged in to retrieve a profile image");
+  }
+
+  try {
+    const userFolder = `users/${user.uid}/profileImage`;
+    const imageRef = ref(fbStorage, `${userFolder}`);
+
+    const result = await list(imageRef);
+    if (result > 0) {
+      const image = result.items[0];
+      const downloadURL = await getDownloadURL(image);
+      return downloadURL;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.log("Error getting profile image from firebase", error);
+  }
+};
+
 export {
   app,
   fbStorage,
@@ -110,4 +168,6 @@ export {
   fbAuth,
   uploadImageToFirebase,
   getAllImagesFromFirebase,
+  uploadProfilePicture,
+  getProfilePicture,
 };
