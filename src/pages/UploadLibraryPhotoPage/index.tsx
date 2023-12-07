@@ -1,30 +1,37 @@
-import { View, Text, Image, TextInput } from 'react-native'
-import React, { useState } from 'react'
-import { RouteProp } from '@react-navigation/native'
-import { Button } from 'react-native-paper';
+import React, { useEffect, useState } from 'react';
+import { Image, TextInput, View } from 'react-native';
 import CustomButton from '../../components/CustomButton';
+import { uploadImageToFirebase } from '../../../firebaseConfig';
 
-type RootStackList = {
-  GalleryPage: undefined;
-  UploadLibraryPhotoPage: { uri: string };
-};
 
-type UploadLibraryPhotoPageRoute = RouteProp<RootStackList, 'UploadLibraryPhotoPage'>
+const UploadLibraryPhotoPage = (route: any) => {
 
-type Props = {
-  route: UploadLibraryPhotoPageRoute
-
-}
-
-const UploadLibraryPhotoPage: React.FC<Props> = ({route}) => {
-
-  const {uri} = route.params
+  const {uri} = route.route.params
 
   const [description, setDescription] = useState<string>('')
   const [tags, setTags] = useState<string>('')
+  const [image, setImage] = useState<string | null>(null)
 
-  const handleUploadToFirebase = () => {
-      
+  useEffect(() => {
+    setImage(uri)
+  }, [])
+
+  const handleUploadToFirebase = async () => {
+      if (image) {
+        try {
+          const uri = image
+          const fileName = uri.split('/').pop()
+          uploadImageToFirebase(uri, fileName, (progress: any) => console.log(progress)
+          ) 
+          console.log(uri);
+          console.log(fileName);
+          
+          
+        }
+        catch (error) {
+          console.log(error)
+        }
+      } 
     }
 
   return (
