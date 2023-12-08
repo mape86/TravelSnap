@@ -13,6 +13,7 @@ import Portugal from "../assets/my-travel-images/portugallisboa.jpg";
 import Prague from "../assets/my-travel-images/prague.jpg";
 import Rome from "../assets/my-travel-images/roma.jpg";
 import Trolltunga from "../assets/my-travel-images/trolltunga.jpg";
+import ProfileImagePlaceholder from "../assets/profileImagePlaceholder.png";
 
 export const Assets = {
   images: {
@@ -24,6 +25,7 @@ export const Assets = {
     Image6,
     ProfileBg,
     ProfileImage,
+    ProfileImagePlaceholder,
   },
   travelImages: {
     CinqueTerre,
