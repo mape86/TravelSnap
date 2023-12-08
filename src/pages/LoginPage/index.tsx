@@ -1,10 +1,10 @@
 import { View } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
 import { TextInput } from "react-native-paper";
 import CustomButton from "../../components/CustomButton";
 import { fbAuth } from "../../../firebaseConfig";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { RouteList } from "../../hooks/Navigation/useCustomNavigation";
 
 const LoginPage = () => {
@@ -25,13 +25,22 @@ const LoginPage = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        navigate("HomeRoutes");
+      }
+    });
+    return unsubscribe;
+  }, []);
+
   const userLogin = async () => {
     try {
       const response = await signInWithEmailAndPassword(auth, email, password);
-      console.log(response);
-      navigate("HomeRoutes");
+      console.log("User with email: ", response.user.email, " logged in");
     } catch (error) {
       console.log(error);
+      alert(error);
     }
   };
 
