@@ -21,6 +21,7 @@ import {
   ref,
   uploadBytesResumable,
   list,
+  getMetadata,
 } from "firebase/storage";
 
 const firebaseConfig = {
@@ -45,7 +46,7 @@ const fbStore = getFirestore(app);
  * @param {*} ref
  */
 
-const uploadImageToFirebase = async (uri, name, onProgress) => {
+const uploadImageToFirebase = async (uri, name, metadata = {}, onProgress) => {
   const user = fbAuth.currentUser;
 
   if (!user) {
@@ -57,8 +58,8 @@ const uploadImageToFirebase = async (uri, name, onProgress) => {
 
   const userFolder = `users/${user.uid}/images`;
   const imageRef = ref(fbStorage, `${userFolder}/${name}`);
-
-  const uploadTask = uploadBytesResumable(imageRef, blob);
+  console.log("uploading with metadata: ", metadata);
+  const uploadTask = uploadBytesResumable(imageRef, blob, {customMetadata: metadata});
 
   return new Promise((resolve, reject) => {
     uploadTask.on(
@@ -74,10 +75,20 @@ const uploadImageToFirebase = async (uri, name, onProgress) => {
       async () => {
         const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
         resolve({ downloadURL, metadata: uploadTask.snapshot.metadata });
+        const storageRef = ref(fbStorage, `users/${user.uid}/images/${name}`);
+        
+        getMetadata(storageRef).then((metadata) => {
+          // Metadata now contains the metadata for 'images/forest.jpg'
+          console.log("metadata: ", metadata);
+        }).catch((error) => {
+          // Uh-oh, an error occurred!
+          console.log("error: ", error);
+        })
       }
     );
   });
 };
+
 
 const uploadProfilePicture = async (uri, name, onProgress) => {
   const user = fbAuth.currentUser;
