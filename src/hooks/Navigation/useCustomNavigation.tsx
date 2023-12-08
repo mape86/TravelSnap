@@ -30,6 +30,7 @@ export type RouteList = {
   UserProfilePage: undefined;
   UserSettingsPage: undefined;
   WelcomeRoutes: undefined;
+  UserPhotoDetailPage: undefined;
 };
 
 type TravelSnapNavigationProp = NavigationProp<RouteList>;
