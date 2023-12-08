@@ -8,12 +8,16 @@ import useCustomNavigation, { RouteList } from "../../hooks/Navigation/useCustom
 
 type photoUri = string;
 
+type PickedPhoto = {
+  uri: string;
+  exif?: Record<string, any>;
+}
+
 const PhotoGalleryPage: React.FC = () => {
   const { navigate } = useCustomNavigation();
 
-  const [pickedPhoto, setPickedPhotos] = useState<photoUri[]>([]);
+  const [pickedPhoto, setPickedPhotos] = useState<PickedPhoto[]>([]);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  // const [photos, setPhotos] = useState<MediaLibrary.Asset[]>([]);
 
   const handleClick = (item: keyof RouteList, uri: string) => {
     navigate(item, { uri });
@@ -23,30 +27,20 @@ const PhotoGalleryPage: React.FC = () => {
     navigate(item);
   }
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const {status} = await MediaLibrary.requestPermissionsAsync();
-  //     if(status == 'granted'){
-  //       const album = await MediaLibrary.getAlbumAsync('Camera Roll')
-  //       const {assets} = await MediaLibrary.getAssetsAsync({
-  //         album: album,
-  //         first: 20,
-  //         mediaType: 'photo'
-  //       })
-  //       setPhotos(assets)
-  //     }
-  //   })()
-  // }, [])
-
   const choosePhotoFromLibrary = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      //allowsEditing: true,
+      exif: true,
       allowsMultipleSelection: true,
-      quality: 1,
+      quality: 0.5,
     });
     if (!result.canceled) {
-      const newPhotoUri = result.assets.map((asset) => asset.uri);
+      const newPhotoUri = result.assets.map((asset) => {
+        return {
+      uri: asset.uri,
+      exif: asset.exif || {},
+    }
+      });
       setPickedPhotos([...pickedPhoto, ...newPhotoUri]);
     }
   };
@@ -77,15 +71,15 @@ const PhotoGalleryPage: React.FC = () => {
         <View className="flex-1 mt-2">
           <FlatList
             data={pickedPhoto}
-            keyExtractor={(item) => item}
+            keyExtractor={(item) => item.uri}
             renderItem={({ item }) => (
               <View className="gap-x-1 gap-y-1">
                 <TouchableOpacity
                   className="mx-0.5 gap-x-1 gap-y-1 p-0.5"
-                  onPress={() => handleClick("UploadLibraryPhotoPage", item)}
+                  onPress={() => handleClick("UploadLibraryPhotoPage", item.uri)}
                 >
                   <Image
-                    source={{ uri: item }}
+                    source={{ uri: item.uri }}
                     className="w-[120px] h-[120px] rounded-lg"
                   />
                 </TouchableOpacity>
