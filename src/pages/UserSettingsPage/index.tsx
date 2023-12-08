@@ -1,40 +1,22 @@
-import { View, Text, Image, Switch, ImageSourcePropType } from "react-native";
+import { View, Text, Image, Switch } from "react-native";
 import React, { useCallback, useState } from "react";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import Assets from "../../Assets";
 import CustomButton from "../../components/CustomButton";
-import {
-  fbAuth,
-  getProfilePicture,
-  uploadImageToFirebase,
-  uploadProfilePicture,
-} from "../../../firebaseConfig";
+import { fbAuth, uploadProfilePicture } from "../../../firebaseConfig";
 import * as ImagePicker from "expo-image-picker";
-import { useFocusEffect } from "@react-navigation/native";
+import { signOut } from "firebase/auth";
+import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
+import WelcomeRoutes from "../../routes/Welcome.Routes";
 
 const UserSettingsPage = () => {
   const [dislayName, setDisplayName] = useState<string>();
   const [description, setDescription] = useState<string>();
   const [toggleIsEnabled, setToggleIsEnabled] = useState<boolean>(false);
   const [profileImage, setProfileImage] = useState<string>();
-  const user = fbAuth.currentUser;
 
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     const fetchProfileImage = async () => {
-  //       try {
-  //         const image = await getProfilePicture();
-  //         if (image) {
-  //           setProfileImage(image);
-  //         }
-  //       } catch (error) {
-  //         console.error("Error fetching profile image:", error);
-  //       }
-  //     };
-
-  //     fetchProfileImage();
-  //   }, [])
-  // );
+  const auth = fbAuth;
+  const navigation = useCustomNavigation();
 
   const toggleDarkMode = () => {
     setToggleIsEnabled((previousState) => !previousState);
@@ -73,7 +55,13 @@ const UserSettingsPage = () => {
 
   const handleSaveChanges = () => {};
 
-  const handleUserLogOut = () => {};
+  const handleUserSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        navigation.reset("Welcome");
+      })
+      .catch((error) => alert(error));
+  };
 
   return (
     <View className="flex-1">
@@ -134,12 +122,7 @@ const UserSettingsPage = () => {
         />
       </View>
       <View className="mt-3 mx-10">
-        <CustomButton
-          title="Log out"
-          onPress={() => {
-            handleUserLogOut;
-          }}
-        />
+        <CustomButton title="Log out" onPress={handleUserSignOut} />
       </View>
     </View>
   );
