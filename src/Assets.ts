@@ -14,6 +14,13 @@ import Prague from "../assets/my-travel-images/prague.jpg";
 import Rome from "../assets/my-travel-images/roma.jpg";
 import Trolltunga from "../assets/my-travel-images/trolltunga.jpg";
 import ProfileImagePlaceholder from "../assets/profileImagePlaceholder.png";
+import CinqueTerre from "../assets/my-travel-images/cinqueterre.jpg";
+import Lofoten from "../assets/my-travel-images/lofoten.jpg";
+import Paris from "../assets/my-travel-images/paris.jpg";
+import Portugal from "../assets/my-travel-images/portugallisboa.jpg";
+import Prague from "../assets/my-travel-images/prague.jpg";
+import Rome from "../assets/my-travel-images/roma.jpg";
+import Trolltunga from "../assets/my-travel-images/trolltunga.jpg";
 
 export const Assets = {
   images: {
