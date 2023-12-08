@@ -5,6 +5,7 @@ import UserSettingsPage from "../pages/UserSettingsPage";
 import PhotoDetailPage from "../pages/PhotoDetailPage";
 import WelcomePage from "../pages/Welcome";
 import WelcomeRoutes from "./Welcome.Routes";
+import UserPhotoDetailPage from "../pages/UserPhotoDetailPage";
 
 const { Navigator, Screen } = createStackNavigator();
 
@@ -22,6 +23,7 @@ export const UserProfilePageRoutes = () => {
         />
         <Screen name="UserSettingsPage" component={UserSettingsPage} />
         <Screen name="PhotoDetailPage" component={PhotoDetailPage} />
+        <Screen name="UserPhotoDetailPage" component={UserPhotoDetailPage} />
         <Screen name="WelcomeRoutes" component={WelcomeRoutes} />
       </Navigator>
     </NavigationContainer>
