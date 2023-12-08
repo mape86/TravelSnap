@@ -6,7 +6,6 @@ import Image5 from "../assets/mockdata/image-5.jpg";
 import Image6 from "../assets/mockdata/image-6.jpg";
 import ProfileBg from "../assets/mockdata/image-7.jpg";
 import ProfileImage from "../assets/mockdata/imageprofile.jpg";
-import ProfileImagePlaceholder from "../assets/profileImagePlaceholder.png";
 import CinqueTerre from "../assets/my-travel-images/cinqueterre.jpg";
 import Lofoten from "../assets/my-travel-images/lofoten.jpg";
 import Paris from "../assets/my-travel-images/paris.jpg";
@@ -25,7 +24,6 @@ export const Assets = {
     Image6,
     ProfileBg,
     ProfileImage,
-    ProfileImagePlaceholder,
   },
   travelImages: {
     CinqueTerre,

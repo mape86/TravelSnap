@@ -11,16 +11,8 @@ import { Alert, Image, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { uploadImageToFirebase } from "../../../firebaseConfig";
 import CustomButton from "../../components/CustomButton";
-import * as Location from "expo-location";
+import * as location from "expo-location";
 import { PermissionStatus } from "expo-location";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-interface LocationInfo {
-  coords: {
-    latitude: number;
-    longitude: number;
-  };
-  }
 
 const CameraPage = () => {
   const [cameraPermission, setCameraPermission] = useState<
@@ -29,8 +21,10 @@ const CameraPage = () => {
   const [locationPermission, setLocationPermission] = useState<
     boolean | null
   >(null);
-  const [location, setLocation] = useState<LocationInfo | null>(null);
-  const [imageData, setImageData] = useState<{uri: string, location?: LocationInfo} | null>(null);
+  const [imageData, setImageData] = useState<{
+    uri: string | null;
+    location: Location | undefined;
+  }>({ uri: null, location: undefined });
   const [image, setImage] = useState<string | null>(null);
   const [camType, setCamType] = useState<ExpoCameraType>(CameraType.back);
   const [flashMode, setFlashMode] = useState<ExpoFlashMode>(ExpoFlashMode.off);
@@ -42,25 +36,41 @@ const CameraPage = () => {
       const cameraStatus = await Camera.requestCameraPermissionsAsync();
       setCameraPermission(cameraStatus.status === "granted");
 
-      let {status} = await Location.requestForegroundPermissionsAsync();
-
-      if (status !== 'granted') {
-        Alert.alert('Permission to access location was denied');
-      }
-      const locationStatus = await Location.requestForegroundPermissionsAsync()
-      setLocationPermission(locationStatus.status === "granted");
-
-      const location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
-      // console.log(location);
+      // const locationStatus = await location.requestForegroundPermissionsAsync()
+      // setLocationPermission(locationStatus.status === PermissionStatus.GRANTED);
     })();
   }, []);
+
+  // const requestLocationPermission = async () => {
+  //   const { status } = await location.requestForegroundPermissionsAsync();
+  //   if (status !== PermissionStatus.GRANTED) {
+  //     Alert.alert("Permission to access location was denied");
+  //   }
+  //   return status
+  // }
+
+  //   const getLocation = async () => {
+  //     if (hasLocationPermission) {
+  //       try {
+  //         const {status} = await location.requestForegroundPermissionsAsync();
+  //         if (status === "granted") {
+  //           const locationResult = await location.getCurrentPositionAsync({});
+  //           console.log(location)
+  //           return locationResult.coords
+  //         } else {
+  //           throw new Error("App does not have permission to access location")
+  //       }
+  //     }catch (error) {
+  //       console.log(error)
+  //     }
+  //   }
+  // }
 
   const getLocation = async () => {
     if (locationPermission) {
       try {
-        let location = await Location.getCurrentPositionAsync({});
-        return location as LocationInfo;
+        const { coords } = await location.getCurrentPositionAsync({});
+        return coords; // Return the coordinates directly
       } catch (error) {
         console.error(error);
         throw error;
@@ -70,44 +80,29 @@ const CameraPage = () => {
     }
   };
 
-  const getLoc = async(): Promise<LocationInfo> => {
-    let locationInfo = location
-    return locationInfo as LocationInfo;
-  }
-
   const takePicture = async () => {
-    if (cameraRef.current && locationPermission) {
+    if (cameraRef.current) {
       try {
-        const locationInfo = await getLoc();
+        // const locationData = await getLocation();
         const data = await cameraRef.current.takePictureAsync({
           quality: 0.5,
         });
-        setImageData({ uri: data.uri, location: locationInfo});
-        //setImage(data.uri);
+        // setImageData({ uri: data.uri, location: locationData });
+        setImage(data.uri);
       } catch (error) {
         console.log(error);
       }
     }
   };
 
-  const saveImageToLibrary = async () => {
-    if (imageData) {
+  const saveImage = async () => {
+    if (image) {
       try {
-        const asset = await MediaLibrary.createAssetAsync(imageData.uri);
-        await MediaLibrary.createAlbumAsync("Expo Images", asset, false);
-        alert("Your image has been saved to your phone's library in the Expo Images album!");
-  
-        const imageMetadata = {
-          uri: imageData.uri,
-          location: imageData.location,
-        };
-        console.log(imageMetadata);
-        
-        await AsyncStorage.setItem(`metadata_${asset.id}`, JSON.stringify(imageMetadata));
-  
-        setImageData(null);
+        await MediaLibrary.saveToLibraryAsync(image);
+        alert("Your image has been saved to your phones library!");
+        setImage(null);
       } catch (error) {
-        console.error(error);
+        console.log(error);
       }
     }
   };
@@ -121,21 +116,14 @@ const CameraPage = () => {
   }
 
   const uploadImage = async () => {
-    if (imageData && imageData.uri) {
+    if (image) {
       try {
-        const uri = imageData.uri;
-        const fileName = uri.split("/").pop() || "NoName.jpg";
-
-        const metadata = imageData.location ? {
-          latitude: String(imageData.location.coords.latitude),
-          longitude: String(imageData.location.coords.longitude),
-      } : {};
-      console.log(metadata);
-      
-      uploadImageToFirebase(uri, fileName, metadata, (progress: any) =>
-      console.log(progress)
-      );
-        setImageData(null);
+        const uri = image;
+        const fileName = uri.split("/").pop();
+        uploadImageToFirebase(uri, fileName, (progress: any) =>
+          console.log(progress)
+        );
+        setImage(null);
       } catch (error) {
         console.log(error);
       }
@@ -144,7 +132,7 @@ const CameraPage = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-black justify-center pb-1">
-      {!imageData ? (
+      {!image ? (
         <Camera
           style={styles.camera}
           type={camType}
@@ -176,17 +164,17 @@ const CameraPage = () => {
           </View>
         </Camera>
       ) : (
-        <Image source={{ uri: imageData?.uri }} style={styles.camera} />
+        <Image source={{ uri: image }} style={styles.camera} />
       )}
       <View>
-        {imageData?.uri ? (
+        {image ? (
           <View className="flex-row justify-between px-6">
             <CustomButton
               title="Retake photo"
               iconName="retweet"
-              onPress={() => setImageData(null)}
+              onPress={() => setImage(null)}
             />
-            <CustomButton title="Save" iconName="check" onPress={saveImageToLibrary} />
+            <CustomButton title="Save" iconName="check" onPress={saveImage} />
             <CustomButton
               title="Upload"
               iconName="upload"

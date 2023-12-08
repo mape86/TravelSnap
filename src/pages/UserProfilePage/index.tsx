@@ -1,100 +1,27 @@
-import React, { useEffect, useState } from "react";
-import { FlatList, Image, ImageSourcePropType, Text, View } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import image1 from "../../../assets/mockdata/image-1.jpg";
-import image2 from "../../../assets/mockdata/image-2.jpg";
-import image3 from "../../../assets/mockdata/image-3.jpg";
-import image4 from "../../../assets/mockdata/image-4.jpg";
-import image5 from "../../../assets/mockdata/image-5.jpg";
-import { fbAuth, getAllImagesFromFirebase } from "../../../firebaseConfig";
-// import useCustomNavigation, { RouteList } from "../../hooks/Navigation/useCustomNavigation";
-import { useNavigation } from "@react-navigation/native";
-import UserPhotoDetailPage from "../UserPhotoDetailPage";
-import { StackNavigationProp } from "@react-navigation/stack";
-
-type PickedPhoto = {
-  uri: string;
-  latitude?: number;
-  longitude?: number;
-}
-
-type RouteParamList = {
- 
-  UserPhotoDetailPage: {uri: string}
-}
+import { View, Text } from 'react-native'
+import React from 'react'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import useCustomNavigation from '../../hooks/Navigation/useCustomNavigation'
+import { RouteList } from '../../hooks/Navigation/useCustomNavigation'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { Icon } from 'react-native-paper'
 
 const UserProfilePage = () => {
-  const mockImages = [image1, image2, image3, image4, image5];
 
-  const auth = fbAuth.currentUser;
+  const { navigate } = useCustomNavigation();
 
-  const  navigation  = useNavigation<StackNavigationProp<RouteParamList>>();
-
-  // const handleClick = (item: keyof RouteList) => {
-  //   navigate(item);
-  // };
-
-  const handleImageClick = (uri: string) => {
-    navigation.navigate("UserPhotoDetailPage", {uri});
+  const handleClick = (item: keyof RouteList) => {
+    navigate(item);
   };
 
-  const [photoUrls, setPhotoUrls] = useState<string[]>([]);
-  const [mockPhotoUrls, setMockPhotoUrls] = useState<ImageSourcePropType[]>([]);
-
-  useEffect(() => {
-    // setMockPhotoUrls(mockImages);
-    const fetchImagesFromFirebase = async () => {
-      const images = await getAllImagesFromFirebase()
-      setPhotoUrls(images)
-
-    }
-
-    fetchImagesFromFirebase()
-  }, []);
-
-  const renderOutImages = ({item} : {item: string}) => (
-    <TouchableOpacity onPress={() => handleImageClick(item)}>
-      <Image source={{uri: item}} className="h-60 w-48 mx-0.5 my-0.5" />
-    </TouchableOpacity>
-  )
-
-
   return (
-    <View className="flex-auto bg-system-brandLight">
-      <View className="mb-3 flex justify-between">
-        <View className="w-screen h-32 object-cover">
-          <Image className="h-44 w-screen object-cover" source={image3} />
-        </View>
-        <View className="h-32 flex flex-row">
-          <Image
-            className="h-32 w-28 ml-6 rounded-xl border-2 border-zinc-100"
-            source={image1}
-          />
+    <SafeAreaView className='flex-1 justify-center items-center'>
+      <Text className='text-lg font-semibold pb-3'>UserProfilePage</Text>
+      <TouchableOpacity onPress={() => handleClick("UserSettingsPage")}>
+        <Text>UserSettingsPage</Text>
+      </TouchableOpacity>
+    </SafeAreaView>
+  )
+}
 
-          <View className="flex flex-col ml-7 mt-14">
-            <Text className="font-semibold text-xl">{auth?.displayName}</Text>
-            <Text className="pt-1">Hello world</Text>
-          </View>
-          {/* <TouchableOpacity
-          className="bg-white rounded-2xl border-2 items-center justify-center mt-14 ml-10" 
-          onPress={() => handleClick("UserSettingsPage")}
-          >
-            <Text className="px-2 py-0.5">Edit Profile</Text>
-          </TouchableOpacity> */}
-        </View>
-      </View>
-
-      <View className="flex-1 mt-5">
-        <FlatList
-          data={photoUrls}
-          renderItem={renderOutImages}
-          keyExtractor={(item, index) => index.toString()}
-          numColumns={2}
-          />
-      </View>
-    </View>
-  );
-};
-
-
-export default UserProfilePage;
+export default UserProfilePage

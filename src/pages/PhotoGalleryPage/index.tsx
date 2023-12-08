@@ -1,96 +1,32 @@
-import * as ImagePicker from "expo-image-picker";
-import React, { useState } from "react";
-import { FlatList, Image, Text, View } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { Button, Icon } from "react-native-paper";
-import { SafeAreaView } from "react-native-safe-area-context";
-import useCustomNavigation, { RouteList } from "../../hooks/Navigation/useCustomNavigation";
+import { View, Text } from 'react-native'
+import React from 'react'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import useCustomNavigation from '../../hooks/Navigation/useCustomNavigation'
+import { RouteList } from '../../hooks/Navigation/useCustomNavigation'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { Icon } from 'react-native-paper'
 
-type photoUri = string;
+const PhotoGalleryPage = () => {
 
-type PickedPhoto = {
-  uri: string;
-  exif?: Record<string, any>;
-}
-
-const PhotoGalleryPage: React.FC = () => {
   const { navigate } = useCustomNavigation();
 
-  const [pickedPhoto, setPickedPhotos] = useState<PickedPhoto[]>([]);
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-
-  const handleClick = (item: keyof RouteList, uri: string) => {
-    navigate(item, { uri });
-  };
-
-  const handleCameraClick = (item: keyof RouteList) => {
+  const handleClick = (item: keyof RouteList) => {
     navigate(item);
-  }
-
-  const choosePhotoFromLibrary = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      exif: true,
-      allowsMultipleSelection: true,
-      quality: 0.5,
-    });
-    if (!result.canceled) {
-      const newPhotoUri = result.assets.map((asset) => {
-        return {
-      uri: asset.uri,
-      exif: asset.exif || {},
-    }
-      });
-      setPickedPhotos([...pickedPhoto, ...newPhotoUri]);
-    }
   };
 
   return (
-    <SafeAreaView className="flex-auto bg-system-brandLight overflow-hidden">
-      <View className="mb-3 flex flex-row justify-between">
-        <Text className="pb-1 ml-4 font-semibold text-3xl">Device Gallery</Text>
-        <TouchableOpacity
-          className="pr-4 pt-2"
-          onPress={() => handleCameraClick("CameraPage")}
-        >
-          <Icon source="camera" size={30} />
-        </TouchableOpacity>
+    <SafeAreaView className='flex-1 justify-center items-center'>
+      <View className='w-screen items-end'>
+      <TouchableOpacity className='pr-4' onPress={() => handleClick("CameraPage")}>
+        <Icon source="camera" size={30} />
+      </TouchableOpacity>
       </View>
-
-      <View className="flex-1">
-        <View className="">
-          <Button
-            textColor="white"
-            className="ml-2 mr-2 bg-black "
-            onPress={() => choosePhotoFromLibrary()}
-          >
-            <Text>Pick photos</Text>
-          </Button>
-        </View>
-
-        <View className="flex-1 mt-2">
-          <FlatList
-            data={pickedPhoto}
-            keyExtractor={(item) => item.uri}
-            renderItem={({ item }) => (
-              <View className="gap-x-1 gap-y-1">
-                <TouchableOpacity
-                  className="mx-0.5 gap-x-1 gap-y-1 p-0.5"
-                  onPress={() => handleClick("UploadLibraryPhotoPage", item.uri)}
-                >
-                  <Image
-                    source={{ uri: item.uri }}
-                    className="w-[120px] h-[120px] rounded-lg"
-                  />
-                </TouchableOpacity>
-              </View>
-            )}
-            numColumns={3}
-          />
-        </View>
-      </View>
+      <Text className='pb-6'>PhotoGalleryPage</Text>
+      <TouchableOpacity onPress={() => handleClick("PhotoDetailPage")}>
+        <Text>PhotoDetailPage</Text>
+      </TouchableOpacity>
     </SafeAreaView>
-  );
-};
+  )
+}
 
-export default PhotoGalleryPage;
+export default PhotoGalleryPage
