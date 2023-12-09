@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Image, TextInput, View, Text } from 'react-native';
+import { Image, TextInput, View, Text, } from 'react-native';
 import CustomButton from '../../components/CustomButton';
 import { uploadImageToFirebase } from '../../../firebaseConfig';
 import * as ImagePicker from 'expo-image-picker';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 const UploadLibraryPhotoPage = (route: any) => {
 
   const {uri, exif} = route.route.params
 
-  const [description, setDescription] = useState<string>('')
+  const [imageDescription, setImageDescription] = useState<string>('')
   const [tags, setTags] = useState<string>('')
   const [image, setImage] = useState<string | null>(null)
 
@@ -23,8 +24,10 @@ const UploadLibraryPhotoPage = (route: any) => {
           const uri = image
           const fileName = uri.split('/').pop()
           const metadata = {
-            latitude: exif?.GPSLatitude || "No latitude location available",
-            longitude: exif?.GPSLongitude || "No longitude location available",
+            latitude: exif?.GPSLatitude,
+            longitude: exif?.GPSLongitude,
+            description: imageDescription,
+            tags: tags
           }
           uploadImageToFirebase(uri, fileName, metadata, (progress: any) => console.log(progress)
           ) 
@@ -40,6 +43,8 @@ const UploadLibraryPhotoPage = (route: any) => {
     }
 
   return (
+    <ScrollView>
+
     <View className='flex-1 items-center'>
       <Image source={{uri}} style={{width: 350, height: 350}} className='rounded-lg m-2'/>
       <Text></Text>
@@ -47,7 +52,7 @@ const UploadLibraryPhotoPage = (route: any) => {
        placeholder='Write a description'
        numberOfLines={10}
        multiline={true}
-       onChangeText={setDescription}
+       onChangeText={setImageDescription}
        className='w-80 h-36 border-2 border-gray-400 mb-4' 
        />
       <TextInput
@@ -59,6 +64,7 @@ const UploadLibraryPhotoPage = (route: any) => {
         <CustomButton title='Upload' onPress={handleUploadToFirebase} />
       </View>
     </View>
+    </ScrollView>
   )
 }
 
