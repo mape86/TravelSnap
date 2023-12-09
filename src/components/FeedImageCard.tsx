@@ -19,11 +19,7 @@ interface FeedImageCardProps {
   id: string;
 }
 
-const FeedImageCard: React.FC<FeedImageCardProps> = ({
-  location,
-  feedImage,
-  id,
-}) => {
+const FeedImageCard: React.FC<FeedImageCardProps> = ({ location, feedImage, id }) => {
   const { navigate } = useCustomNavigation();
   const [isFavorited, setIsFavorited] = useState(false);
   const scale = useSharedValue(1);

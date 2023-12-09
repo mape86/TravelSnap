@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  ImageBackground,
-} from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, ImageBackground } from "react-native";
 import React from "react";
 import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -21,10 +15,7 @@ const WelcomePage = () => {
   };
 
   return (
-    <ImageBackground
-      source={Assets.images.Image5}
-      className="flex-1 p-5 items-center"
-    >
+    <ImageBackground source={Assets.images.Image5} className="flex-1 p-5 items-center">
       <LinearGradient
         colors={["rgba(255, 255, 255, 1)", "rgba(255, 255, 255, 0)"]}
         style={{
@@ -52,16 +43,11 @@ const WelcomePage = () => {
               />
             </View>
             <View>
-              <CustomButton
-                onPress={() => handleClick("LoginPage")}
-                text="Log In"
-              />
+              <CustomButton onPress={() => handleClick("LoginPage")} text="Log In" />
             </View>
           </View>
           <TouchableOpacity onPress={() => handleClick("HomeRoutes")}>
-            <Text className="text-white underline text-lg mx-auto">
-              Continue as guest
-            </Text>
+            <Text className="text-white underline text-lg mx-auto">Continue as guest</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>

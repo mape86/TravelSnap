@@ -74,15 +74,9 @@ const CreateUserPage = () => {
         </View>
       </View>
       <View className="justify-center items-center">
-        <CustomButton
-          text="Go to login"
-          onPress={() => handleClick("LoginPage")}
-        />
+        <CustomButton text="Go to login" onPress={() => handleClick("LoginPage")} />
         <View className="mt-2">
-          <CustomButton
-            text="Continue as guest"
-            onPress={() => handleClick("HomeRoutes")}
-          />
+          <CustomButton text="Continue as guest" onPress={() => handleClick("HomeRoutes")} />
         </View>
       </View>
     </SafeAreaView>

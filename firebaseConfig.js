@@ -62,8 +62,7 @@ const uploadImageToFirebase = async (uri, name, metadata = {}, onProgress) => {
     uploadTask.on(
       "state_changed",
       (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         onProgress(progress);
       },
       (error) => {

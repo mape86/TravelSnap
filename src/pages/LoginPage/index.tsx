@@ -68,11 +68,7 @@ const LoginPage = () => {
           <CustomButton onPress={userLogin} text="Sign In" />
         </View>
         <View>
-          <CustomButton
-            variant="secondary"
-            onPress={handleReturnClick}
-            text="Go back"
-          />
+          <CustomButton variant="secondary" onPress={handleReturnClick} text="Go back" />
         </View>
       </View>
     </View>

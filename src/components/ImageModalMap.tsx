@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Modal,
-  Image,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Text,
-} from "react-native";
+import { Modal, Image, StyleSheet, View, TouchableOpacity, Text } from "react-native";
 
 // TODO: Add navigation to photo detail page
 
@@ -16,11 +9,7 @@ interface ImageModalProps {
   onClose: () => void;
 }
 
-const ImageModal: React.FC<ImageModalProps> = ({
-  imageUrl,
-  locationTitle,
-  onClose,
-}) => {
+const ImageModal: React.FC<ImageModalProps> = ({ imageUrl, locationTitle, onClose }) => {
   return (
     <Modal transparent={true} visible={!!imageUrl} onRequestClose={onClose}>
       <View className="flex-1 justify-center">
@@ -35,9 +24,7 @@ const ImageModal: React.FC<ImageModalProps> = ({
 
         <View className="absolute top-20 items-center flex-row p-4 w-full justify-between">
           {locationTitle && (
-            <Text className="text-2xl font-bold text-black">
-              {locationTitle}
-            </Text>
+            <Text className="text-2xl font-bold text-black">{locationTitle}</Text>
           )}
 
           <TouchableOpacity

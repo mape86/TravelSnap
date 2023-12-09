@@ -7,9 +7,7 @@ import image3 from "../../../assets/mockdata/image-3.jpg";
 import image4 from "../../../assets/mockdata/image-4.jpg";
 import image5 from "../../../assets/mockdata/image-5.jpg";
 import { fbAuth, getAllImagesFromFirebase } from "../../../firebaseConfig";
-import useCustomNavigation, {
-  RouteList,
-} from "../../hooks/Navigation/useCustomNavigation";
+import useCustomNavigation, { RouteList } from "../../hooks/Navigation/useCustomNavigation";
 import { useNavigation } from "@react-navigation/native";
 import UserPhotoDetailPage from "../UserPhotoDetailPage";
 import { StackNavigationProp } from "@react-navigation/stack";
