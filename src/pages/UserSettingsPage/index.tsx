@@ -1,22 +1,44 @@
-import { View, Text, Image, Switch } from "react-native";
-import React, { useCallback, useState } from "react";
+import * as ImagePicker from "expo-image-picker";
+import { signOut, updateProfile } from "firebase/auth";
+import React, { useEffect, useState } from "react";
+import { DevSettings, Image, Switch, Text, View } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
+import {
+  fbAuth,
+  getProfilePicture,
+  uploadProfilePicture,
+} from "../../../firebaseConfig";
 import Assets from "../../Assets";
 import CustomButton from "../../components/CustomButton";
-import { fbAuth, uploadProfilePicture } from "../../../firebaseConfig";
-import * as ImagePicker from "expo-image-picker";
-import { signOut } from "firebase/auth";
-import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
-import WelcomeRoutes from "../../routes/Welcome.Routes";
 
 const UserSettingsPage = () => {
-  const [dislayName, setDisplayName] = useState<string>();
+  const auth = fbAuth;
+
+  const [dislayName, setDisplayName] = useState<string>(
+    `${auth.currentUser?.displayName}`
+  );
   const [description, setDescription] = useState<string>();
   const [toggleIsEnabled, setToggleIsEnabled] = useState<boolean>(false);
   const [profileImage, setProfileImage] = useState<string>();
 
-  const auth = fbAuth;
-  const navigation = useCustomNavigation();
+  // useEffect(() => {
+  //   handleProfileImageUpload();
+  // }, []);
+
+  // useEffect(() => {
+  //   retrieveProfilePicture();
+  // }, []);
+
+  const retrieveProfilePicture = async () => {
+    try {
+      const profileImageUrl = await getProfilePicture();
+      if (profileImageUrl) {
+        setProfileImage(profileImageUrl);
+      }
+    } catch (error) {
+      console.log("Error getting profile picture:", error);
+    }
+  };
 
   const toggleDarkMode = () => {
     setToggleIsEnabled((previousState) => !previousState);
@@ -31,10 +53,6 @@ const UserSettingsPage = () => {
 
     if (!response.canceled) {
       setProfileImage(response.assets[0].uri);
-    }
-    if (profileImage) {
-      handleProfileImageUpload();
-      setProfileImage("");
     }
   };
 
@@ -53,12 +71,17 @@ const UserSettingsPage = () => {
     }
   };
 
-  const handleSaveChanges = () => {};
+  const handleSaveChanges = async () => {
+    if (auth.currentUser) {
+      await updateProfile(auth.currentUser, { displayName: dislayName });
+      alert("Display name updated!");
+    }
+  };
 
   const handleUserSignOut = () => {
     signOut(auth)
       .then(() => {
-        navigation.reset("Welcome");
+        DevSettings.reload();
       })
       .catch((error) => alert(error));
   };
@@ -116,9 +139,7 @@ const UserSettingsPage = () => {
         <CustomButton
           title="Save changes"
           backgroundColor="bg-gray-500"
-          onPress={() => {
-            handleSaveChanges;
-          }}
+          onPress={handleSaveChanges}
         />
       </View>
       <View className="mt-3 mx-10">
