@@ -25,10 +25,7 @@ const HomePage = () => {
     <SafeAreaView className="flex-1">
       <ScrollView>
         <View className="mx-5 flex-row justify-between items-center mb-10">
-          <Text className="font-bold text-3xl text-black-600">Home</Text>
-          <TouchableOpacity>
-            <Text>0</Text>
-          </TouchableOpacity>
+          <Text className="font-bold text-3xl text-system-brandDark">Home</Text>
         </View>
 
         <View>

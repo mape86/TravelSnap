@@ -1,27 +1,22 @@
 import {
   FIREBASE_API_KEY,
+  FIREBASE_APP_ID,
   FIREBASE_AUTH_DOMAIN,
+  FIREBASE_MESSAGING_SENDER_ID,
   FIREBASE_PROJECT_ID,
   FIREBASE_STORAGE_BUCKET,
-  FIREBASE_MESSAGING_SENDER_ID,
-  FIREBASE_APP_ID,
 } from "@env";
 import { initializeApp } from "firebase/app";
-import {
-  getAuth,
-  getReactNativePersistence,
-  initializeAuth,
-} from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 import {
-  getStorage,
   getDownloadURL,
+  getMetadata,
+  getStorage,
+  list,
   listAll,
   ref,
   uploadBytesResumable,
-  list,
-  getMetadata,
 } from "firebase/storage";
 
 const firebaseConfig = {
@@ -59,7 +54,9 @@ const uploadImageToFirebase = async (uri, name, metadata = {}, onProgress) => {
   const userFolder = `users/${user.uid}/images`;
   const imageRef = ref(fbStorage, `${userFolder}/${name}`);
   console.log("uploading with metadata: ", metadata);
-  const uploadTask = uploadBytesResumable(imageRef, blob, {customMetadata: metadata});
+  const uploadTask = uploadBytesResumable(imageRef, blob, {
+    customMetadata: metadata,
+  });
 
   return new Promise((resolve, reject) => {
     uploadTask.on(
@@ -76,19 +73,18 @@ const uploadImageToFirebase = async (uri, name, metadata = {}, onProgress) => {
         const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
         resolve({ downloadURL, metadata: uploadTask.snapshot.metadata });
         const storageRef = ref(fbStorage, `users/${user.uid}/images/${name}`);
-        
-        getMetadata(storageRef).then((metadata) => {
-          // Metadata now contains the metadata for 'images/forest.jpg'
-          console.log("metadata: ", metadata);
-        }).catch((error) => {
-          // Uh-oh, an error occurred!
-          console.log("error: ", error);
-        })
+
+        getMetadata(storageRef)
+          .then((metadata) => {
+            console.log("metadata: ", metadata);
+          })
+          .catch((error) => {
+            console.log("error: ", error);
+          });
       }
     );
   });
 };
-
 
 const uploadProfilePicture = async (uri, name, onProgress) => {
   const user = fbAuth.currentUser;
@@ -158,14 +154,14 @@ const getProfilePicture = async () => {
     const userFolder = `users/${user.uid}/profileImage`;
     const imageRef = ref(fbStorage, `${userFolder}`);
 
-    const result = await list(imageRef);
-    if (result > 0) {
-      const image = result.items[0];
-      const downloadURL = await getDownloadURL(image);
-      return downloadURL;
-    } else {
-      return null;
-    }
+    const result = await listAll(imageRef);
+    const imageUrls = await Promise.all(
+      result.items.map(async (item) => {
+        const downloadURL = await getDownloadURL(item);
+        return downloadURL;
+      })
+    );
+    return imageUrls[0];
   } catch (error) {
     console.log("Error getting profile image from firebase", error);
   }
@@ -173,12 +169,12 @@ const getProfilePicture = async () => {
 
 export {
   app,
-  fbStorage,
-  firebaseConfig,
-  fbStore,
   fbAuth,
-  uploadImageToFirebase,
+  fbStorage,
+  fbStore,
+  firebaseConfig,
   getAllImagesFromFirebase,
-  uploadProfilePicture,
   getProfilePicture,
+  uploadImageToFirebase,
+  uploadProfilePicture,
 };
