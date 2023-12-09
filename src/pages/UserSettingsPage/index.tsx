@@ -23,7 +23,7 @@ const UserSettingsPage = () => {
 
   // useEffect(() => {
   //   handleProfileImageUpload();
-  // }, []);
+  // }, [profileImage]);
 
   // useEffect(() => {
   //   retrieveProfilePicture();
