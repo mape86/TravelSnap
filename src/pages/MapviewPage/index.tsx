@@ -75,9 +75,7 @@ const MapviewPage: React.FC = () => {
           <Marker
             key={marker.id}
             coordinate={marker.coordinate}
-            onPress={() =>
-              handleMarkerPress(marker.imageUrl, marker.locationTitle)
-            }
+            onPress={() => handleMarkerPress(marker.imageUrl, marker.locationTitle)}
           >
             <Image source={marker.imageUrl} style={styles.markerIcon} />
           </Marker>

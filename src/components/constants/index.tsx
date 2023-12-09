@@ -44,8 +44,7 @@ export const feedImages: FeedImage[] = [
     image: require("../../../assets/mockdata/image-5.jpg"),
     user: "Susanna Winther",
     userProfile: require("../../../assets/mockdata/profile.image.jpg"),
-    description:
-      "Living in a palette of dreams amidst the vibrant charm of a seaside haven.",
+    description: "Living in a palette of dreams amidst the vibrant charm of a seaside haven.",
   },
   {
     location: "Dubrovnik, Croatia",

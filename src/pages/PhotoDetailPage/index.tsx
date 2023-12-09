@@ -35,8 +35,7 @@ const PhotoDetailPage = (props: any) => {
         <View className="p-4">
           <Text className="text-xl font-bold">Location</Text>
           <Text className="text-base text-gray-800">
-            Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum
-            dolor sit amet.
+            Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.
           </Text>
           <Text className="mt-1 text-gray-500">#Dolor #Sit #Amet</Text>
         </View>

@@ -3,20 +3,14 @@ import { signOut, updateProfile } from "firebase/auth";
 import React, { useEffect, useState } from "react";
 import { DevSettings, Image, Switch, Text, View } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
-import {
-  fbAuth,
-  getProfilePicture,
-  uploadProfilePicture,
-} from "../../../firebaseConfig";
+import { fbAuth, getProfilePicture, uploadProfilePicture } from "../../../firebaseConfig";
 import Assets from "../../Assets";
 import CustomButton from "../../components/CustomButton";
 
 const UserSettingsPage = () => {
   const auth = fbAuth;
 
-  const [dislayName, setDisplayName] = useState<string>(
-    `${auth.currentUser?.displayName}`
-  );
+  const [dislayName, setDisplayName] = useState<string>(`${auth.currentUser?.displayName}`);
   const [description, setDescription] = useState<string>();
   const [toggleIsEnabled, setToggleIsEnabled] = useState<boolean>(false);
   const [profileImage, setProfileImage] = useState<string>();
@@ -62,9 +56,7 @@ const UserSettingsPage = () => {
         const uri = profileImage;
         const fileName = uri.split("/").pop();
 
-        uploadProfilePicture(uri, fileName, (progress: any) =>
-          console.log(progress)
-        );
+        uploadProfilePicture(uri, fileName, (progress: any) => console.log(progress));
       } catch (error) {
         console.error(error);
       }
@@ -136,11 +128,7 @@ const UserSettingsPage = () => {
         />
       </View>
       <View className="mt-5 mx-10">
-        <CustomButton
-          variant="secondary"
-          text="Save changes"
-          onPress={handleSaveChanges}
-        />
+        <CustomButton variant="secondary" text="Save changes" onPress={handleSaveChanges} />
       </View>
       <View className="mt-3 mx-10">
         <CustomButton text="Log out" onPress={handleUserSignOut} />

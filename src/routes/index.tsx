@@ -34,11 +34,7 @@ const HomeRoutes: React.FC = () => {
         options={{
           tabBarLabel: "Search",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons
-              name="magnify-plus-outline"
-              color={color}
-              size={26}
-            />
+            <MaterialCommunityIcons name="magnify-plus-outline" color={color} size={26} />
           ),
         }}
       />
@@ -48,11 +44,7 @@ const HomeRoutes: React.FC = () => {
         options={{
           tabBarLabel: "",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons
-              name="plus-box-outline"
-              color={color}
-              size={26}
-            />
+            <MaterialCommunityIcons name="plus-box-outline" color={color} size={26} />
           ),
         }}
       />
@@ -72,11 +64,7 @@ const HomeRoutes: React.FC = () => {
         options={{
           tabBarLabel: "Profile",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons
-              name="account-circle"
-              color={color}
-              size={26}
-            />
+            <MaterialCommunityIcons name="account-circle" color={color} size={26} />
           ),
         }}
       />
