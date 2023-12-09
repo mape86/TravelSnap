@@ -42,7 +42,6 @@ const WelcomePage = () => {
           <Text className="text-4xl font-bold">TravelSnap</Text>
           <Text className="text-2xl ">Keep your travel memories alive</Text>
         </View>
-        {/* TODO: Endre customButton */}
         <View className="mb-18">
           <View className="space-y-4 mb-6">
             <View className="">
