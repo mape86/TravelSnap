@@ -75,7 +75,7 @@ const UserPhotoDetailPage = (route: any) => {
             <Text>{description}</Text>
           </View>
           <Text className="pb-5">{tags}</Text>
-          <CustomButton title="Add to Feed" onPress={() => {}} />
+          <CustomButton text="Add to Feed" onPress={() => {}} />
         </View>
         <View className="flex items-center">
           {imageLocation.latitude && imageLocation.longitude ? (

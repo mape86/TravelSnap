@@ -137,13 +137,13 @@ const UserSettingsPage = () => {
       </View>
       <View className="mt-5 mx-10">
         <CustomButton
-          title="Save changes"
-          backgroundColor="bg-gray-500"
+          variant="secondary"
+          text="Save changes"
           onPress={handleSaveChanges}
         />
       </View>
       <View className="mt-3 mx-10">
-        <CustomButton title="Log out" onPress={handleUserSignOut} />
+        <CustomButton text="Log out" onPress={handleUserSignOut} />
       </View>
     </View>
   );
