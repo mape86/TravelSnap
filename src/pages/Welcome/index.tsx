@@ -44,14 +44,14 @@ const WelcomePage = () => {
         </View>
         <View className="mb-18">
           <View className="space-y-4 mb-6">
-            <View className="">
+            <View>
               <CustomButton
                 variant="secondary"
                 onPress={() => handleClick("CreateUserPage")}
                 text="Sign Up"
               />
             </View>
-            <View className="">
+            <View>
               <CustomButton
                 onPress={() => handleClick("LoginPage")}
                 text="Log In"

@@ -4,14 +4,16 @@ import { FlatList, Image, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Button, Icon } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
-import useCustomNavigation, { RouteList } from "../../hooks/Navigation/useCustomNavigation";
+import useCustomNavigation, {
+  RouteList,
+} from "../../hooks/Navigation/useCustomNavigation";
 
 type photoUri = string;
 
 type PickedPhoto = {
   uri: string;
   exif?: Record<string, any>;
-}
+};
 
 const PhotoGalleryPage: React.FC = () => {
   const { navigate } = useCustomNavigation();
@@ -25,7 +27,7 @@ const PhotoGalleryPage: React.FC = () => {
 
   const handleCameraClick = (item: keyof RouteList) => {
     navigate(item);
-  }
+  };
 
   const choosePhotoFromLibrary = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -37,9 +39,9 @@ const PhotoGalleryPage: React.FC = () => {
     if (!result.canceled) {
       const newPhotoUri = result.assets.map((asset) => {
         return {
-      uri: asset.uri,
-      exif: asset.exif || {},
-    }
+          uri: asset.uri,
+          exif: asset.exif || {},
+        };
       });
       setPickedPhotos([...pickedPhoto, ...newPhotoUri]);
     }
@@ -58,7 +60,7 @@ const PhotoGalleryPage: React.FC = () => {
       </View>
 
       <View className="flex-1">
-        <View className="">
+        <View>
           <Button
             textColor="white"
             className="ml-2 mr-2 bg-black "
@@ -76,7 +78,9 @@ const PhotoGalleryPage: React.FC = () => {
               <View className="gap-x-1 gap-y-1">
                 <TouchableOpacity
                   className="mx-0.5 gap-x-1 gap-y-1 p-0.5"
-                  onPress={() => handleClick("UploadLibraryPhotoPage", item.uri)}
+                  onPress={() =>
+                    handleClick("UploadLibraryPhotoPage", item.uri)
+                  }
                 >
                   <Image
                     source={{ uri: item.uri }}
