@@ -23,12 +23,8 @@ interface LocationInfo {
 }
 
 const CameraPage = () => {
-  const [cameraPermission, setCameraPermission] = useState<boolean | null>(
-    null
-  );
-  const [locationPermission, setLocationPermission] = useState<boolean | null>(
-    null
-  );
+  const [cameraPermission, setCameraPermission] = useState<boolean | null>(null);
+  const [locationPermission, setLocationPermission] = useState<boolean | null>(null);
   const [location, setLocation] = useState<LocationInfo | null>(null);
   const [imageData, setImageData] = useState<{
     uri: string;
@@ -98,9 +94,7 @@ const CameraPage = () => {
       try {
         const asset = await MediaLibrary.createAssetAsync(imageData.uri);
         await MediaLibrary.createAlbumAsync("Expo Images", asset, false);
-        alert(
-          "Your image has been saved to your phone's library in the Expo Images album!"
-        );
+        alert("Your image has been saved to your phone's library in the Expo Images album!");
 
         const imageMetadata = {
           uri: imageData.uri,
@@ -108,10 +102,7 @@ const CameraPage = () => {
         };
         console.log(imageMetadata);
 
-        await AsyncStorage.setItem(
-          `metadata_${asset.id}`,
-          JSON.stringify(imageMetadata)
-        );
+        await AsyncStorage.setItem(`metadata_${asset.id}`, JSON.stringify(imageMetadata));
 
         setImageData(null);
       } catch (error) {
@@ -155,22 +146,13 @@ const CameraPage = () => {
   return (
     <SafeAreaView className="flex-1 bg-black justify-center pb-1">
       {!imageData ? (
-        <Camera
-          style={styles.camera}
-          type={camType}
-          flashMode={flashMode}
-          ref={cameraRef}
-        >
+        <Camera style={styles.camera} type={camType} flashMode={flashMode} ref={cameraRef}>
           <View className="flex-row justify-between px-6 pt-3">
             <CustomButton
               variant="secondary"
               iconName="retweet"
               onPress={() =>
-                setCamType(
-                  camType === CameraType.back
-                    ? CameraType.front
-                    : CameraType.back
-                )
+                setCamType(camType === CameraType.back ? CameraType.front : CameraType.back)
               }
             />
             <CustomButton
@@ -179,9 +161,7 @@ const CameraPage = () => {
               className={flashMode === ExpoFlashMode.on ? "yellow" : "gray"}
               onPress={() => {
                 setFlashMode(
-                  flashMode === ExpoFlashMode.off
-                    ? ExpoFlashMode.on
-                    : ExpoFlashMode.off
+                  flashMode === ExpoFlashMode.off ? ExpoFlashMode.on : ExpoFlashMode.off
                 );
               }}
             />
@@ -198,16 +178,8 @@ const CameraPage = () => {
               iconName="retweet"
               onPress={() => setImageData(null)}
             />
-            <CustomButton
-              text="Save"
-              iconName="check"
-              onPress={saveImageToLibrary}
-            />
-            <CustomButton
-              text="Upload"
-              iconName="upload"
-              onPress={uploadImage}
-            />
+            <CustomButton text="Save" iconName="check" onPress={saveImageToLibrary} />
+            <CustomButton text="Upload" iconName="upload" onPress={uploadImage} />
           </View>
         ) : (
           <CustomButton

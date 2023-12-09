@@ -64,14 +64,9 @@ const UserPhotoDetailPage = (route: any) => {
     <ScrollView>
       <View className="flex-1 items-center">
         <View className="flex items-center">
-          <Image
-            source={{ uri }}
-            className="rounded-lg m-2 w-80 h-96 object-cover"
-          />
+          <Image source={{ uri }} className="rounded-lg m-2 w-80 h-96 object-cover" />
           <View className="flex flex-row w-72 justify-center pb-5">
-            <Text className="font-bold">
-              {fbAuth.currentUser?.displayName}:{" "}
-            </Text>
+            <Text className="font-bold">{fbAuth.currentUser?.displayName}: </Text>
             <Text>{description}</Text>
           </View>
           <Text className="pb-5">{tags}</Text>
