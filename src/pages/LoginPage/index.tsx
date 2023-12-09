@@ -1,11 +1,11 @@
-import { View } from "react-native";
+import { View, TextInput, Text, SafeAreaView } from "react-native";
 import React, { useEffect, useState } from "react";
 import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
-import { TextInput } from "react-native-paper";
 import CustomButton from "../../components/CustomButton";
 import { fbAuth } from "../../../firebaseConfig";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { RouteList } from "../../hooks/Navigation/useCustomNavigation";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const LoginPage = () => {
   const { navigate } = useCustomNavigation();
@@ -45,33 +45,48 @@ const LoginPage = () => {
   };
 
   return (
-    <View className="mt-52">
-      <View className="px-10">
-        <TextInput
-          label="Email"
-          placeholder="email"
-          value={email}
-          autoCapitalize="none"
-          onChangeText={(text) => setEmail(text)}
-        />
-        <TextInput
-          className="mb-10"
-          label="Password"
-          placeholder="password"
-          autoCapitalize="none"
-          value={password}
-          secureTextEntry={true}
-          onChangeText={(text) => setPassword(text)}
-        />
+    <SafeAreaView className="flex-1">
+      <Text className="font-bold text-3xl ml-4">Log into your account</Text>
+      <View className="px-8">
+        <View className="py-5 space-y-6">
+          <View>
+            <Text>Email</Text>
+            <TextInput
+              className="border rounded-md p-4"
+              placeholder="email"
+              value={email}
+              autoCapitalize="none"
+              onChangeText={(text) => setEmail(text)}
+            />
+          </View>
+          <View>
+            <Text>Password</Text>
+            <TextInput
+              className="border rounded-md p-4"
+              placeholder="password"
+              autoCapitalize="none"
+              value={password}
+              secureTextEntry={true}
+              onChangeText={(text) => setPassword(text)}
+            />
+          </View>
+          <TouchableOpacity>
+            <Text className="underline text-right">Forgot password?</Text>
+          </TouchableOpacity>
+        </View>
 
         <View className="mb-5">
           <CustomButton onPress={userLogin} text="Sign In" />
         </View>
+
         <View>
           <CustomButton variant="secondary" onPress={handleReturnClick} text="Go back" />
         </View>
+        <TouchableOpacity onPress={handleReturnClick} className="py-64">
+          <Text className="underline">Don`t have an account? Sign up</Text>
+        </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
