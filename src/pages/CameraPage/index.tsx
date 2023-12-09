@@ -13,24 +13,27 @@ import { uploadImageToFirebase } from "../../../firebaseConfig";
 import CustomButton from "../../components/CustomButton";
 import * as Location from "expo-location";
 import { PermissionStatus } from "expo-location";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface LocationInfo {
   coords: {
     latitude: number;
     longitude: number;
   };
-  }
+}
 
 const CameraPage = () => {
-  const [cameraPermission, setCameraPermission] = useState<
-    boolean | null
-  >(null);
-  const [locationPermission, setLocationPermission] = useState<
-    boolean | null
-  >(null);
+  const [cameraPermission, setCameraPermission] = useState<boolean | null>(
+    null
+  );
+  const [locationPermission, setLocationPermission] = useState<boolean | null>(
+    null
+  );
   const [location, setLocation] = useState<LocationInfo | null>(null);
-  const [imageData, setImageData] = useState<{uri: string, location?: LocationInfo} | null>(null);
+  const [imageData, setImageData] = useState<{
+    uri: string;
+    location?: LocationInfo;
+  } | null>(null);
   const [image, setImage] = useState<string | null>(null);
   const [camType, setCamType] = useState<ExpoCameraType>(CameraType.back);
   const [flashMode, setFlashMode] = useState<ExpoFlashMode>(ExpoFlashMode.off);
@@ -42,12 +45,12 @@ const CameraPage = () => {
       const cameraStatus = await Camera.requestCameraPermissionsAsync();
       setCameraPermission(cameraStatus.status === "granted");
 
-      let {status} = await Location.requestForegroundPermissionsAsync();
+      let { status } = await Location.requestForegroundPermissionsAsync();
 
-      if (status !== 'granted') {
-        Alert.alert('Permission to access location was denied');
+      if (status !== "granted") {
+        Alert.alert("Permission to access location was denied");
       }
-      const locationStatus = await Location.requestForegroundPermissionsAsync()
+      const locationStatus = await Location.requestForegroundPermissionsAsync();
       setLocationPermission(locationStatus.status === "granted");
 
       const location = await Location.getCurrentPositionAsync({});
@@ -70,10 +73,10 @@ const CameraPage = () => {
     }
   };
 
-  const getLoc = async(): Promise<LocationInfo> => {
-    let locationInfo = location
+  const getLoc = async (): Promise<LocationInfo> => {
+    let locationInfo = location;
     return locationInfo as LocationInfo;
-  }
+  };
 
   const takePicture = async () => {
     if (cameraRef.current && locationPermission) {
@@ -82,7 +85,7 @@ const CameraPage = () => {
         const data = await cameraRef.current.takePictureAsync({
           quality: 0.5,
         });
-        setImageData({ uri: data.uri, location: locationInfo});
+        setImageData({ uri: data.uri, location: locationInfo });
         //setImage(data.uri);
       } catch (error) {
         console.log(error);
@@ -95,16 +98,21 @@ const CameraPage = () => {
       try {
         const asset = await MediaLibrary.createAssetAsync(imageData.uri);
         await MediaLibrary.createAlbumAsync("Expo Images", asset, false);
-        alert("Your image has been saved to your phone's library in the Expo Images album!");
-  
+        alert(
+          "Your image has been saved to your phone's library in the Expo Images album!"
+        );
+
         const imageMetadata = {
           uri: imageData.uri,
           location: imageData.location,
         };
         console.log(imageMetadata);
-        
-        await AsyncStorage.setItem(`metadata_${asset.id}`, JSON.stringify(imageMetadata));
-  
+
+        await AsyncStorage.setItem(
+          `metadata_${asset.id}`,
+          JSON.stringify(imageMetadata)
+        );
+
         setImageData(null);
       } catch (error) {
         console.error(error);
@@ -126,15 +134,17 @@ const CameraPage = () => {
         const uri = imageData.uri;
         const fileName = uri.split("/").pop() || "NoName.jpg";
 
-        const metadata = imageData.location ? {
-          latitude: String(imageData.location.coords.latitude),
-          longitude: String(imageData.location.coords.longitude),
-      } : {};
-      console.log(metadata);
-      
-      uploadImageToFirebase(uri, fileName, metadata, (progress: any) =>
-      console.log(progress)
-      );
+        const metadata = imageData.location
+          ? {
+              latitude: String(imageData.location.coords.latitude),
+              longitude: String(imageData.location.coords.longitude),
+            }
+          : {};
+        console.log(metadata);
+
+        uploadImageToFirebase(uri, fileName, metadata, (progress: any) =>
+          console.log(progress)
+        );
         setImageData(null);
       } catch (error) {
         console.log(error);
@@ -153,18 +163,20 @@ const CameraPage = () => {
         >
           <View className="flex-row justify-between px-6 pt-3">
             <CustomButton
-              title=""
+              variant="secondary"
               iconName="retweet"
               onPress={() =>
                 setCamType(
-                  camType === CameraType.back ? CameraType.front : CameraType.back
+                  camType === CameraType.back
+                    ? CameraType.front
+                    : CameraType.back
                 )
               }
             />
             <CustomButton
-              title=""
+              variant="secondary"
               iconName="flash"
-              color={flashMode === ExpoFlashMode.on ? "yellow" : "gray"}
+              className={flashMode === ExpoFlashMode.on ? "yellow" : "gray"}
               onPress={() => {
                 setFlashMode(
                   flashMode === ExpoFlashMode.off
@@ -182,20 +194,25 @@ const CameraPage = () => {
         {imageData?.uri ? (
           <View className="flex-row justify-between px-6">
             <CustomButton
-              title="Retake photo"
+              text="Retake photo"
               iconName="retweet"
               onPress={() => setImageData(null)}
             />
-            <CustomButton title="Save" iconName="check" onPress={saveImageToLibrary} />
             <CustomButton
-              title="Upload"
+              text="Save"
+              iconName="check"
+              onPress={saveImageToLibrary}
+            />
+            <CustomButton
+              text="Upload"
               iconName="upload"
               onPress={uploadImage}
             />
           </View>
         ) : (
           <CustomButton
-            title="Capture photo"
+            variant="secondary"
+            iconSize={28}
             iconName="camera"
             onPress={takePicture}
           />

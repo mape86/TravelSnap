@@ -29,48 +29,55 @@ type EntypoIconName =
   | "cloud"
   | "upload";
 
+type Variant = "primary" | "secondary";
+
+type ColorConfig = {
+  backgroundColor: string;
+  color: string;
+};
+
+const COLORS: Record<Variant, ColorConfig> = {
+  primary: {
+    color: "text-system-brandLight",
+    backgroundColor: "bg-system-brandDark",
+  },
+  secondary: {
+    color: "text-system-brandDark",
+    backgroundColor: "bg-system-brandLight",
+  },
+};
+
 interface ButtonProps {
   onPress: () => void;
-  title: string;
+  text?: string;
+  variant?: Variant;
   iconName?: EntypoIconName;
-  color?: string;
+  iconSize?: number;
   disabled?: boolean;
-  backgroundColor?: string;
+  className?: string;
 }
 
 const CustomButton = ({
   onPress,
-  title,
+  text,
   iconName,
-  color,
+  iconSize = 24,
   disabled,
-  backgroundColor,
-}: ButtonProps) => (
-  <TouchableOpacity
-    onPress={onPress}
-    style={styles.button}
-    disabled={disabled}
-    className={backgroundColor || "bg-black"}
-  >
-    {iconName && <Entypo name={iconName} size={24} color={color || "white"} />}
-    <Text style={styles.text}>{title}</Text>
-  </TouchableOpacity>
-);
+  variant = "primary",
+  className = "",
+}: ButtonProps) => {
+  const { color, backgroundColor } = COLORS[variant];
 
-const styles = StyleSheet.create({
-  button: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 4,
-    elevation: 3,
-  },
-  text: {
-    marginLeft: 8,
-    color: "white",
-  },
-});
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      disabled={disabled}
+      className={`flex flex-row items-center justify-center py-4 px-12 rounded-full ${color} ${backgroundColor} ${className}`}
+    >
+      {iconName && <Entypo name={iconName} size={iconSize} color={color} />}
+      {text && <Text className={`${color} text-lg font-bold`}>{text}</Text>}
+    </TouchableOpacity>
+  );
+};
 
 export default CustomButton;

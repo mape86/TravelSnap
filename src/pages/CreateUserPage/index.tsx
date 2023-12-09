@@ -70,20 +70,18 @@ const CreateUserPage = () => {
           onChangeText={(text) => setPassword(text)}
         />
         <View className="my-2">
-          <CustomButton onPress={createUser} title="Create account" />
+          <CustomButton onPress={createUser} text="Create account" />
         </View>
       </View>
       <View className="justify-center items-center">
         <CustomButton
-          title="Go to login"
-          backgroundColor="bg-gray-500"
+          text="Go to login"
           onPress={() => handleClick("LoginPage")}
         />
         <View className="mt-2">
           <CustomButton
-            title="Continue as guest"
+            text="Continue as guest"
             onPress={() => handleClick("HomeRoutes")}
-            backgroundColor="bg-zinc-800"
           />
         </View>
       </View>

@@ -65,13 +65,13 @@ const LoginPage = () => {
         />
 
         <View className="mb-5">
-          <CustomButton onPress={userLogin} title="Sign In" />
+          <CustomButton onPress={userLogin} text="Sign In" />
         </View>
         <View>
           <CustomButton
+            variant="secondary"
             onPress={handleReturnClick}
-            title="Go back"
-            backgroundColor="bg-neutral-400"
+            text="Go back"
           />
         </View>
       </View>

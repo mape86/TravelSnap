@@ -43,23 +43,26 @@ const WelcomePage = () => {
           <Text className="text-2xl ">Keep your travel memories alive</Text>
         </View>
         {/* TODO: Endre customButton */}
-        <View className="mb-24 space-y-4 ">
-          <View className="">
-            <CustomButton
-              onPress={() => handleClick("CreateUserPage")}
-              title="Sign Up"
-              backgroundColor="bg-system-brandLight"
-            />
-          </View>
-          <View className="">
-            <CustomButton
-              onPress={() => handleClick("LoginPage")}
-              title="Log In"
-              backgroundColor="bg-system-brandDark"
-            />
+        <View className="mb-18">
+          <View className="space-y-4 mb-6">
+            <View className="">
+              <CustomButton
+                variant="secondary"
+                onPress={() => handleClick("CreateUserPage")}
+                text="Sign Up"
+              />
+            </View>
+            <View className="">
+              <CustomButton
+                onPress={() => handleClick("LoginPage")}
+                text="Log In"
+              />
+            </View>
           </View>
           <TouchableOpacity onPress={() => handleClick("HomeRoutes")}>
-            <Text className="text-white underline">Continue as guest</Text>
+            <Text className="text-white underline text-lg mx-auto">
+              Continue as guest
+            </Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
