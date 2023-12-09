@@ -21,9 +21,9 @@ const UserSettingsPage = () => {
   const [toggleIsEnabled, setToggleIsEnabled] = useState<boolean>(false);
   const [profileImage, setProfileImage] = useState<string>();
 
-  // useEffect(() => {
-  //   handleProfileImageUpload();
-  // }, [profileImage]);
+  useEffect(() => {
+    handleProfileImageUpload();
+  }, [profileImage]);
 
   // useEffect(() => {
   //   retrieveProfilePicture();
