@@ -38,11 +38,11 @@ type ColorConfig = {
 
 const COLORS: Record<Variant, ColorConfig> = {
   primary: {
-    color: "text-system-brandLight",
+    color: "text-white",
     backgroundColor: "bg-system-brandDark",
   },
   secondary: {
-    color: "text-system-brandDark",
+    color: "text-black",
     backgroundColor: "bg-system-brandLight",
   },
 };
@@ -72,7 +72,7 @@ const CustomButton = ({
     <TouchableOpacity
       onPress={onPress}
       disabled={disabled}
-      className={`flex flex-row items-center justify-center py-4 px-12 rounded-full ${color} ${backgroundColor} ${className}`}
+      className={`flex flex-row items-center justify-center py-4 px-12 border rounded-full ${color} ${backgroundColor} ${className}`}
     >
       {iconName && <Entypo name={iconName} size={iconSize} color={color} />}
       {text && <Text className={`${color} text-lg font-bold`}>{text}</Text>}
