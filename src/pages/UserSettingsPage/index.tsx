@@ -1,3 +1,4 @@
+import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { signOut, updateProfile } from "firebase/auth";
 import React, { useEffect, useState } from "react";
@@ -6,22 +7,25 @@ import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { fbAuth, getProfilePicture, uploadProfilePicture } from "../../../firebaseConfig";
 import Assets from "../../Assets";
 import CustomButton from "../../components/CustomButton";
+import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
 
 const UserSettingsPage = () => {
   const auth = fbAuth;
+  const navigation = useCustomNavigation();
 
   const [dislayName, setDisplayName] = useState<string>(`${auth.currentUser?.displayName}`);
-  const [description, setDescription] = useState<string>();
+  const [description, setDescription] = useState<string>(`${auth.currentUser?.photoURL}`);
   const [toggleIsEnabled, setToggleIsEnabled] = useState<boolean>(false);
+  const [chosenProfileImage, setChosenProfileImage] = useState<string>();
   const [profileImage, setProfileImage] = useState<string>();
 
   useEffect(() => {
     handleProfileImageUpload();
-  }, [profileImage]);
+  }, [chosenProfileImage]);
 
-  // useEffect(() => {
-  //   retrieveProfilePicture();
-  // }, []);
+  useEffect(() => {
+    retrieveProfilePicture();
+  }, []);
 
   const retrieveProfilePicture = async () => {
     try {
@@ -46,14 +50,14 @@ const UserSettingsPage = () => {
     });
 
     if (!response.canceled) {
-      setProfileImage(response.assets[0].uri);
+      setChosenProfileImage(response.assets[0].uri);
     }
   };
 
   const handleProfileImageUpload = async () => {
-    if (profileImage) {
+    if (chosenProfileImage) {
       try {
-        const uri = profileImage;
+        const uri = chosenProfileImage;
         const fileName = uri.split("/").pop();
 
         uploadProfilePicture(uri, fileName, (progress: any) => console.log(progress));
@@ -65,8 +69,11 @@ const UserSettingsPage = () => {
 
   const handleSaveChanges = async () => {
     if (auth.currentUser) {
-      await updateProfile(auth.currentUser, { displayName: dislayName });
-      alert("Display name updated!");
+      await updateProfile(auth.currentUser, {
+        displayName: dislayName,
+        photoURL: description,
+      });
+      alert("Profile info updated!");
     }
   };
 
@@ -80,7 +87,13 @@ const UserSettingsPage = () => {
 
   return (
     <View className="flex-1">
-      <View className="mt-10 ml-10">
+      <View className="mt-12 ml-2">
+        <TouchableOpacity className="flex-row items-center" onPress={navigation.goBack}>
+          <Ionicons name="arrow-back" size={28} color="black" />
+          <Text>Back</Text>
+        </TouchableOpacity>
+      </View>
+      <View className="mt-5 ml-10">
         <Text className="font-bold text-2xl">Edit profile</Text>
         <TouchableOpacity
           className="justify-center items-center"
@@ -103,6 +116,7 @@ const UserSettingsPage = () => {
       <View className="mx-10 my-5">
         <Text className="mb-2 font-bold">Edit display name</Text>
         <TextInput
+          autoCapitalize="none"
           value={dislayName}
           onChangeText={(text) => setDisplayName(text)}
           placeholder="Display name"
@@ -112,10 +126,12 @@ const UserSettingsPage = () => {
       <View className="mx-10">
         <Text className="mb-2 font-bold">Edit profile description</Text>
         <TextInput
+          autoCapitalize="none"
+          multiline={true}
           value={description}
           onChangeText={(text) => setDescription(text)}
           placeholder="Profile description"
-          className="h-20  border-2 rounded-md px-2"
+          className="h-20  border-2 rounded-md px-2 py-2"
         />
       </View>
       <View className="flex-row justify-between px-10 mt-10">
@@ -127,10 +143,10 @@ const UserSettingsPage = () => {
           onValueChange={toggleDarkMode}
         />
       </View>
-      <View className="mt-5 mx-10">
+      <View className="mx-10">
         <CustomButton variant="secondary" text="Save changes" onPress={handleSaveChanges} />
       </View>
-      <View className="mt-3 mx-10">
+      <View className="mt-1 mx-10">
         <CustomButton text="Log out" onPress={handleUserSignOut} />
       </View>
     </View>
