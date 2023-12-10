@@ -12,11 +12,7 @@ module.exports = {
     extend: {
       colors: {
         system: {
-          welcomeBg: "#2C3639",
-          textWhite: "#fff",
-          bgApp: "#213555",
-          headlines: "#FF6000",
-          linkItems: "#FFA559",
+          pinkText: "#E8DEF8",
           brandLight: "#F1F0F0",
           brandDark: "#121212",
         },
