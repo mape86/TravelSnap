@@ -14,6 +14,7 @@ import CustomButton from "../../components/CustomButton";
 import * as Location from "expo-location";
 import { PermissionStatus } from "expo-location";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import CameraButtons from "../../components/CameraButtons";
 
 interface LocationInfo {
   coords: {
@@ -100,7 +101,6 @@ const CameraPage = () => {
           uri: imageData.uri,
           location: imageData.location,
         };
-        console.log(imageMetadata);
 
         await AsyncStorage.setItem(`metadata_${asset.id}`, JSON.stringify(imageMetadata));
 
@@ -144,21 +144,28 @@ const CameraPage = () => {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-black justify-center pb-1">
+    <SafeAreaView className="flex-1 bg-system-brandDark justify-center pb-1">
       {!imageData ? (
-        <Camera style={styles.camera} type={camType} flashMode={flashMode} ref={cameraRef}>
+        <Camera
+          className="flex-1 rounded-lg"
+          type={camType}
+          flashMode={flashMode}
+          ref={cameraRef}
+        >
           <View className="flex-row justify-between px-6 pt-3">
-            <CustomButton
-              variant="secondary"
-              iconName="retweet"
+            <CameraButtons
+              title=""
+              icon="retweet"
+              backgroundColor="black"
               onPress={() =>
                 setCamType(camType === CameraType.back ? CameraType.front : CameraType.back)
               }
             />
-            <CustomButton
-              variant="secondary"
-              iconName="flash"
-              className={flashMode === ExpoFlashMode.on ? "yellow" : "gray"}
+            <CameraButtons
+              title=""
+              icon="flash"
+              backgroundColor="black"
+              color={flashMode === ExpoFlashMode.on ? "yellow" : "gray"}
               onPress={() => {
                 setFlashMode(
                   flashMode === ExpoFlashMode.off ? ExpoFlashMode.on : ExpoFlashMode.off
@@ -168,37 +175,21 @@ const CameraPage = () => {
           </View>
         </Camera>
       ) : (
-        <Image source={{ uri: imageData?.uri }} style={styles.camera} />
+        <Image source={{ uri: imageData?.uri }} className="flex-1 rounded-lg" />
       )}
       <View>
         {imageData?.uri ? (
           <View className="flex-row justify-between px-6">
-            <CustomButton
-              text="Retake photo"
-              iconName="retweet"
-              onPress={() => setImageData(null)}
-            />
-            <CustomButton text="Save" iconName="check" onPress={saveImageToLibrary} />
-            <CustomButton text="Upload" iconName="upload" onPress={uploadImage} />
+            <CameraButtons title="Retake" icon="retweet" onPress={() => setImageData(null)} />
+            <CameraButtons title="Save" icon="check" onPress={saveImageToLibrary} />
+            <CameraButtons title="Upload" icon="upload" onPress={uploadImage} />
           </View>
         ) : (
-          <CustomButton
-            variant="secondary"
-            iconSize={28}
-            iconName="camera"
-            onPress={takePicture}
-          />
+          <CameraButtons title="" icon="camera" onPress={takePicture} />
         )}
       </View>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  camera: {
-    flex: 1,
-    borderRadius: 20,
-  },
-});
 
 export default CameraPage;

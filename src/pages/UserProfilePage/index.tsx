@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { FlatList, Image, ImageSourcePropType, Text, View } from "react-native";
+import { useFocusEffect, useNavigation, useIsFocused } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import React, { useCallback, useEffect, useState } from "react";
+import { FlatList, Image, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import image1 from "../../../assets/mockdata/image-1.jpg";
-import image2 from "../../../assets/mockdata/image-2.jpg";
 import image3 from "../../../assets/mockdata/image-3.jpg";
-import image4 from "../../../assets/mockdata/image-4.jpg";
-import image5 from "../../../assets/mockdata/image-5.jpg";
 import { fbAuth, getAllImagesFromFirebase } from "../../../firebaseConfig";
 import useCustomNavigation, { RouteList } from "../../hooks/Navigation/useCustomNavigation";
-import { useNavigation } from "@react-navigation/native";
-import UserPhotoDetailPage from "../UserPhotoDetailPage";
-import { StackNavigationProp } from "@react-navigation/stack";
+import { Entypo } from "@expo/vector-icons";
 
 type PickedPhoto = {
   uri: string;
@@ -23,12 +20,11 @@ type RouteParamList = {
 };
 
 const UserProfilePage = () => {
-  const mockImages = [image1, image2, image3, image4, image5];
-
   const auth = fbAuth.currentUser;
 
   const navigation = useNavigation<StackNavigationProp<RouteParamList>>();
   const { navigate } = useCustomNavigation();
+  const isFocused = useIsFocused();
 
   const handleClick = (item: keyof RouteList) => {
     navigate(item);
@@ -39,17 +35,16 @@ const UserProfilePage = () => {
   };
 
   const [photoUrls, setPhotoUrls] = useState<string[]>([]);
-  const [mockPhotoUrls, setMockPhotoUrls] = useState<ImageSourcePropType[]>([]);
 
   useEffect(() => {
-    // setMockPhotoUrls(mockImages);
-    const fetchImagesFromFirebase = async () => {
-      const images = await getAllImagesFromFirebase();
-      setPhotoUrls(images);
-    };
+      fetchImagesFromFirebase();
 
-    fetchImagesFromFirebase();
-  }, []);
+  }, [isFocused]);
+
+  const fetchImagesFromFirebase = async () => {
+    const images = await getAllImagesFromFirebase();
+    setPhotoUrls(images);
+  };
 
   const renderOutImages = ({ item }: { item: string }) => (
     <TouchableOpacity onPress={() => handleImageClick(item)}>
@@ -71,7 +66,7 @@ const UserProfilePage = () => {
 
           <View className="flex flex-col ml-7 mt-14">
             <Text className="font-semibold text-xl">{auth?.displayName}</Text>
-            <Text className="pt-1">Hello world</Text>
+            <Text className="pt-1">{auth?.photoURL}</Text>
           </View>
           <TouchableOpacity
             className="bg-white rounded-2xl border-2 items-center justify-center mt-14 ml-12"
@@ -82,7 +77,10 @@ const UserProfilePage = () => {
         </View>
       </View>
 
-      <View className="flex-1 mt-5">
+      <View className="flex-1 mt-5 items-center">
+        <TouchableOpacity onPress={() => fetchImagesFromFirebase()}>
+          <Entypo name="cycle" size={22} color="gray" />
+        </TouchableOpacity>
         <FlatList
           data={photoUrls}
           renderItem={renderOutImages}
