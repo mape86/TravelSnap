@@ -235,7 +235,7 @@ export {
   fbStore,
   firebaseConfig,
   getAllImagesFromFirebase,
-  getOwnProfilePicture as getProfilePicture,
+  getOwnProfilePicture,
   uploadImageToFirebase,
   uploadProfilePicture,
   uploadToFeed,
