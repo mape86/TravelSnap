@@ -37,8 +37,7 @@ const UserProfilePage = () => {
   const [photoUrls, setPhotoUrls] = useState<string[]>([]);
 
   useEffect(() => {
-      fetchImagesFromFirebase();
-
+    fetchImagesFromFirebase();
   }, [isFocused]);
 
   const fetchImagesFromFirebase = async () => {
@@ -64,16 +63,22 @@ const UserProfilePage = () => {
             source={image1}
           />
 
-          <View className="flex flex-col ml-7 mt-14">
-            <Text className="font-semibold text-xl">{auth?.displayName}</Text>
-            <Text className="pt-1">{auth?.photoURL}</Text>
+          <View className="items-center">
+            <View className="flex-wrap space-x-14">
+              <View className="flex-wrap-reverse">
+                <Text className="font-semibold text-xl mt-14">{auth?.displayName}</Text>
+              </View>
+              <TouchableOpacity
+                className="rounded-2xl border-2 mt-14 mr-1"
+                onPress={() => handleClick("UserSettingsPage")}
+              >
+                <Text className="px-2 py-0.5">Edit Profile</Text>
+              </TouchableOpacity>
+            </View>
+            <View className="ml-2 mb-20">
+              <Text className="">{auth?.photoURL}</Text>
+            </View>
           </View>
-          <TouchableOpacity
-            className="bg-white rounded-2xl border-2 items-center justify-center mt-14 ml-12"
-            onPress={() => handleClick("UserSettingsPage")}
-          >
-            <Text className="px-2 py-0.5">Edit Profile</Text>
-          </TouchableOpacity>
         </View>
       </View>
 
