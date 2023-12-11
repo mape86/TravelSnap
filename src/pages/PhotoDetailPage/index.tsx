@@ -8,7 +8,7 @@ import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
 import { RouteList } from "../../hooks/Navigation/useCustomNavigation";
 import Navigator from "../../components/Navigator";
 import Assets from "../../Assets";
-import { ImageObject } from "../SearchPage";
+import { ImageObject } from "../../hooks/useFeedImages";
 
 interface PhotoDetailPageProps {
   location: string;
@@ -28,6 +28,7 @@ const PhotoDetailPage = (props: any) => {
             <Image
               className="rounded-lg m-3"
               style={{ width: 60, height: 75 }}
+              // source={Assets.images.ProfileImage}
               source={Assets.images.ProfileImage}
             />
             <Text className=" text-lg font-bold">@susanna.winther</Text>

@@ -186,7 +186,7 @@ const getAllImagesFromFirebase = async () => {
   }
 };
 
-const getProfilePicture = async () => {
+const getOwnProfilePicture = async () => {
   const user = fbAuth.currentUser;
 
   if (!user) {
@@ -235,7 +235,7 @@ export {
   fbStore,
   firebaseConfig,
   getAllImagesFromFirebase,
-  getProfilePicture,
+  getOwnProfilePicture as getProfilePicture,
   uploadImageToFirebase,
   uploadProfilePicture,
   uploadToFeed,
