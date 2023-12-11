@@ -13,14 +13,17 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { uploadImageToFirebase } from "../../../firebaseConfig";
 import CustomButton from "../../components/CustomButton";
 import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
+import { fbAuth } from "../../../firebaseConfig";
 
 const UploadLibraryPhotoPage = (route: any) => {
   const { uri, exif } = route.route.params;
+  const auth = fbAuth.currentUser;
 
   const navigation = useCustomNavigation();
 
   const [imageDescription, setImageDescription] = useState<string>("");
   const [tags, setTags] = useState<string>("");
+  const [userName, setUserName] = useState<string>("");
   const [image, setImage] = useState<string | null>(null);
 
   useEffect(() => {
@@ -37,11 +40,12 @@ const UploadLibraryPhotoPage = (route: any) => {
           longitude: exif?.GPSLongitude,
           description: imageDescription,
           tags: tags,
+          userName: auth?.displayName,
         };
         uploadImageToFirebase(uri, fileName, metadata, (progress: any) =>
           console.log(progress)
         );
-        console.log(metadata);
+        alert("Success, your image was uploaded to your firebase folder");
       } catch (error) {
         console.log(error);
       }

@@ -1,19 +1,16 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   Camera,
   CameraType,
   CameraType as ExpoCameraType,
   FlashMode as ExpoFlashMode,
 } from "expo-camera";
-import * as ImagePicker from "expo-image-picker";
+import * as Location from "expo-location";
 import * as MediaLibrary from "expo-media-library";
 import React, { useEffect, useRef, useState } from "react";
-import { Alert, Image, StyleSheet, Text, View } from "react-native";
+import { Alert, Image, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { uploadImageToFirebase } from "../../../firebaseConfig";
-import CustomButton from "../../components/CustomButton";
-import * as Location from "expo-location";
-import { PermissionStatus } from "expo-location";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import CameraButtons from "../../components/CameraButtons";
 
 interface LocationInfo {
@@ -31,7 +28,6 @@ const CameraPage = () => {
     uri: string;
     location?: LocationInfo;
   } | null>(null);
-  const [image, setImage] = useState<string | null>(null);
   const [camType, setCamType] = useState<ExpoCameraType>(CameraType.back);
   const [flashMode, setFlashMode] = useState<ExpoFlashMode>(ExpoFlashMode.off);
   const cameraRef = useRef<Camera | null>(null);
@@ -52,23 +48,8 @@ const CameraPage = () => {
 
       const location = await Location.getCurrentPositionAsync({});
       setLocation(location);
-      // console.log(location);
     })();
   }, []);
-
-  const getLocation = async () => {
-    if (locationPermission) {
-      try {
-        let location = await Location.getCurrentPositionAsync({});
-        return location as LocationInfo;
-      } catch (error) {
-        console.error(error);
-        throw error;
-      }
-    } else {
-      throw new Error("Location permission not granted");
-    }
-  };
 
   const getLoc = async (): Promise<LocationInfo> => {
     let locationInfo = location;
@@ -83,7 +64,6 @@ const CameraPage = () => {
           quality: 0.5,
         });
         setImageData({ uri: data.uri, location: locationInfo });
-        //setImage(data.uri);
       } catch (error) {
         console.log(error);
       }
@@ -94,8 +74,7 @@ const CameraPage = () => {
     if (imageData) {
       try {
         const asset = await MediaLibrary.createAssetAsync(imageData.uri);
-        await MediaLibrary.createAlbumAsync("Expo Images", asset, false);
-        alert("Your image has been saved to your phone's library in the Expo Images album!");
+        alert("Your image has been saved to your phone's library!");
 
         const imageMetadata = {
           uri: imageData.uri,
@@ -137,6 +116,7 @@ const CameraPage = () => {
           console.log(progress)
         );
         setImageData(null);
+        alert("Success, uploaded to your firebase folder");
       } catch (error) {
         console.log(error);
       }
