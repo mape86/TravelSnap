@@ -4,7 +4,7 @@ import { signOut, updateProfile } from "firebase/auth";
 import React, { useEffect, useState } from "react";
 import { DevSettings, Image, Switch, Text, View } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
-import { fbAuth, getProfilePicture, uploadProfilePicture } from "../../../firebaseConfig";
+import { fbAuth, getOwnProfilePicture, uploadProfilePicture } from "../../../firebaseConfig";
 import Assets from "../../Assets";
 import CustomButton from "../../components/CustomButton";
 import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
@@ -29,7 +29,7 @@ const UserSettingsPage = () => {
 
   const retrieveProfilePicture = async () => {
     try {
-      const profileImageUrl = await getProfilePicture();
+      const profileImageUrl = await getOwnProfilePicture();
       if (profileImageUrl) {
         setProfileImage(profileImageUrl);
       }

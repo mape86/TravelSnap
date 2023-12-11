@@ -12,14 +12,13 @@ import Animated, {
   useAnimatedStyle,
   runOnJS,
 } from "react-native-reanimated";
+import { ImageObject } from "../hooks/useFeedImages";
 
 interface FeedImageCardProps {
-  location: string;
-  feedImage: any;
-  id: string;
+  image: ImageObject;
 }
 
-const FeedImageCard: React.FC<FeedImageCardProps> = ({ location, feedImage, id }) => {
+const FeedImageCard: React.FC<FeedImageCardProps> = ({ image }) => {
   const { navigate } = useCustomNavigation();
   const [isFavorited, setIsFavorited] = useState(false);
   const scale = useSharedValue(1);
@@ -48,14 +47,13 @@ const FeedImageCard: React.FC<FeedImageCardProps> = ({ location, feedImage, id }
       <TouchableOpacity
         onPress={() =>
           navigate("PhotoDetailPage", {
-            id,
-            feedImage,
+            image,
           })
         }
         className="flex items-center relative mb-5"
       >
         <Image
-          source={feedImage}
+          source={{ uri: image.uri }}
           style={{ width: 350, height: 430 }}
           className=" aspect-ratio-ratio-1 rounded-lg"
         />
@@ -70,7 +68,7 @@ const FeedImageCard: React.FC<FeedImageCardProps> = ({ location, feedImage, id }
             </Animated.View>
           </TouchableOpacity>
         </View>
-        <Text className="font-semibold mt-2 ">{location}</Text>
+        <Text className="font-semibold mt-2 ">{image.userName}</Text>
       </TouchableOpacity>
     </View>
   );

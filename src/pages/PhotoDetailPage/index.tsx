@@ -8,25 +8,27 @@ import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
 import { RouteList } from "../../hooks/Navigation/useCustomNavigation";
 import Navigator from "../../components/Navigator";
 import Assets from "../../Assets";
+import { ImageObject } from "../../hooks/useFeedImages";
 
 interface PhotoDetailPageProps {
   location: string;
-  feedImage: any;
-  id: string;
+  image: ImageObject;
 }
 
 const PhotoDetailPage = (props: any) => {
   const { navigate } = useCustomNavigation();
+  const image: ImageObject = props.route.params.image;
 
   return (
     <ScrollView className="bg-brandLight ">
-      <Image source={props.route.params.feedImage} className="w-full h-96" />
+      <Image source={{ uri: image.uri }} className="w-full h-96" />
       <SafeAreaView className="flex-1">
         <TouchableOpacity onPress={() => navigate("ProfilePage")}>
           <View className="flex-row items-center">
             <Image
               className="rounded-lg m-3"
               style={{ width: 60, height: 75 }}
+              // source={Assets.images.ProfileImage}
               source={Assets.images.ProfileImage}
             />
             <Text className=" text-lg font-bold">@susanna.winther</Text>

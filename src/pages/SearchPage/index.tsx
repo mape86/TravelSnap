@@ -9,15 +9,7 @@ import Assets from "../../Assets";
 import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
-
-type ImageObject = {
-  uri: string;
-  latitude?: string;
-  longitude?: string;
-  description?: string;
-  tags?: string;
-  userName?: string;
-};
+import { useFeedImages } from "../../hooks/useFeedImages";
 
 type RouteParamList = {
   PhotoDetailPage: { uri: string };
@@ -25,7 +17,6 @@ type RouteParamList = {
 
 const SearchPage = () => {
   const navigation = useNavigation<StackNavigationProp<RouteParamList>>();
-  const [imageObjects, setImageObjects] = useState<ImageObject[]>([]);
   const [searchText, setSearchText] = useState<string>("");
 
   const mockImages: ImageSourcePropType[] = [
@@ -34,35 +25,7 @@ const SearchPage = () => {
     Assets.travelImages.Paris,
   ];
 
-  useEffect(() => {
-    fillImageObjects();
-  }, []);
-
-  const fillImageObjects = async () => {
-    const photoUrls = await getAllFeedImagesFromFirebase();
-
-    const metadataPromises = photoUrls.map((url) => {
-      const imageRef = ref(fbStorage, url);
-      return getMetadata(imageRef).then((metadata) => {
-        const latitude = metadata.customMetadata?.latitude;
-        const longitude = metadata.customMetadata?.longitude;
-        const description = metadata.customMetadata?.description || "";
-        const tags = metadata.customMetadata?.tags || "";
-        const userName = metadata.customMetadata?.userName || "";
-        return {
-          uri: url,
-          latitude: latitude,
-          longitude: longitude,
-          description: description,
-          tags: tags,
-          userName: userName,
-        };
-      });
-    });
-
-    const imageObject = await Promise.all(metadataPromises);
-    setImageObjects(imageObject);
-  };
+  const { imageObjects, isError } = useFeedImages();
 
   // const refreshList = () => {
   //   fillImageObjects();
