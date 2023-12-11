@@ -36,11 +36,11 @@ const useFeedImages = (): {
         const userName = metadata.customMetadata?.userName || "";
         return {
           uri: url,
-          latitude: latitude,
-          longitude: longitude,
-          description: description,
-          tags: tags,
-          userName: userName,
+          latitude,
+          longitude,
+          description,
+          tags,
+          userName,
         };
       });
     });

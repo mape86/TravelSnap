@@ -12,18 +12,10 @@ import Animated, {
   useAnimatedStyle,
   runOnJS,
 } from "react-native-reanimated";
+import { ImageObject } from "../hooks/useFeedImages";
 
 interface FeedImageCardProps {
   image: ImageObject;
-}
-
-interface ImageObject {
-  uri: string;
-  latitude?: string;
-  longitude?: string;
-  description?: string;
-  tags?: string;
-  userName?: string;
 }
 
 const FeedImageCard: React.FC<FeedImageCardProps> = ({ image }) => {

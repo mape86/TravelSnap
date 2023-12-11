@@ -13,23 +13,10 @@ import { fbStorage, getAllFeedImagesFromFirebase } from "../../../firebaseConfig
 import { getMetadata, ref } from "firebase/storage";
 import { useFeedImages } from "../../hooks/useFeedImages";
 
-interface ImageObject {
-  uri: string;
-  latitude?: string;
-  longitude?: string;
-  description?: string;
-  tags?: string;
-  userName?: string;
-}
-
 const HomePage = () => {
   const { navigate } = useCustomNavigation();
 
   const { imageObjects, isError } = useFeedImages();
-
-  const handleClick = (item: keyof RouteList) => {
-    navigate(item);
-  };
 
   if (isError)
     return (
@@ -38,7 +25,6 @@ const HomePage = () => {
           <View className="mx-5 flex-row justify-between items-center mb-10">
             <Text className="font-bold text-3xl text-system-brandDark">Home</Text>
           </View>
-
           <View>
             {isError ? (
               <Text>Something went wrong fetching the feed</Text>
