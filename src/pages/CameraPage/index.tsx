@@ -12,6 +12,9 @@ import { Alert, Image, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { uploadImageToFirebase } from "../../../firebaseConfig";
 import CameraButtons from "../../components/CameraButtons";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { Ionicons } from "@expo/vector-icons";
+import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
 
 interface LocationInfo {
   coords: {
@@ -31,6 +34,8 @@ const CameraPage = () => {
   const [camType, setCamType] = useState<ExpoCameraType>(CameraType.back);
   const [flashMode, setFlashMode] = useState<ExpoFlashMode>(ExpoFlashMode.off);
   const cameraRef = useRef<Camera | null>(null);
+
+  const navigation = useCustomNavigation();
 
   useEffect(() => {
     (async () => {
@@ -125,6 +130,12 @@ const CameraPage = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-system-brandDark justify-center pb-1">
+      <View className="ml-2 mb-2">
+            <TouchableOpacity className="flex-row items-center" onPress={navigation.goBack}>
+              <Ionicons name="arrow-back" size={28} color="gray" />
+              <Text className="text-zinc-200">Back</Text>
+            </TouchableOpacity>
+          </View>
       {!imageData ? (
         <Camera
           className="flex-1 rounded-lg"
@@ -145,7 +156,7 @@ const CameraPage = () => {
               title=""
               icon="flash"
               backgroundColor="black"
-              color={flashMode === ExpoFlashMode.on ? "yellow" : "gray"}
+              color={flashMode === ExpoFlashMode.on ? "yellow" : "#CBD5E1"}
               onPress={() => {
                 setFlashMode(
                   flashMode === ExpoFlashMode.off ? ExpoFlashMode.on : ExpoFlashMode.off

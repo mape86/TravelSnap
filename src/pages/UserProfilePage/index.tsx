@@ -53,31 +53,29 @@ const UserProfilePage = () => {
 
   return (
     <View className="flex-auto bg-system-brandLight">
-      <View className="mb-3 flex justify-between">
-        <View className="w-screen h-32 object-cover">
-          <Image className="h-44 w-screen object-cover" source={image3} />
-        </View>
-        <View className="h-32 flex flex-row">
-          <Image
-            className="h-32 w-28 ml-6 rounded-xl border-2 border-zinc-100"
-            source={image1}
-          />
+      <View className="w-screen h-32 object-cover">
+        <Image className="h-44 w-screen object-cover" source={image3} />
+      </View>
 
-          <View className="items-center">
-            <View className="flex-wrap space-x-14">
-              <View className="flex-wrap-reverse">
-                <Text className="font-semibold text-xl mt-14">{auth?.displayName}</Text>
-              </View>
-              <TouchableOpacity
-                className="rounded-2xl border-2 mt-14 mr-1"
-                onPress={() => handleClick("UserSettingsPage")}
-              >
-                <Text className="px-2 py-0.5">Edit Profile</Text>
-              </TouchableOpacity>
-            </View>
-            <View className="ml-2 mb-20">
-              <Text className="">{auth?.photoURL}</Text>
-            </View>
+      <View className="flex flex-row items-center">
+        <Image
+          className="h-32 w-28 ml-6 rounded-xl border-2 object-cover flex-shrink-0 border-zinc-100"
+          source={image1}
+          resizeMode="cover"
+        />
+
+        <View className="flex flex-col justify-between ml-2 flex-grow mt-6">
+          <View className="flex-row mt-6 justify-between">
+            <Text className="font-semibold text-xl truncate">{auth?.displayName}</Text>
+            <TouchableOpacity
+              className="rounded-2xl border-2 flex-shrink-0 self-center mr-2"
+              onPress={() => handleClick("UserSettingsPage")}
+            >
+              <Text className="px-2 py-0.5">Edit</Text>
+            </TouchableOpacity>
+          </View>
+          <View className="flex-col flex-shrink">
+            <Text className="text-sm truncate w-56">{auth?.photoURL}</Text>
           </View>
         </View>
       </View>
