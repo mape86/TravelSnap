@@ -15,8 +15,8 @@ export const PhotoGalleryPageRoutes = () => {
     <NavigationContainer independent={true}>
       <Navigator initialRouteName="PhotoGalleryPage">
         <Screen name="PhotoGalleryPage" component={PhotoGalleryPage} options={noHeaderShown} />
-        <Screen name="CameraPage" component={CameraPage} />
-        <Screen name="UploadLibraryPhotoPage" component={UploadLibraryPhotoPage} />
+        <Screen name="CameraPage" component={CameraPage} options={noHeaderShown}/>
+        <Screen name="UploadLibraryPhotoPage" component={UploadLibraryPhotoPage} options={noHeaderShown} />
       </Navigator>
     </NavigationContainer>
   );

@@ -1,12 +1,11 @@
-import { View, Text, Image } from "react-native";
-import React, { useEffect, useState } from "react";
-import { getStorage, ref, getMetadata } from "firebase/storage";
 import { RouteProp } from "@react-navigation/native";
-import { fbStorage } from "../../../firebaseConfig";
-import MapView, { Marker } from "react-native-maps";
+import { getMetadata, ref } from "firebase/storage";
+import React, { useEffect, useState } from "react";
+import { Image, Text, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import MapView, { Marker } from "react-native-maps";
+import { fbAuth, fbStorage, uploadToFeed } from "../../../firebaseConfig";
 import CustomButton from "../../components/CustomButton";
-import { fbAuth } from "../../../firebaseConfig";
 
 type UserPhotoDetailPageRouteProp = RouteProp<{
   params: {
@@ -24,6 +23,8 @@ interface LocationState {
 }
 
 const UserPhotoDetailPage = (route: any) => {
+  const auth = fbAuth.currentUser;
+
   const { uri } = route.route.params;
   const [description, setDescription] = useState<string>("");
   const [tags, setTags] = useState<string>("");
@@ -31,10 +32,11 @@ const UserPhotoDetailPage = (route: any) => {
     latitude: null,
     longitude: null,
   });
+  const [userName, setUserName] = useState<string>("");
+  const [image, setImage] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchImageLocationData = async () => {
-      //   const storage = getStorage();
       const imageRef = ref(fbStorage, uri);
 
       try {
@@ -53,12 +55,35 @@ const UserPhotoDetailPage = (route: any) => {
         if (tags) {
           setTags(tags);
         }
+        if (auth?.displayName) {
+          setUserName(auth.displayName);
+        }
       } catch (error) {
         console.log(error);
       }
     };
     fetchImageLocationData();
+    setImage(uri);
   }, [uri]);
+
+  const uploadImageToFeed = async () => {
+    if (image) {
+      try {
+        const uri = image;
+        const fileName = uri.split("/").pop();
+        const metadata = {
+          latitude: imageLocation.latitude,
+          longitude: imageLocation.longitude,
+          description: description,
+          tags: tags,
+          userName: userName,
+        };
+        uploadToFeed(uri, fileName, metadata, (progress: any) => console.log(progress));
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
 
   return (
     <ScrollView>
@@ -70,7 +95,7 @@ const UserPhotoDetailPage = (route: any) => {
             <Text>{description}</Text>
           </View>
           <Text className="pb-5">{tags}</Text>
-          <CustomButton text="Add to Feed" onPress={() => {}} />
+          <CustomButton text="Add to Feed" onPress={uploadImageToFeed} />
         </View>
         <View className="flex items-center">
           {imageLocation.latitude && imageLocation.longitude ? (
@@ -91,7 +116,7 @@ const UserPhotoDetailPage = (route: any) => {
               />
             </MapView>
           ) : (
-            <Text className="pt-3">No location data available</Text>
+            <Text className="pt-3">No location available</Text>
           )}
         </View>
       </View>
