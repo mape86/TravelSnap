@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
-import { getFirestore, collection, addDoc, getDocs } from "firebase/firestore";
+import { getFirestore, collection, addDoc, getDocs, query, where } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 interface CommentItemProps {
@@ -15,7 +15,11 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment, userName }) => (
   </View>
 );
 
-const CommentSection = () => {
+interface CommentSectionProps {
+  uri: string;
+}
+
+const CommentSection: React.FC<CommentSectionProps> = ({ uri }) => {
   const [comments, setComments] = useState<string[]>([]);
   const [newComment, setNewComment] = useState<string>("");
   const [showComments, setShowComments] = useState<boolean>(false);
@@ -38,7 +42,9 @@ const CommentSection = () => {
     const imageAttributesCollection = collection(firestore, "ImageAttributes");
 
     try {
-      const querySnapshot = await getDocs(imageAttributesCollection);
+      const q = query(imageAttributesCollection, where("imageId", "==", uri));
+      const querySnapshot = await getDocs(q);
+
       const commentsData = querySnapshot.docs.map((doc) => doc.data().userComment);
       setComments(commentsData);
     } catch (error) {
@@ -48,7 +54,7 @@ const CommentSection = () => {
 
   useEffect(() => {
     fetchComments();
-  }, []);
+  }, [uri]);
 
   const saveNewComment = async () => {
     if (!user) {
@@ -61,7 +67,7 @@ const CommentSection = () => {
 
     try {
       const newCommentData = {
-        imageId: "yourImageId",
+        imageId: uri,
         userComment: newComment,
         userId: user.uid,
         userName: user.displayName,

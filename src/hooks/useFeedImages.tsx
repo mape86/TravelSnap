@@ -8,6 +8,7 @@ export interface ImageObject {
   longitude?: string;
   description?: string;
   tags?: string;
+  like?: boolean;
   userName?: string;
 }
 
@@ -34,6 +35,7 @@ const useFeedImages = (): {
         const description = metadata.customMetadata?.description || "";
         const tags = metadata.customMetadata?.tags || "";
         const userName = metadata.customMetadata?.userName || "";
+        const like = !!metadata.customMetadata?.like;
         return {
           uri: url,
           latitude,
@@ -41,6 +43,7 @@ const useFeedImages = (): {
           description,
           tags,
           userName,
+          like,
         };
       });
     });
