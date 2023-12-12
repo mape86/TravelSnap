@@ -1,43 +1,18 @@
-import { View, Text, Image, ImageSourcePropType } from "react-native";
-import React, { useEffect, useState } from "react";
-import { fbStorage, getAllFeedImagesFromFirebase } from "../../../firebaseConfig";
-import { getMetadata, ref } from "firebase/storage";
-import { ScrollView, TextInput, TouchableOpacity } from "react-native-gesture-handler";
-import { Entypo } from "@expo/vector-icons";
+import React, { useState } from "react";
+import { Text, View } from "react-native";
+import { ScrollView, TextInput } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Assets from "../../Assets";
-import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { useNavigation } from "@react-navigation/native";
+import SearchImageCard from "../../components/SearchImageCard";
 import { useFeedImages } from "../../hooks/useFeedImages";
 
-type RouteParamList = {
-  PhotoDetailPage: { uri: string };
-};
-
 const SearchPage = () => {
-  const navigation = useNavigation<StackNavigationProp<RouteParamList>>();
   const [searchText, setSearchText] = useState<string>("");
 
-  const mockImages: ImageSourcePropType[] = [
-    Assets.travelImages.CinqueTerre,
-    Assets.travelImages.Lofoten,
-    Assets.travelImages.Paris,
-  ];
-
   const { imageObjects, isError } = useFeedImages();
-
-  // const refreshList = () => {
-  //   fillImageObjects();
-  // };
 
   const imageSearchResults = imageObjects.filter(
     (image) => image.tags?.toLowerCase().includes(searchText.toLowerCase())
   );
-
-  const handleImageClick = (uri: string) => {
-    navigation.navigate("PhotoDetailPage", { uri });
-  };
 
   return (
     <SafeAreaView className="flex-1">
@@ -50,30 +25,13 @@ const SearchPage = () => {
             setSearchText(text);
           }}
         />
-        {/* <TouchableOpacity onPress={() => refreshList()}>
-          <Entypo name="cycle" size={22} color="gray" />
-        </TouchableOpacity> */}
       </View>
-      {mockImages.length >= 1 ? (
+      {imageSearchResults.length >= 1 ? (
         <ScrollView className="h-screen">
           {imageSearchResults.map((image, index) => (
             <View key={index} className="flex-1 p-2 items-center">
               {image.tags?.includes(searchText)}
-              <View className="flex-1 justify-start items-start w-screen pl-10">
-                <Text className="font-semibold text-lg pb-2">{image.userName}</Text>
-              </View>
-              <TouchableOpacity onPress={() => handleImageClick(image.uri)}>
-                <Image
-                  key={index}
-                  source={{ uri: image.uri }}
-                  alt="image"
-                  className="h-96 w-80 p-2 rounded-xl"
-                />
-              </TouchableOpacity>
-              <View className="w-screen px-10 pt-1">
-                <Text>{image.description}</Text>
-                <Text className="font-semibold pt-1">{image.tags}</Text>
-              </View>
+              <SearchImageCard image={image} />
             </View>
           ))}
         </ScrollView>
