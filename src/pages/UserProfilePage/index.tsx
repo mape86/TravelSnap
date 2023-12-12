@@ -1,13 +1,16 @@
 import { useFocusEffect, useNavigation, useIsFocused } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import React, { useCallback, useEffect, useState } from "react";
-import { FlatList, Image, Text, View } from "react-native";
+import { DevSettings, FlatList, Image, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import image1 from "../../../assets/mockdata/image-1.jpg";
 import image3 from "../../../assets/mockdata/image-3.jpg";
 import { fbAuth, getAllImagesFromFirebase } from "../../../firebaseConfig";
 import useCustomNavigation, { RouteList } from "../../hooks/Navigation/useCustomNavigation";
 import { Entypo } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
+import CustomButton from "../../components/CustomButton";
+import { signOut } from "firebase/auth";
 
 type PickedPhoto = {
   uri: string;
@@ -45,6 +48,10 @@ const UserProfilePage = () => {
     setPhotoUrls(images);
   };
 
+  const handleLoginClick = () => {
+        DevSettings.reload();    
+  };
+
   const renderOutImages = ({ item }: { item: string }) => (
     <TouchableOpacity onPress={() => handleImageClick(item)}>
       <Image source={{ uri: item }} className="h-60 w-48 mx-0.5 my-0.5" />
@@ -52,6 +59,8 @@ const UserProfilePage = () => {
   );
 
   return (
+    <>
+      {auth ? ( 
     <View className="flex-auto bg-system-brandLight">
       <View className="w-screen h-32 object-cover">
         <Image className="h-44 w-screen object-cover" source={image3} />
@@ -92,6 +101,13 @@ const UserProfilePage = () => {
         />
       </View>
     </View>
+  ) : (
+    <View className="flex-1 justify-center items-center">
+      <Text className="text-lg font-semibold mb-5">Log in to view profile</Text>
+      <CustomButton onPress={handleLoginClick} text="Log in" />
+    </View>
+  )}
+    </>
   );
 };
 
