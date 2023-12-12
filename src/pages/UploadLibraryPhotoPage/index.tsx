@@ -23,7 +23,6 @@ const UploadLibraryPhotoPage = (route: any) => {
 
   const [imageDescription, setImageDescription] = useState<string>("");
   const [tags, setTags] = useState<string>("");
-  const [userName, setUserName] = useState<string>("");
   const [image, setImage] = useState<string | null>(null);
 
   useEffect(() => {
@@ -45,7 +44,11 @@ const UploadLibraryPhotoPage = (route: any) => {
         uploadImageToFirebase(uri, fileName, metadata, (progress: any) =>
           console.log(progress)
         );
-        alert("Success, your image was uploaded to your firebase folder");
+        if (auth) {
+          alert("Success, your image was uploaded to your firebase folder");
+        } else {
+          alert("You need to be logged in to upload images");
+        }
       } catch (error) {
         console.log(error);
       }
