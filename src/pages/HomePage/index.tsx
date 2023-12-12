@@ -18,25 +18,24 @@ const HomePage = () => {
 
   const { imageObjects, isError } = useFeedImages();
 
-  if (isError)
-    return (
-      <SafeAreaView className="flex-1">
-        <ScrollView>
-          <View className="mx-5 flex-row justify-between items-center mb-10">
-            <Text className="font-bold text-3xl text-system-brandDark">Home</Text>
-          </View>
-          <View>
-            {isError ? (
-              <Text>Something went wrong fetching the feed</Text>
-            ) : (
-              imageObjects.map((image) => {
-                return <FeedImageCard image={image} />;
-              })
-            )}
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    );
+  return (
+    <SafeAreaView className="flex-1">
+      <ScrollView>
+        <View className="mx-5 flex-row justify-between items-center mb-10">
+          <Text className="font-bold text-3xl text-system-brandDark">Home</Text>
+        </View>
+        <View>
+          {isError ? (
+            <Text>Something went wrong fetching the feed</Text>
+          ) : (
+            imageObjects.map((image) => {
+              return <FeedImageCard key={image.uri} image={image} />;
+            })
+          )}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
 };
 
 export default HomePage;

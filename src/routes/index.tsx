@@ -7,6 +7,7 @@ import SearchPage from "../pages/SearchPage";
 import PhotoGalleryPageRoutes from "./PhotoGalleryPage.Routes";
 import ProfilePageRoutes from "./UserProfilePage.Routes";
 import MapviewPage from "../pages/MapviewPage";
+import SearchPageRoutes from "./SearchPage.Routes";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -30,7 +31,7 @@ const HomeRoutes: React.FC = () => {
       />
       <Tab.Screen
         name="Search"
-        component={SearchPage}
+        component={SearchPageRoutes}
         options={{
           tabBarLabel: "Search",
           tabBarIcon: ({ color }) => (
