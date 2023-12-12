@@ -131,11 +131,11 @@ const CameraPage = () => {
   return (
     <SafeAreaView className="flex-1 bg-system-brandDark justify-center pb-1">
       <View className="ml-2 mb-2">
-            <TouchableOpacity className="flex-row items-center" onPress={navigation.goBack}>
-              <Ionicons name="arrow-back" size={28} color="gray" />
-              <Text className="text-zinc-200">Back</Text>
-            </TouchableOpacity>
-          </View>
+        <TouchableOpacity className="flex-row items-center" onPress={navigation.goBack}>
+          <Ionicons name="arrow-back" size={28} color="gray" />
+          <Text className="text-zinc-200">Back</Text>
+        </TouchableOpacity>
+      </View>
       {!imageData ? (
         <Camera
           className="flex-1 rounded-lg"

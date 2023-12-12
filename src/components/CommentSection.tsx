@@ -86,9 +86,9 @@ const CommentSection: React.FC<CommentSectionProps> = ({ uri }) => {
   };
 
   return (
-    <View className="p-5">
+    <View>
       <TouchableOpacity onPress={() => setShowComments(!showComments)}>
-        <Text className="font-bold">
+        <Text className="font-bold mb-2">
           {comments.length} {comments.length === 1 ? "Comment" : "Comments"}
         </Text>
       </TouchableOpacity>
@@ -106,13 +106,14 @@ const CommentSection: React.FC<CommentSectionProps> = ({ uri }) => {
           value={newComment}
           onChangeText={(text) => setNewComment(text)}
           editable={user !== null}
-          className="flex-1 border rounded-full p-3"
+          className="flex-1 border rounded-full px-6 py-4 mr-2"
         />
 
         <TouchableOpacity
           onPress={saveNewComment}
           disabled={!user}
-          style={{ padding: 5, opacity: user !== null ? 1 : 0.5 }}
+          className="px-2 bold text-system-brandDark"
+          style={{ opacity: user !== null ? 1 : 0.5 }}
         >
           <Text>Post</Text>
         </TouchableOpacity>

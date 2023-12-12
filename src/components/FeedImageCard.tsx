@@ -17,7 +17,6 @@ import Animated, {
   useAnimatedStyle,
   runOnJS,
 } from "react-native-reanimated";
-import CommentSection from "./CommentSection";
 import useCustomNavigation from "../hooks/Navigation/useCustomNavigation";
 import { ImageObject } from "../hooks/useFeedImages";
 
