@@ -8,38 +8,27 @@ import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
 import { RouteList } from "../../hooks/Navigation/useCustomNavigation";
 import Navigator from "../../components/Navigator";
 import Assets from "../../Assets";
+import { ImageObject } from "../../hooks/useFeedImages";
+import CommentSection from "../../components/CommentSection";
 
 interface PhotoDetailPageProps {
   location: string;
-  feedImage: any;
-  id: string;
+  image: ImageObject;
 }
 
 const PhotoDetailPage = (props: any) => {
-  const { navigate } = useCustomNavigation();
+  const image: ImageObject = props.route.params.image;
 
   return (
-    <ScrollView className="bg-brandLight ">
-      <Image source={props.route.params.feedImage} className="w-full h-96" />
-      <SafeAreaView className="flex-1">
-        <TouchableOpacity onPress={() => navigate("ProfilePage")}>
-          <View className="flex-row items-center">
-            <Image
-              className="rounded-lg m-3"
-              style={{ width: 60, height: 75 }}
-              source={Assets.images.ProfileImage}
-            />
-            <Text className=" text-lg font-bold">@susanna.winther</Text>
-          </View>
-        </TouchableOpacity>
-        <View className="p-4">
-          <Text className="text-xl font-bold">Location</Text>
-          <Text className="text-base text-gray-800">
-            Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.
-          </Text>
-          <Text className="mt-1 text-gray-500">#Dolor #Sit #Amet</Text>
+    <ScrollView className="bg-brandLight">
+      <Image source={{ uri: image.uri }} className="w-full aspect-square" />
+      <SafeAreaView className="flex-1 px-4">
+        <View className="mb-12">
+          <Text className="text-lg font-bold mb-2">@{image.userName}</Text>
+          <Text className="text-base text-gray-800 mb-4">{image.description}</Text>
+          <Text className="text-gray-500">{image.tags}</Text>
         </View>
-
+        <CommentSection uri={image.uri} />
         {/* Use react-native-maps */}
       </SafeAreaView>
     </ScrollView>

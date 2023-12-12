@@ -64,7 +64,7 @@ const PhotoGalleryPage: React.FC = () => {
             className="ml-2 mr-2 bg-black "
             onPress={() => choosePhotoFromLibrary()}
           >
-            <Text>Pick photos</Text>
+            <Text>Pick photos to upload</Text>
           </Button>
         </View>
 

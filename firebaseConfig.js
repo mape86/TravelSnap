@@ -85,6 +85,50 @@ const uploadImageToFirebase = async (uri, name, metadata = {}, onProgress) => {
   });
 };
 
+const uploadToFeed = async (uri, name, metadata = {}, onProgress) => {
+  const user = fbAuth.currentUser;
+
+  if (!user) {
+    throw new Error("You must be loggged in to upload images your Feed");
+  }
+
+  const fetchResponse = await fetch(uri);
+  const blob = await fetchResponse.blob();
+
+  const imageFolder = "feed";
+  const imageRef = ref(fbStorage, `${imageFolder}/${name}`);
+
+  const uploadTask = uploadBytesResumable(imageRef, blob, {
+    customMetadata: metadata,
+  });
+
+  return new Promise((resolve, reject) => {
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        onProgress(progress);
+      },
+      (error) => {
+        reject(error);
+      },
+      async () => {
+        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+        resolve({ downloadURL, metadata: uploadTask.snapshot.metadata });
+        const storageRef = ref(fbStorage, `feed/${name}`);
+
+        getMetadata(storageRef)
+          .then((metadata) => {
+            console.log("metadata: ", metadata);
+          })
+          .catch((error) => {
+            console.log("error: ", error);
+          });
+      }
+    );
+  });
+};
+
 const uploadProfilePicture = async (uri, name, onProgress) => {
   const user = fbAuth.currentUser;
 
@@ -142,7 +186,7 @@ const getAllImagesFromFirebase = async () => {
   }
 };
 
-const getProfilePicture = async () => {
+const getOwnProfilePicture = async () => {
   const user = fbAuth.currentUser;
 
   if (!user) {
@@ -166,6 +210,24 @@ const getProfilePicture = async () => {
   }
 };
 
+const getAllFeedImagesFromFirebase = async () => {
+  try {
+    const imageRef = ref(fbStorage, "feed");
+
+    const result = await listAll(imageRef);
+    const imageUrls = await Promise.all(
+      result.items.map(async (item) => {
+        const downloadUrl = await getDownloadURL(item);
+        return downloadUrl;
+      })
+    );
+    return imageUrls;
+  } catch (error) {
+    console.error("Error getting images from Feed", error);
+    return [];
+  }
+};
+
 export {
   app,
   fbAuth,
@@ -173,7 +235,9 @@ export {
   fbStore,
   firebaseConfig,
   getAllImagesFromFirebase,
-  getProfilePicture,
+  getOwnProfilePicture,
   uploadImageToFirebase,
   uploadProfilePicture,
+  uploadToFeed,
+  getAllFeedImagesFromFirebase,
 };

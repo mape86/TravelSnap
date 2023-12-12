@@ -1,5 +1,5 @@
 import { View, Text } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList, ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -9,13 +9,14 @@ import CamerPage from "../CameraPage";
 import FeedImageCard from "../../components/FeedImageCard";
 import { feedImages } from "../../components/constants";
 import Assets from "../../Assets";
+import { fbStorage, getAllFeedImagesFromFirebase } from "../../../firebaseConfig";
+import { getMetadata, ref } from "firebase/storage";
+import { useFeedImages } from "../../hooks/useFeedImages";
 
 const HomePage = () => {
   const { navigate } = useCustomNavigation();
 
-  const handleClick = (item: keyof RouteList) => {
-    navigate(item);
-  };
+  const { imageObjects, isError } = useFeedImages();
 
   return (
     <SafeAreaView className="flex-1">
@@ -23,10 +24,14 @@ const HomePage = () => {
         <View className="mx-5 flex-row justify-between items-center mb-10">
           <Text className="font-bold text-3xl text-system-brandDark">Home</Text>
         </View>
-
         <View>
-          <FeedImageCard location="Bali, Indonesia" feedImage={Assets.images.Image1} id="2" />
-          <FeedImageCard location="Bali, Indonesia" feedImage={Assets.images.Image2} id="1" />
+          {isError ? (
+            <Text>Something went wrong fetching the feed</Text>
+          ) : (
+            imageObjects.map((image) => {
+              return <FeedImageCard key={image.uri} image={image} />;
+            })
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
