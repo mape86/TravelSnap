@@ -14,10 +14,13 @@ export interface ImageObject {
 
 const useFeedImages = (): {
   imageObjects: ImageObject[];
+  setImageObjects: React.Dispatch<React.SetStateAction<ImageObject[]>>;
   isError: boolean;
+  isLoading: boolean;
   refreshList: () => Promise<void>;
 } => {
   const [imageObjects, setImageObjects] = useState<ImageObject[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
 
   useEffect(() => {
@@ -25,6 +28,7 @@ const useFeedImages = (): {
   }, []);
 
   const fillImageObjects = async () => {
+    setIsLoading(true);
     const photoUrls = await getAllFeedImagesFromFirebase();
 
     const metadataPromises = photoUrls.map((url) => {
@@ -55,10 +59,13 @@ const useFeedImages = (): {
       })
       .catch(() => {
         setIsError(true);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
-  return { imageObjects, isError, refreshList: fillImageObjects };
+  return { imageObjects, setImageObjects, isError, isLoading, refreshList: fillImageObjects };
 };
 
 export { useFeedImages };
