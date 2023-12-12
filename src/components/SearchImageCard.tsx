@@ -12,17 +12,10 @@ const SearchImageCard: React.FC<SearchImageCardProps> = ({ image }) => {
   const { navigate } = useCustomNavigation();
 
   return (
-    <View>
-      <View>
-        <Text className="font-semibold text-lg py-2">{image.userName}</Text>
-      </View>
+    <View className="w-1/3 h-[165px] aspect-auto object-cover">
       <TouchableOpacity onPress={() => navigate("PhotoDetailPage", { image })}>
-        <Image source={{ uri: image.uri }} className="rounded-lg w-80 h-96" />
+        <Image source={{ uri: image.uri }} className="h-full " />
       </TouchableOpacity>
-      <View>
-        <Text className="pt-2">{image.description}</Text>
-        <Text className="font-semibold">{image.tags}</Text>
-      </View>
     </View>
   );
 };
