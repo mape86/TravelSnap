@@ -16,9 +16,9 @@ const SearchPage = () => {
 
   return (
     <SafeAreaView className="flex-1">
-      <View className="flex-1 w-screen mt-10 mb-12 px-5 justify-center">
+      <View className="flex-1 w-screen my-20 px-5 justify-center">
         <TextInput
-          className="h-10 border-2 rounded-3xl pl-4"
+          className="h-14 border-[1px] rounded-full pl-6 .placeholder-black"
           placeholder="Search..."
           enterKeyHint="search"
           value={searchText}
@@ -28,7 +28,7 @@ const SearchPage = () => {
         />
       </View>
       {imageSearchResults.length >= 1 ? (
-        <View className="h-screen px-5">
+        <View className="h-screen ">
           <FlatList
             columnWrapperStyle={flatListStyles.root}
             contentContainerStyle={flatListStyles.root}
