@@ -16,7 +16,7 @@ const SearchImageCard: React.FC<SearchImageCardProps> = ({ image }) => {
       <View>
         <Text className="font-semibold text-lg py-2">{image.userName}</Text>
       </View>
-      <TouchableOpacity onPress={() => navigate("PhotoDetailPage", image)}>
+      <TouchableOpacity onPress={() => navigate("PhotoDetailPage", { image })}>
         <Image source={{ uri: image.uri }} className="rounded-lg w-80 h-96" />
       </TouchableOpacity>
       <View>

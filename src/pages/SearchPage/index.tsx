@@ -28,12 +28,13 @@ const SearchPage = () => {
       </View>
       {imageSearchResults.length >= 1 ? (
         <ScrollView className="h-screen">
-          {imageSearchResults.map((image, index) => (
-            <View key={index} className="flex-1 p-2 items-center">
-              {image.tags?.includes(searchText)}
-              <SearchImageCard image={image} />
-            </View>
-          ))}
+          {imageSearchResults.length > 0 &&
+            imageSearchResults.map((image, index) => (
+              <View key={index} className="flex-1 p-2 items-center">
+                {image.tags?.includes(searchText)}
+                <SearchImageCard image={image} />
+              </View>
+            ))}
         </ScrollView>
       ) : (
         <View className="justify-center items-center h-screen">

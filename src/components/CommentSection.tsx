@@ -4,23 +4,20 @@ import { getFirestore, collection, addDoc, getDocs, query, where } from "firebas
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 interface CommentItemProps {
-  comment: string;
-  userName: string;
+  comment: Comment;
 }
-
-const CommentItem: React.FC<CommentItemProps> = ({ comment, userName }) => (
-  <View className="flex-row items-center p-2">
-    <Text className="font-bold">{userName}</Text>
-    <Text>{comment}</Text>
-  </View>
-);
 
 interface CommentSectionProps {
   uri: string;
 }
 
+interface Comment {
+  userComment: string;
+  userName: string;
+}
+
 const CommentSection: React.FC<CommentSectionProps> = ({ uri }) => {
-  const [comments, setComments] = useState<string[]>([]);
+  const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState<string>("");
   const [showComments, setShowComments] = useState<boolean>(false);
   const [user, setUser] = useState<any | null>(null);
@@ -45,8 +42,13 @@ const CommentSection: React.FC<CommentSectionProps> = ({ uri }) => {
       const q = query(imageAttributesCollection, where("imageId", "==", uri));
       const querySnapshot = await getDocs(q);
 
-      const commentsData = querySnapshot.docs.map((doc) => doc.data().userComment);
-      setComments(commentsData);
+      const commentsData = querySnapshot.docs.map((doc) => doc.data());
+      const comments = commentsData.map((comment) => ({
+        userComment: comment.userComment,
+        userName: comment.userName,
+      }));
+
+      setComments(comments);
     } catch (error) {
       console.error("Error fetching comments:", error);
     }
@@ -76,7 +78,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ uri }) => {
       const newCommentRef = await addDoc(imageAttributesCollection, newCommentData);
 
       console.log("New comment added with ID:", newCommentRef.id);
-      setComments([...comments, newComment]);
+      setComments([...comments, { userComment: newComment, userName: user.displayName }]);
       setNewComment("");
     } catch (error) {
       console.error("Error adding new comment:", error);
@@ -93,7 +95,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ uri }) => {
       {showComments && (
         <View>
           {comments.map((comment, index) => (
-            <CommentItem key={index} comment={comment} userName={user.displayName} />
+            <CommentItem key={index} comment={comment} />
           ))}
         </View>
       )}
@@ -118,5 +120,12 @@ const CommentSection: React.FC<CommentSectionProps> = ({ uri }) => {
     </View>
   );
 };
+
+const CommentItem: React.FC<CommentItemProps> = ({ comment }) => (
+  <View className="flex-row items-center p-2">
+    <Text className="font-bold mr-2">{comment.userName}</Text>
+    <Text>{comment.userComment}</Text>
+  </View>
+);
 
 export default CommentSection;
