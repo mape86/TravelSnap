@@ -1,17 +1,16 @@
-import { View, Text, Image, StyleSheet, ScrollView, Platform } from "react-native";
 import React from "react";
-import customMapStyles from "./../MapviewPage/styling.json";
-import MapView, { Marker } from "react-native-maps";
+import { Ionicons } from "@expo/vector-icons";
+import { Image, Platform, ScrollView, StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { NavigationContainer } from "@react-navigation/native";
+import MapView from "react-native-maps";
+import Animated from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
-import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
-import { RouteList } from "../../hooks/Navigation/useCustomNavigation";
-import Navigator from "../../components/Navigator";
-import Assets from "../../Assets";
-import { ImageObject } from "../../hooks/useFeedImages";
-import CommentSection from "../../components/CommentSection";
+import customMapStyles from "./../MapviewPage/styling.json";
 import { BackButton } from "../../components/BackButton";
+import CommentSection from "../../components/CommentSection";
+import { ImageObject } from "../../hooks/useFeedImages";
+import { useLikeImage } from "../../hooks/useLike";
+import { Map } from "../../components/Map";
 
 interface PhotoDetailPageProps {
   location: string;
@@ -20,13 +19,28 @@ interface PhotoDetailPageProps {
 
 const PhotoDetailPage = (props: any) => {
   const image: ImageObject = props.route.params.image;
-
+  const imageIdPath = decodeURIComponent(image.uri).replace(
+    "https://firebasestorage.googleapis.com/v0/b/travelsnap-84d7a.appspot.com/o/feed/",
+    ""
+  );
+  const { isLiked, toggleLike, animatedStyle } = useLikeImage({ imageIdPath });
   return (
     <ScrollView className="bg-brandLight">
       <SafeAreaView>
-        <BackButton />
-        <View>
+        <View className="relative">
+          <BackButton />
           <Image source={{ uri: image.uri }} className="w-full aspect-square mb-4" />
+          <View className="absolute bottom-[-36] right-6 items-center justify-center w-20 h-20 bg-system-brandLight rounded-full overflow-hidden">
+            <TouchableOpacity className="" onPress={toggleLike}>
+              <Animated.View className="" style={animatedStyle}>
+                <Ionicons
+                  name={!isLiked ? "ios-heart-outline" : "ios-heart-sharp"}
+                  size={40}
+                  color="black"
+                />
+              </Animated.View>
+            </TouchableOpacity>
+          </View>
         </View>
         <View className="flex-1 px-4">
           <View className="mb-12">
@@ -36,12 +50,11 @@ const PhotoDetailPage = (props: any) => {
           </View>
           <CommentSection uri={image.uri} />
 
-          <View className="flex-1 w-full h-1/3">
-            <MapView
-              provider={Platform.OS === "ios" ? "google" : undefined}
-              customMapStyle={customMapStyles}
-            ></MapView>
-          </View>
+          {!!(image.latitude && image.longitude) && (
+            <View className="mt-8">
+              <Map latitude={image.latitude} longitude={image.longitude} />
+            </View>
+          )}
         </View>
       </SafeAreaView>
     </ScrollView>

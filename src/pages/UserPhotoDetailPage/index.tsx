@@ -7,7 +7,9 @@ import { ScrollView } from "react-native-gesture-handler";
 import MapView, { Marker } from "react-native-maps";
 import { fbAuth, fbStorage, uploadToFeed } from "../../../firebaseConfig";
 import CustomButton from "../../components/CustomButton";
+import { Map } from "../../components/Map";
 import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
+import CustomMapStyle from "../MapviewPage/styling.json";
 
 interface LocationState {
   latitude: string | null;
@@ -121,22 +123,7 @@ const UserPhotoDetailPage = (route: any) => {
           </View>
           <View className="flex items-center">
             {imageLocation.latitude && imageLocation.longitude ? (
-              <MapView
-                className="rounded-xl m-2 w-screen h-80"
-                initialRegion={{
-                  latitude: Number(imageLocation.latitude),
-                  longitude: Number(imageLocation.longitude),
-                  latitudeDelta: 0.1022,
-                  longitudeDelta: 0.0521,
-                }}
-              >
-                <Marker
-                  coordinate={{
-                    latitude: Number(imageLocation.latitude),
-                    longitude: Number(imageLocation.longitude),
-                  }}
-                />
-              </MapView>
+              <Map latitude={imageLocation.latitude} longitude={imageLocation.longitude} />
             ) : (
               <Text className="pt-3 mb-2">No location available</Text>
             )}
