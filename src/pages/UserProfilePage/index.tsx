@@ -1,16 +1,18 @@
-import { useFocusEffect, useNavigation, useIsFocused } from "@react-navigation/native";
+import { Entypo } from "@expo/vector-icons";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DevSettings, FlatList, Image, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import image1 from "../../../assets/mockdata/image-1.jpg";
 import image3 from "../../../assets/mockdata/image-3.jpg";
-import { fbAuth, getAllImagesFromFirebase } from "../../../firebaseConfig";
-import useCustomNavigation, { RouteList } from "../../hooks/Navigation/useCustomNavigation";
-import { Entypo } from "@expo/vector-icons";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  fbAuth,
+  getAllImagesFromFirebase,
+  getOwnProfilePicture,
+} from "../../../firebaseConfig";
 import CustomButton from "../../components/CustomButton";
-import { signOut } from "firebase/auth";
+import useCustomNavigation, { RouteList } from "../../hooks/Navigation/useCustomNavigation";
 
 type PickedPhoto = {
   uri: string;
@@ -28,6 +30,8 @@ const UserProfilePage = () => {
   const navigation = useNavigation<StackNavigationProp<RouteParamList>>();
   const { navigate } = useCustomNavigation();
   const isFocused = useIsFocused();
+  const [photoUrls, setPhotoUrls] = useState<string[]>([]);
+  const [profileImage, setProfileImage] = useState<string>();
 
   const handleClick = (item: keyof RouteList) => {
     navigate(item);
@@ -37,10 +41,9 @@ const UserProfilePage = () => {
     navigation.navigate("UserPhotoDetailPage", { uri });
   };
 
-  const [photoUrls, setPhotoUrls] = useState<string[]>([]);
-
   useEffect(() => {
     fetchImagesFromFirebase();
+    handleProfilePictureChange();
   }, [isFocused]);
 
   const fetchImagesFromFirebase = async () => {
@@ -58,6 +61,12 @@ const UserProfilePage = () => {
     </TouchableOpacity>
   );
 
+  const handleProfilePictureChange = async () => {
+    let uri = await getOwnProfilePicture();
+    if (uri) {
+      setProfileImage(uri);
+    }
+  };
   return (
     <>
       {auth ? (
@@ -69,7 +78,7 @@ const UserProfilePage = () => {
           <View className="flex flex-row items-center">
             <Image
               className="h-32 w-28 ml-6 rounded-xl border-2 object-cover flex-shrink-0 border-zinc-100"
-              source={image1}
+              source={profileImage ? { uri: profileImage } : image1}
               resizeMode="cover"
             />
 

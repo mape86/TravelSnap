@@ -116,6 +116,7 @@ const UserSettingsPage = () => {
       <View className="mx-10 my-5">
         <Text className="mb-2 font-bold">Edit display name</Text>
         <TextInput
+          autoCorrect={false}
           autoCapitalize="none"
           value={dislayName}
           onChangeText={(text) => setDisplayName(text)}
@@ -126,6 +127,7 @@ const UserSettingsPage = () => {
       <View className="mx-10">
         <Text className="mb-2 font-bold">Edit profile description</Text>
         <TextInput
+          autoCorrect={false}
           autoCapitalize="none"
           multiline={true}
           value={description}

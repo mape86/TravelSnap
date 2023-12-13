@@ -1,25 +1,13 @@
+import { Ionicons } from "@expo/vector-icons";
 import { RouteProp } from "@react-navigation/native";
 import { getMetadata, ref } from "firebase/storage";
 import React, { useEffect, useState } from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Image, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import MapView, { Marker } from "react-native-maps";
 import { fbAuth, fbStorage, uploadToFeed } from "../../../firebaseConfig";
 import CustomButton from "../../components/CustomButton";
-import { Ionicons } from "@expo/vector-icons";
 import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { onAuthStateChanged } from "firebase/auth";
-
-type UserPhotoDetailPageRouteProp = RouteProp<{
-  params: {
-    uri: string;
-    latitude?: string;
-    longitude?: string;
-    description?: string;
-    tags?: string;
-  };
-}>;
 
 interface LocationState {
   latitude: string | null;
@@ -71,8 +59,6 @@ const UserPhotoDetailPage = (route: any) => {
     setImage(uri);
   }, [uri]);
 
-
-
   const uploadImageToFeed = async () => {
     if (image) {
       try {
@@ -86,54 +72,78 @@ const UserPhotoDetailPage = (route: any) => {
           userName: userName,
         };
         uploadToFeed(uri, fileName, metadata, (progress: any) => console.log(progress));
+        alert("Success, your image was added to the Feed");
       } catch (error) {
         console.log(error);
+        alert("Something went wrong, please try again");
       }
     }
   };
 
   return (
-    <ScrollView>
+    <>
       <View className="mt-12 ml-2">
-            <TouchableOpacity className="flex-row items-center" onPress={navigation.goBack}>
-              <Ionicons name="arrow-back" size={28} color="black" />
-              <Text>Back</Text>
-            </TouchableOpacity>
+        <TouchableOpacity className="flex-row items-center" onPress={navigation.goBack}>
+          <Ionicons name="arrow-back" size={28} color="black" />
+          <Text>Back</Text>
+        </TouchableOpacity>
+      </View>
+      <ScrollView>
+        <View className="flex-1 items-center mt-5">
+          <View className="flex items-center">
+            <Image source={{ uri }} className="rounded-lg m-2 w-80 h-96 object-cover" />
+            <View className="flex flex-row w-72 justify-center pb-5">
+              <View className="flex-col w-80">
+                <Text className="font-bold mb-1">{fbAuth.currentUser?.displayName}</Text>
+                <Text className="mb-2">{description}</Text>
+                <Text className="">{tags}</Text>
+              </View>
+            </View>
+            <View className="flex items-center justify-between mt-2">
+              <TextInput
+                autoCorrect={false}
+                placeholder="Write a description"
+                numberOfLines={10}
+                multiline={true}
+                onChangeText={setDescription}
+                className="w-80 h-16 border-2 border-gray-400 mb-1"
+              />
+              <TextInput
+                autoCorrect={false}
+                placeholder="Add tags"
+                onChangeText={setTags}
+                className="w-80 h-10 border-2 border-gray-400"
+              />
+            </View>
+            <View className="mt-2">
+              <CustomButton text="Add to Feed" onPress={uploadImageToFeed} />
+            </View>
           </View>
-      <View className="flex-1 items-center mt-5">
-        <View className="flex items-center">
-          <Image source={{ uri }} className="rounded-lg m-2 w-80 h-96 object-cover" />
-          <View className="flex flex-row w-72 justify-center pb-5">
-            <Text className="font-bold">{fbAuth.currentUser?.displayName}: </Text>
-            <Text>{description}</Text>
-          </View>
-          <Text className="pb-5">{tags}</Text>
-          <CustomButton text="Add to Feed" onPress={uploadImageToFeed} />
-        </View>
-        <View className="flex items-center">
-          {imageLocation.latitude && imageLocation.longitude ? (
-            <MapView
-              className="rounded-xl m-2 w-screen h-80"
-              initialRegion={{
-                latitude: Number(imageLocation.latitude),
-                longitude: Number(imageLocation.longitude),
-                latitudeDelta: 0.1022,
-                longitudeDelta: 0.0521,
-              }}
-            >
-              <Marker
-                coordinate={{
+          <View className="flex items-center">
+            {imageLocation.latitude && imageLocation.longitude ? (
+              <MapView
+                className="rounded-xl m-2 w-screen h-80"
+                initialRegion={{
                   latitude: Number(imageLocation.latitude),
                   longitude: Number(imageLocation.longitude),
+                  latitudeDelta: 0.1022,
+                  longitudeDelta: 0.0521,
                 }}
-              />
-            </MapView>
-          ) : (
-            <Text className="pt-3">No location available</Text>
-          )}
+              >
+                <Marker
+                  coordinate={{
+                    latitude: Number(imageLocation.latitude),
+                    longitude: Number(imageLocation.longitude),
+                  }}
+                />
+              </MapView>
+            ) : (
+              <Text className="pt-3 mb-2">No location available</Text>
+            )}
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </>
   );
 };
 
