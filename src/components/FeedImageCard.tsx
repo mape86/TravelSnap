@@ -8,6 +8,9 @@ import {
   query,
   getDocs,
   where,
+  getDoc,
+  setDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { Ionicons } from "@expo/vector-icons";
@@ -26,52 +29,93 @@ interface FeedImageCardProps {
 
 const FeedImageCard: React.FC<FeedImageCardProps> = ({ image }) => {
   const { navigate } = useCustomNavigation();
-  const [isFavorited, setIsFavorited] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState<number>(0);
   const scale = useSharedValue(1);
 
   const auth = getAuth();
   const user = auth.currentUser;
-
-  useEffect(() => {
-    fetchLikes();
-  }, []);
+  const imageIdPath = decodeURIComponent(image.uri).replace(
+    "https://firebasestorage.googleapis.com/v0/b/travelsnap-84d7a.appspot.com/o/feed/",
+    ""
+  );
 
   const fetchLikes = async () => {
     const firestore = getFirestore();
-    const imageAttributesCollection = collection(firestore, "ImageAttributes");
+    const imageAttributesCollection = collection(
+      firestore,
+      "ImageAttributes",
+      imageIdPath,
+      "likes"
+    );
 
     try {
-      const q = query(imageAttributesCollection, where("imageId", "==", image.uri));
-
+      const q = query(imageAttributesCollection);
       const querySnapshot = await getDocs(q);
 
-      const likesData = querySnapshot.docs.map((doc) => doc.data().like);
-      setLikeCount(likesData.length > 0 ? likesData[0] : 0);
+      setLikeCount(querySnapshot.docs.length);
+
+      if (user) {
+        const userLikeDoc = await getDoc(doc(imageAttributesCollection, user.uid));
+        setIsLiked(userLikeDoc.exists());
+      }
     } catch (error) {
       console.error("Error fetching likes:", error);
     }
   };
 
-  const toggleFavorite = async () => {
+  useEffect(() => {
+    fetchLikes();
+  }, []);
+
+  const setLike = async () => {
     if (!user) {
-      console.log("User is not logged in. Cannot toggle favorite.");
+      return;
+    }
+    setIsLiked(true);
+    scale.value = withSpring(1.2, {}, () => {
+      runOnJS(resetScale)();
+    });
+
+    try {
+      const firestore = getFirestore();
+      const userId = user.uid;
+
+      const likeRef = doc(firestore, "ImageAttributes", imageIdPath, "likes", userId);
+
+      await setDoc(likeRef, { like: true });
+      console.log("Image liked successfully");
+    } catch (error) {
+      setIsLiked(false);
+      console.error("Error liking image:", error);
+    }
+  };
+
+  const unsetLike = async () => {
+    if (!user) {
       return;
     }
 
-    const firestore = getFirestore();
-    const imageDocRef = doc(firestore, "ImageAttributes", image.uri);
-
+    setIsLiked(false);
     try {
-      await updateDoc(imageDocRef, { likes: likeCount + 1 });
+      const firestore = getFirestore();
+      const userId = user.uid;
 
-      setLikeCount((prevCount) => prevCount + 1);
+      const likeRef = doc(firestore, "ImageAttributes", imageIdPath, "likes", userId);
 
-      scale.value = withSpring(1.2, {}, () => {
-        runOnJS(resetScale)();
-      });
+      await deleteDoc(likeRef);
+      console.log("Image disliked successfully");
     } catch (error) {
-      console.error("Error toggling like:", error);
+      setIsLiked(true);
+      console.error("Error disliking image:", error);
+    }
+  };
+
+  const toggleLike = async () => {
+    if (isLiked) {
+      await unsetLike();
+    } else {
+      await setLike();
     }
   };
 
@@ -104,13 +148,13 @@ const FeedImageCard: React.FC<FeedImageCardProps> = ({ image }) => {
       </TouchableOpacity>
 
       <View className="absolute bottom-0 right-10 items-center justify-center w-16 h-16 bg-system-brandLight rounded-full overflow-hidden">
-        <TouchableOpacity onPress={toggleFavorite}>
+        <TouchableOpacity onPress={toggleLike}>
           <Animated.View style={animatedStyle}>
-            {isFavorited ? (
-              <Ionicons name="ios-heart-sharp" size={24} color="black" />
-            ) : (
-              <Ionicons name="ios-heart-outline" size={24} color="black" />
-            )}
+            <Ionicons
+              name={!isLiked ? "ios-heart-outline" : "ios-heart-sharp"}
+              size={32}
+              color="black"
+            />
           </Animated.View>
         </TouchableOpacity>
       </View>
@@ -119,3 +163,6 @@ const FeedImageCard: React.FC<FeedImageCardProps> = ({ image }) => {
 };
 
 export default FeedImageCard;
+function setUserHasLiked(arg0: any) {
+  throw new Error("Function not implemented.");
+}
