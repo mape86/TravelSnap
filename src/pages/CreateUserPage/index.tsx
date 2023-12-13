@@ -4,14 +4,13 @@ import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
 import { RouteList } from "../../hooks/Navigation/useCustomNavigation";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "../../components/CustomButton";
-//import { TextInput } from "react-native-gesture-handler";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { fbAuth } from "../../../firebaseConfig";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-//import { TextInput } from "react-native-paper";
 import Checkbox from "expo-checkbox";
 import { Ionicons } from "@expo/vector-icons";
 import { PasswordField } from "../../components/PasswordField";
+import { BackButton } from "../../components/BackButton";
 
 const CreateUserPage = () => {
   const { navigate, pop } = useCustomNavigation();
@@ -57,14 +56,7 @@ const CreateUserPage = () => {
 
   return (
     <SafeAreaView className="flex-1">
-      <TouchableOpacity
-        onPress={backToWelcome}
-        className="flex p-5 my-3 flex-row items-center"
-      >
-        <Ionicons name="arrow-back" size={28} color="black" />
-        <Text>Back</Text>
-      </TouchableOpacity>
-
+      <BackButton onPress={backToWelcome} />
       <Text className="font-bold text-3xl ml-4">Create your account</Text>
       <View className="px-8">
         <View className="py-5 space-y-6">
@@ -75,6 +67,7 @@ const CreateUserPage = () => {
               placeholder="Username"
               value={userName}
               autoCapitalize="none"
+              autoCorrect={false}
               onChangeText={(text) => setUserName(text)}
             />
           </View>
@@ -86,6 +79,7 @@ const CreateUserPage = () => {
               value={email}
               keyboardType="email-address"
               autoCapitalize="none"
+              autoCorrect={false}
               onChangeText={(text) => setEmail(text)}
             />
           </View>
@@ -105,7 +99,7 @@ const CreateUserPage = () => {
         </View>
 
         <View className="mb-5 top-5">
-          <CustomButton onPress={createUser} text="Sign up" />
+          <CustomButton onPress={createUser} text="Sign up" disabled={!isChecked} />
         </View>
 
         <TouchableOpacity onPress={() => handleClick("LoginPage")} className="py-14 m-auto">
