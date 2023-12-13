@@ -1,24 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, Image } from "react-native";
-import {
-  getFirestore,
-  doc,
-  updateDoc,
-  collection,
-  query,
-  getDocs,
-  where,
-} from "firebase/firestore";
-import { getAuth } from "firebase/auth";
 import { Ionicons } from "@expo/vector-icons";
-import Animated, {
-  useSharedValue,
-  withSpring,
-  useAnimatedStyle,
-  runOnJS,
-} from "react-native-reanimated";
+import { useIsFocused } from "@react-navigation/native";
+import React, { useEffect } from "react";
+import { Image, Text, TouchableOpacity, View } from "react-native";
+import Animated from "react-native-reanimated";
 import useCustomNavigation from "../hooks/Navigation/useCustomNavigation";
 import { ImageObject } from "../hooks/useFeedImages";
+import { useLikeImage } from "../hooks/useLike";
 
 interface FeedImageCardProps {
   image: ImageObject;
@@ -26,64 +13,18 @@ interface FeedImageCardProps {
 
 const FeedImageCard: React.FC<FeedImageCardProps> = ({ image }) => {
   const { navigate } = useCustomNavigation();
-  const [isFavorited, setIsFavorited] = useState(false);
-  const [likeCount, setLikeCount] = useState<number>(0);
-  const scale = useSharedValue(1);
-
-  const auth = getAuth();
-  const user = auth.currentUser;
+  const isFocused = useIsFocused();
+  const imageIdPath = decodeURIComponent(image.uri).replace(
+    "https://firebasestorage.googleapis.com/v0/b/travelsnap-84d7a.appspot.com/o/feed/",
+    ""
+  );
+  const { toggleLike, isLiked, animatedStyle, fetchLikes } = useLikeImage({ imageIdPath });
 
   useEffect(() => {
-    fetchLikes();
-  }, []);
-
-  const fetchLikes = async () => {
-    const firestore = getFirestore();
-    const imageAttributesCollection = collection(firestore, "ImageAttributes");
-
-    try {
-      const q = query(imageAttributesCollection, where("imageId", "==", image.uri));
-
-      const querySnapshot = await getDocs(q);
-
-      const likesData = querySnapshot.docs.map((doc) => doc.data().like);
-      setLikeCount(likesData.length > 0 ? likesData[0] : 0);
-    } catch (error) {
-      console.error("Error fetching likes:", error);
+    if (isFocused) {
+      fetchLikes();
     }
-  };
-
-  const toggleFavorite = async () => {
-    if (!user) {
-      console.log("User is not logged in. Cannot toggle favorite.");
-      return;
-    }
-
-    const firestore = getFirestore();
-    const imageDocRef = doc(firestore, "ImageAttributes", image.uri);
-
-    try {
-      await updateDoc(imageDocRef, { likes: likeCount + 1 });
-
-      setLikeCount((prevCount) => prevCount + 1);
-
-      scale.value = withSpring(1.2, {}, () => {
-        runOnJS(resetScale)();
-      });
-    } catch (error) {
-      console.error("Error toggling like:", error);
-    }
-  };
-
-  const resetScale = () => {
-    scale.value = withSpring(1);
-  };
-
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{ scale: scale.value }],
-    };
-  });
+  }, [isFocused]);
 
   return (
     <View>
@@ -104,13 +45,13 @@ const FeedImageCard: React.FC<FeedImageCardProps> = ({ image }) => {
       </TouchableOpacity>
 
       <View className="absolute bottom-0 right-10 items-center justify-center w-16 h-16 bg-system-brandLight rounded-full overflow-hidden">
-        <TouchableOpacity onPress={toggleFavorite}>
+        <TouchableOpacity onPress={toggleLike}>
           <Animated.View style={animatedStyle}>
-            {isFavorited ? (
-              <Ionicons name="ios-heart-sharp" size={24} color="black" />
-            ) : (
-              <Ionicons name="ios-heart-outline" size={24} color="black" />
-            )}
+            <Ionicons
+              name={!isLiked ? "ios-heart-outline" : "ios-heart-sharp"}
+              size={32}
+              color="black"
+            />
           </Animated.View>
         </TouchableOpacity>
       </View>
@@ -119,3 +60,6 @@ const FeedImageCard: React.FC<FeedImageCardProps> = ({ image }) => {
 };
 
 export default FeedImageCard;
+function setUserHasLiked(arg0: any) {
+  throw new Error("Function not implemented.");
+}

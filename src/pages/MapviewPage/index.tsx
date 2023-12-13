@@ -50,6 +50,8 @@ const markersData = [
   },
 ];
 
+//TODO: REmove mockdata
+
 const MapviewPage: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedTitle, setSelectedTitle] = useState<string | null>(null);
