@@ -1,16 +1,9 @@
-import { View, Text } from "react-native";
-import React, { useEffect, useState } from "react";
-import { FlatList, ScrollView, TouchableOpacity } from "react-native-gesture-handler";
-import { NavigationContainer } from "@react-navigation/native";
+import React from "react";
+import { Text, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
-import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
-import { RouteList } from "../../hooks/Navigation/useCustomNavigation";
-import CamerPage from "../CameraPage";
 import FeedImageCard from "../../components/FeedImageCard";
-import { feedImages } from "../../components/constants";
-import Assets from "../../Assets";
-import { fbStorage, getAllFeedImagesFromFirebase } from "../../../firebaseConfig";
-import { getMetadata, ref } from "firebase/storage";
+import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
 import { useFeedImages } from "../../hooks/useFeedImages";
 
 const HomePage = () => {
