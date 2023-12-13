@@ -106,6 +106,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ uri }) => {
           value={newComment}
           onChangeText={(text) => setNewComment(text)}
           editable={user !== null}
+          autoCorrect={false}
           className="flex-1 border rounded-full px-6 py-4 mr-2"
         />
 

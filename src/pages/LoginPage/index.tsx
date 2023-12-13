@@ -66,6 +66,7 @@ const LoginPage = () => {
               <TextInput
                 className="border rounded-md p-4"
                 placeholder="email"
+                autoCorrect={false}
                 value={email}
                 autoCapitalize="none"
                 onChangeText={(text) => setEmail(text)}

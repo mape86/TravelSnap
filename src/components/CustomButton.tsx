@@ -68,11 +68,13 @@ const CustomButton = ({
 }: ButtonProps) => {
   const { color, backgroundColor } = COLORS[variant];
 
+  const buttonStyle = disabled ? "opacity-40" : "opacity-100";
+
   return (
     <TouchableOpacity
       onPress={onPress}
       disabled={disabled}
-      className={`flex flex-row items-center justify-center py-4 px-12 border rounded-full ${color} ${backgroundColor} ${className}`}
+      className={`flex flex-row items-center justify-center py-4 px-12 border rounded-full ${color} ${backgroundColor} ${buttonStyle} ${className}`}
     >
       {iconName && <Entypo name={iconName} size={iconSize} color={color} />}
       {text && <Text className={`${color} text-lg font-bold`}>{text}</Text>}
