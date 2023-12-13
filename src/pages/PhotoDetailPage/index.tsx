@@ -1,16 +1,14 @@
-import React from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { Image, Platform, ScrollView, StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import MapView from "react-native-maps";
 import Animated from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
-import customMapStyles from "./../MapviewPage/styling.json";
 import { BackButton } from "../../components/BackButton";
 import CommentSection from "../../components/CommentSection";
+import { Map } from "../../components/Map";
 import { ImageObject } from "../../hooks/useFeedImages";
 import { useLikeImage } from "../../hooks/useLike";
-import { Map } from "../../components/Map";
 
 interface PhotoDetailPageProps {
   location: string;
