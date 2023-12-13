@@ -83,7 +83,7 @@ const MapviewPage: React.FC = () => {
       </MapView>
 
       <View className="absolute top-20 left-5">
-        <Text className="text-3xl font-bold">Travel Memoir</Text>
+        <Text className="text-3xl font-bold">My travels</Text>
       </View>
 
       <ImageModal
