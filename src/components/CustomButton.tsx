@@ -1,6 +1,6 @@
+import { Entypo } from "@expo/vector-icons";
 import * as React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Text, TouchableOpacity } from "react-native";
 
 type EntypoIconName =
   | "key"

@@ -10,6 +10,7 @@ import { BackButton } from "../../components/BackButton";
 import CommentSection from "../../components/CommentSection";
 import { ImageObject } from "../../hooks/useFeedImages";
 import { useLikeImage } from "../../hooks/useLike";
+import { Map } from "../../components/Map";
 
 interface PhotoDetailPageProps {
   location: string;
@@ -49,12 +50,11 @@ const PhotoDetailPage = (props: any) => {
           </View>
           <CommentSection uri={image.uri} />
 
-          <View className="flex-1 w-full h-1/3">
-            <MapView
-              provider={Platform.OS === "ios" ? "google" : undefined}
-              customMapStyle={customMapStyles}
-            ></MapView>
-          </View>
+          {!!(image.latitude && image.longitude) && (
+            <View className="mt-8">
+              <Map latitude={image.latitude} longitude={image.longitude} />
+            </View>
+          )}
         </View>
       </SafeAreaView>
     </ScrollView>
