@@ -34,14 +34,13 @@ const FeedImageCard: React.FC<FeedImageCardProps> = ({ image }) => {
             image,
           })
         }
-        className="flex items-center relative mb-5"
+        className="flex relative mb-5"
       >
         <Image
           source={{ uri: image.uri }}
-          style={{ width: 350, height: 400 }}
-          className="aspect-ratio-ratio-1 rounded-lg"
+          style={{ width: 350, height: 470, aspectRatio: 1 }}
         />
-        <Text className="font-semibold mt-2 ">{image.userName}</Text>
+        <Text className="font-semibold ml-2 mt-2 ">@{image.userName}</Text>
       </TouchableOpacity>
 
       <View className="absolute bottom-0 right-10 items-center justify-center w-16 h-16 bg-system-brandLight rounded-full overflow-hidden">
