@@ -1,14 +1,12 @@
-import { View, TextInput, Text, SafeAreaView } from "react-native";
-import React, { useEffect, useState } from "react";
-import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
-import CustomButton from "../../components/CustomButton";
-import { fbAuth } from "../../../firebaseConfig";
-import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
-import { RouteList } from "../../hooks/Navigation/useCustomNavigation";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
-import PhotoDetailPage from "../PhotoDetailPage";
+import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import React, { useEffect, useState } from "react";
+import { SafeAreaView, Text, TextInput, View } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { fbAuth } from "../../../firebaseConfig";
+import CustomButton from "../../components/CustomButton";
 import { PasswordField } from "../../components/PasswordField";
+import useCustomNavigation, { RouteList } from "../../hooks/Navigation/useCustomNavigation";
 
 const LoginPage = () => {
   const { navigate, goBack, pop } = useCustomNavigation();

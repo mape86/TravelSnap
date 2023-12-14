@@ -48,7 +48,7 @@ const PhotoGalleryPage: React.FC = () => {
   return (
     <SafeAreaView className="flex-auto bg-system-brandLight overflow-hidden">
       <View className="mb-3 flex flex-row justify-between">
-        <Text className="pb-1 ml-4 font-semibold text-3xl">Device Gallery</Text>
+        <Text className="pb-1 ml-4 font-semibold text-3xl">Upload</Text>
         <TouchableOpacity
           className="pr-4 pt-2"
           onPress={() => handleCameraClick("CameraPage")}

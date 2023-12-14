@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { fbAuth, uploadImageToFirebase } from "../../../firebaseConfig";
+import { BackButton } from "../../components/BackButton";
 import CustomButton from "../../components/CustomButton";
 import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
 
@@ -53,15 +54,12 @@ const UploadLibraryPhotoPage = (route: any) => {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View className="flex-1 ">
           <View className="mt-12 ml-2">
-            <TouchableOpacity className="flex-row items-center" onPress={navigation.goBack}>
-              <Ionicons name="arrow-back" size={28} color="black" />
-              <Text>Back</Text>
-            </TouchableOpacity>
+            <BackButton />
           </View>
           <View className="flex-1 items-center justify-between mt-4">
             <Image
               source={{ uri }}
-              style={{ width: 350, height: 350 }}
+              style={{ width: 350, height: 380 }}
               className="rounded-lg"
             />
             <Text>Go to profile to edit image and add it to feed</Text>

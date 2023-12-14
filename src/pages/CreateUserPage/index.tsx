@@ -75,7 +75,7 @@ const CreateUserPage = () => {
             <Text>Email</Text>
             <TextInput
               className="border rounded-md p-4"
-              placeholder="Email"
+              placeholder="email@example.com"
               value={email}
               keyboardType="email-address"
               autoCapitalize="none"

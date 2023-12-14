@@ -1,8 +1,8 @@
 import React from "react";
-import { GestureResponderEvent, Text, TextInput, View } from "react-native";
+import { GestureResponderEvent, Text } from "react-native";
 
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import useCustomNavigation from "../hooks/Navigation/useCustomNavigation";
 
 interface BackButtonProps {

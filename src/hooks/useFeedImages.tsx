@@ -1,5 +1,5 @@
 import { getMetadata, ref } from "firebase/storage";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fbStorage, getAllFeedImagesFromFirebase } from "../../firebaseConfig";
 
 export interface ImageObject {

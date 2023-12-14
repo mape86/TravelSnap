@@ -1,11 +1,10 @@
-import { View, Text, TouchableOpacity, StyleSheet, ImageBackground } from "react-native";
-import React from "react";
-import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { RouteList } from "../../hooks/Navigation/useCustomNavigation";
-import CustomButton from "../../components/CustomButton";
-import Assets from "../../Assets";
 import { LinearGradient } from "expo-linear-gradient";
+import React from "react";
+import { ImageBackground, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Assets from "../../Assets";
+import CustomButton from "../../components/CustomButton";
+import useCustomNavigation, { RouteList } from "../../hooks/Navigation/useCustomNavigation";
 
 const WelcomePage = () => {
   const { navigate } = useCustomNavigation();

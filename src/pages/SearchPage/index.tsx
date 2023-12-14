@@ -1,10 +1,10 @@
+import { Entypo } from "@expo/vector-icons";
 import React, { useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SearchImageCard from "../../components/SearchImageCard";
 import { useFeedImages } from "../../hooks/useFeedImages";
-import { Entypo } from "@expo/vector-icons";
 
 const SearchPage = () => {
   const [searchText, setSearchText] = useState<string>("");
