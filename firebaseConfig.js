@@ -13,7 +13,6 @@ import {
   getDownloadURL,
   getMetadata,
   getStorage,
-  list,
   listAll,
   ref,
   uploadBytesResumable,

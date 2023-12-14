@@ -18,7 +18,11 @@ export const UserProfilePageRoutes = () => {
       <Navigator initialRouteName="UserProfilePage">
         <Screen name="UserProfilePage" component={UserProfilePage} options={noHeaderShown} />
         <Screen name="UserSettingsPage" component={UserSettingsPage} options={noHeaderShown} />
-        <Screen name="UserPhotoDetailPage" component={UserPhotoDetailPage} options={noHeaderShown} />
+        <Screen
+          name="UserPhotoDetailPage"
+          component={UserPhotoDetailPage}
+          options={noHeaderShown}
+        />
       </Navigator>
     </NavigationContainer>
   );
