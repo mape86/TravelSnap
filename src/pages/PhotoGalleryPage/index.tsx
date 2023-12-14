@@ -17,7 +17,6 @@ const PhotoGalleryPage: React.FC = () => {
   const { navigate } = useCustomNavigation();
 
   const [pickedPhoto, setPickedPhotos] = useState<PickedPhoto[]>([]);
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const handleClick = (item: keyof RouteList, uri: string) => {
     navigate(item, { uri });
@@ -27,6 +26,7 @@ const PhotoGalleryPage: React.FC = () => {
     navigate(item);
   };
 
+  //Function for choosing photos from device camera roll. If a photo or photos are picked setPickedPhotos is called, and the picked photos are added to the pickedPhoto state. The spread operator will add any new photos to the array, next to the old ones.
   const choosePhotoFromLibrary = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,

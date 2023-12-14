@@ -37,6 +37,7 @@ const CameraPage = () => {
 
   const navigation = useCustomNavigation();
 
+  //This useEffect is used to ask for permission to use the camera, location and media library, when user first enters the view. These codelines are taken from the expo documentation. If user accepts the states are set to true, and the user can use the camera.
   useEffect(() => {
     (async () => {
       MediaLibrary.requestPermissionsAsync();
@@ -61,6 +62,7 @@ const CameraPage = () => {
     return locationInfo as LocationInfo;
   };
 
+  //function for capturing a picture with camera, adding the location if that is granted permission. The captured image is then set to the imageData state, and then displayed in the view.
   const takePicture = async () => {
     if (cameraRef.current && locationPermission) {
       try {
@@ -75,6 +77,7 @@ const CameraPage = () => {
     }
   };
 
+  //Saves captures image to your device camera roll, with extra metadata such as location if there.
   const saveImageToLibrary = async () => {
     if (imageData) {
       try {
@@ -103,6 +106,7 @@ const CameraPage = () => {
     );
   }
 
+  //fcuntion to upload the captures image to firebase storage, with metadata such as location if it is available in with the image. This func is calling the upload function from firebaseConfig, and sending in image data in the call.
   const uploadImage = async () => {
     if (imageData && imageData.uri) {
       try {

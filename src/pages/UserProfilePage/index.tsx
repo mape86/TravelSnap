@@ -14,12 +14,6 @@ import {
 import CustomButton from "../../components/CustomButton";
 import useCustomNavigation, { RouteList } from "../../hooks/Navigation/useCustomNavigation";
 
-type PickedPhoto = {
-  uri: string;
-  latitude?: number;
-  longitude?: number;
-};
-
 type RouteParamList = {
   UserPhotoDetailPage: { uri: string };
 };
@@ -46,6 +40,7 @@ const UserProfilePage = () => {
     handleProfilePictureChange();
   }, [isFocused]);
 
+  //Function for fetching all images from firebase, using the getAllImagesFromFirebase function from firebaseConfig. The images are then set to the photoUrls state, and displayed in the FlatList, through the renderOutImages function.
   const fetchImagesFromFirebase = async () => {
     const images = await getAllImagesFromFirebase();
     setPhotoUrls(images);
@@ -61,6 +56,7 @@ const UserProfilePage = () => {
     </TouchableOpacity>
   );
 
+  //Function for setting new profile image, using the the getOwnProfilePicture function from firebaseConfig. If an image is picked, the uri is set to the profileImage state, and the image is displayed.
   const handleProfilePictureChange = async () => {
     let uri = await getOwnProfilePicture();
     if (uri) {
