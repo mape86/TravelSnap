@@ -106,7 +106,7 @@ const CameraPage = () => {
     );
   }
 
-  //fcuntion to upload the captures image to firebase storage, with metadata such as location if it is available in with the image. This func is calling the upload function from firebaseConfig, and sending in image data in the call.
+  //function to upload the captures image to firebase storage, with metadata such as location if it is available in with the image. This func is calling the upload function from firebaseConfig, and sending in image data in the call.
   const uploadImage = async () => {
     if (imageData && imageData.uri) {
       try {

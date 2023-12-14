@@ -16,6 +16,7 @@ interface PhotoDetailPageProps {
 
 const PhotoDetailPage = (props: any) => {
   const image: ImageObject = props.route.params.image;
+  //The ID's of the images in Firestore is the path excluding this first part of the url, which is therefor removed.
   const imageIdPath = decodeURIComponent(image.uri).replace(
     "https://firebasestorage.googleapis.com/v0/b/travelsnap-84d7a.appspot.com/o/feed/",
     ""
@@ -50,7 +51,6 @@ const PhotoDetailPage = (props: any) => {
             <Text className="text-gray-500">{image.tags}</Text>
           </View>
           <CommentSection uri={image.uri} />
-
           {!!(image.latitude && image.longitude) && (
             <View className="mt-8">
               <Map latitude={image.latitude} longitude={image.longitude} />

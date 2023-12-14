@@ -5,10 +5,14 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 
 interface PasswordFieldProps {
   password: string;
+  // Simply set the type to be the same type React uses
+  // on the function that sets the state when using the useState hook (seen when hovering over the function).
   setPassword: React.Dispatch<React.SetStateAction<string>>;
   className?: string;
 }
 
+// Made a seperate password component
+// since the same design (and toggle visibility functionality ) is used in the login page and signup page  */
 const PasswordField = ({ password, setPassword, className }: PasswordFieldProps) => {
   const [isPasswordVisible, setPasswordVisible] = useState<boolean>(false);
 
@@ -26,11 +30,7 @@ const PasswordField = ({ password, setPassword, className }: PasswordFieldProps)
         onChangeText={(text) => setPassword(text)}
       />
       <TouchableOpacity onPress={() => setPasswordVisible((state) => !state)} className="mr-2">
-        {isPasswordVisible ? (
-          <Ionicons name="eye" size={24} color="black" />
-        ) : (
-          <Ionicons name="eye-off" size={24} color="black" />
-        )}
+        <Ionicons name={isPasswordVisible ? "eye" : "eye-off"} size={24} color="black" />
       </TouchableOpacity>
     </View>
   );

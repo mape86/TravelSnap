@@ -4,12 +4,9 @@ import { Text, View } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import FeedImageCard from "../../components/FeedImageCard";
-import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
 import { useFeedImages } from "../../hooks/useFeedImages";
 
 const HomePage = () => {
-  const { navigate } = useCustomNavigation();
-
   const { imageObjects, isError, refreshList } = useFeedImages();
 
   return (

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Image, Platform, StyleSheet, Text, View } from "react-native";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import Assets from "../../Assets";
 import ImageModal from "../../components/ImageModalMap";
 import customMapStyles from "./styling.json";
@@ -50,8 +50,6 @@ const markersData = [
   },
 ];
 
-//TODO: REmove mockdata
-
 const MapviewPage: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedTitle, setSelectedTitle] = useState<string | null>(null);
@@ -66,11 +64,15 @@ const MapviewPage: React.FC = () => {
     setSelectedTitle(null);
   };
 
+  // Created a custom map style using https://mapstyle.withgoogle.com/,
+  // which was then copied to ./styling.json.
+  // The "provider" prop must be set to the value of the imported PROVIDER_GOOGLE variable if on iOS,
+  // as explained by the library docs: https://www.npmjs.com/package/react-native-maps
   return (
     <View className="flex-1">
       <MapView
         style={styles.map}
-        provider={Platform.OS === "ios" ? "google" : undefined}
+        provider={Platform.OS === "ios" ? PROVIDER_GOOGLE : undefined}
         customMapStyle={customMapStyles}
       >
         {markersData.map((marker) => (

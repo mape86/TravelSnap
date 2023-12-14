@@ -15,8 +15,12 @@ const SearchPage = () => {
     (image) => image.tags?.toLowerCase().includes(searchText.toLowerCase())
   );
 
+  //If there is searchtext present, it means the user is currently expecting search results,
+  // so use this as the source of the images rendered, even if it's empty.
   const images = searchText ? imageSearchResults : imageObjects;
 
+  // If the user is searching, but the result is empty, show that, if not we show the images.
+  // In the variable above this is either set to searchresult or all feed images dependent if the user is searching or not.
   const results =
     searchText && imageSearchResults.length === 0 ? (
       <View className="justify-center items-center h-screen">
@@ -34,6 +38,7 @@ const SearchPage = () => {
               contentContainerStyle={flatListStyles.root}
               data={images}
               renderItem={({ item }) => <SearchImageCard image={item} />}
+              // url of the image is unique, so we can use that as the key
               keyExtractor={(item) => item.uri}
               numColumns={3}
             />

@@ -12,6 +12,9 @@ export interface ImageObject {
   userName?: string;
 }
 
+// Created this hook to so we can reuse the logic of fetching feed images,
+// since these images are both used on the frontpage/main page and the search page.
+
 const useFeedImages = (): {
   imageObjects: ImageObject[];
   setImageObjects: React.Dispatch<React.SetStateAction<ImageObject[]>>;
@@ -60,6 +63,8 @@ const useFeedImages = (): {
       .catch(() => {
         setIsError(true);
       })
+      // Set loading to false in a "finally" block
+      // since the loading will always end after the fetching is done, no matter if it went well or not.
       .finally(() => {
         setIsLoading(false);
       });

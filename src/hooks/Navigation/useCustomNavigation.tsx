@@ -1,10 +1,4 @@
-import {
-  useNavigation,
-  NavigationProp,
-  ParamListBase,
-  NavigatorScreenParams,
-  StackActions,
-} from "@react-navigation/native";
+import { NavigationProp, StackActions, useNavigation } from "@react-navigation/native";
 
 export type RouteList = {
   //Welcome routes:

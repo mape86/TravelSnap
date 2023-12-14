@@ -6,7 +6,6 @@ import { fbAuth, fbStorage, uploadToFeed } from "../../../firebaseConfig";
 import { BackButton } from "../../components/BackButton";
 import CustomButton from "../../components/CustomButton";
 import { Map } from "../../components/Map";
-import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
 
 interface LocationState {
   latitude: string | null;
@@ -15,7 +14,6 @@ interface LocationState {
 
 const UserPhotoDetailPage = (route: any) => {
   const auth = fbAuth.currentUser;
-  const navigation = useCustomNavigation();
 
   const { uri } = route.route.params;
   const [description, setDescription] = useState<string>("");
@@ -29,7 +27,7 @@ const UserPhotoDetailPage = (route: any) => {
 
   //Using useEffect to fetch image, and metadata if it exists when the user enters the view. If metadata exists, it will be set to the states, and shown in the input fields.
   useEffect(() => {
-    const fetchImageLocationData = async () => {
+    const fetchImageInformation = async () => {
       const imageRef = ref(fbStorage, uri);
 
       try {
@@ -55,7 +53,7 @@ const UserPhotoDetailPage = (route: any) => {
         console.log(error);
       }
     };
-    fetchImageLocationData();
+    fetchImageInformation();
     setImage(uri);
   }, [uri]);
 

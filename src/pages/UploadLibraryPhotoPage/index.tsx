@@ -1,4 +1,3 @@
-import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import {
   Image,
@@ -8,7 +7,6 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { fbAuth, uploadImageToFirebase } from "../../../firebaseConfig";
 import { BackButton } from "../../components/BackButton";
 import CustomButton from "../../components/CustomButton";
