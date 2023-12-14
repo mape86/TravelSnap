@@ -1,4 +1,3 @@
-import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { signOut, updateProfile } from "firebase/auth";
 import React, { useEffect, useState } from "react";
@@ -8,11 +7,9 @@ import { fbAuth, getOwnProfilePicture, uploadProfilePicture } from "../../../fir
 import Assets from "../../Assets";
 import { BackButton } from "../../components/BackButton";
 import CustomButton from "../../components/CustomButton";
-import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
 
 const UserSettingsPage = () => {
   const auth = fbAuth;
-  const navigation = useCustomNavigation();
 
   const [dislayName, setDisplayName] = useState<string>(`${auth.currentUser?.displayName}`);
   const [description, setDescription] = useState<string>(`${auth.currentUser?.photoURL}`);
@@ -24,6 +21,7 @@ const UserSettingsPage = () => {
     handleProfileImageUpload();
   }, [chosenProfileImage]);
 
+  //Using useEffect to fetch a profileImage if it exists when the user enters the view.
   useEffect(() => {
     retrieveProfilePicture();
   }, []);
@@ -43,6 +41,7 @@ const UserSettingsPage = () => {
     setToggleIsEnabled((previousState) => !previousState);
   };
 
+  //Using the image picker to set profile image, and in turn triggering useEffect with upload function.
   const handleProfilePictureChange = async () => {
     let response = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -68,6 +67,7 @@ const UserSettingsPage = () => {
     }
   };
 
+  //Saving changes to the userName and description in Firebase Authentication.
   const handleSaveChanges = async () => {
     if (auth.currentUser) {
       await updateProfile(auth.currentUser, {

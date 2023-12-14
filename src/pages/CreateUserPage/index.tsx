@@ -1,16 +1,14 @@
-import { Text, TextInput, View } from "react-native";
-import React, { useState } from "react";
-import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
-import { RouteList } from "../../hooks/Navigation/useCustomNavigation";
-import { SafeAreaView } from "react-native-safe-area-context";
-import CustomButton from "../../components/CustomButton";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { fbAuth } from "../../../firebaseConfig";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import Checkbox from "expo-checkbox";
-import { Ionicons } from "@expo/vector-icons";
-import { PasswordField } from "../../components/PasswordField";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import React, { useState } from "react";
+import { Text, TextInput, View } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { fbAuth } from "../../../firebaseConfig";
 import { BackButton } from "../../components/BackButton";
+import CustomButton from "../../components/CustomButton";
+import { PasswordField } from "../../components/PasswordField";
+import useCustomNavigation, { RouteList } from "../../hooks/Navigation/useCustomNavigation";
 
 const CreateUserPage = () => {
   const { navigate, pop } = useCustomNavigation();
@@ -30,6 +28,7 @@ const CreateUserPage = () => {
 
   const auth = fbAuth;
 
+  //Creating a user through Firebase Authentication, and in turn setting the display name. If successful the user navigates to HomeRoutes.
   const createUser = async () => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
