@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { View, TextInput, Text, SafeAreaView } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
+import React, { useState } from "react";
+import { TextInput, View } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 interface PasswordFieldProps {
   password: string;

@@ -1,15 +1,12 @@
-import { Ionicons } from "@expo/vector-icons";
-import { RouteProp } from "@react-navigation/native";
 import { getMetadata, ref } from "firebase/storage";
 import React, { useEffect, useState } from "react";
-import { Image, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Image, Text, TextInput, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import MapView, { Marker } from "react-native-maps";
 import { fbAuth, fbStorage, uploadToFeed } from "../../../firebaseConfig";
+import { BackButton } from "../../components/BackButton";
 import CustomButton from "../../components/CustomButton";
 import { Map } from "../../components/Map";
 import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
-import CustomMapStyle from "../MapviewPage/styling.json";
 
 interface LocationState {
   latitude: string | null;
@@ -85,10 +82,7 @@ const UserPhotoDetailPage = (route: any) => {
   return (
     <>
       <View className="mt-12 ml-2">
-        <TouchableOpacity className="flex-row items-center" onPress={navigation.goBack}>
-          <Ionicons name="arrow-back" size={28} color="black" />
-          <Text>Back</Text>
-        </TouchableOpacity>
+        <BackButton />
       </View>
       <ScrollView>
         <View className="flex-1 items-center mt-5">
@@ -108,13 +102,13 @@ const UserPhotoDetailPage = (route: any) => {
                 numberOfLines={10}
                 multiline={true}
                 onChangeText={setDescription}
-                className="w-80 h-16 border-2 border-gray-400 mb-1"
+                className="w-80 h-16 border rounded"
               />
               <TextInput
                 autoCorrect={false}
                 placeholder="Add tags"
                 onChangeText={setTags}
-                className="w-80 h-10 border-2 border-gray-400"
+                className="w-80 h-10 border rounded"
               />
             </View>
             <View className="mt-2">

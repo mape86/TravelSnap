@@ -1,3 +1,4 @@
+import { Entypo } from "@expo/vector-icons";
 import React from "react";
 import { Text, View } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
@@ -5,7 +6,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import FeedImageCard from "../../components/FeedImageCard";
 import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
 import { useFeedImages } from "../../hooks/useFeedImages";
-import { Entypo } from "@expo/vector-icons";
 
 const HomePage = () => {
   const { navigate } = useCustomNavigation();

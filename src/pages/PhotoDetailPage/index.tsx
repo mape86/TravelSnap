@@ -3,7 +3,6 @@ import React from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Animated from "react-native-reanimated";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { BackButton } from "../../components/BackButton";
 import CommentSection from "../../components/CommentSection";
 import { Map } from "../../components/Map";
@@ -22,11 +21,14 @@ const PhotoDetailPage = (props: any) => {
     ""
   );
   const { isLiked, toggleLike, animatedStyle } = useLikeImage({ imageIdPath });
+
   return (
-    <ScrollView className="bg-brandLight">
-      <SafeAreaView>
+    <>
+      <View className="mt-12 ml-2">
+        <BackButton />
+      </View>
+      <ScrollView>
         <View className="relative">
-          <BackButton />
           <Image source={{ uri: image.uri }} className="w-full aspect-square mb-4" />
           <View className="absolute bottom-[-36] right-6 items-center justify-center w-20 h-20 bg-system-brandLight rounded-full overflow-hidden">
             <TouchableOpacity className="" onPress={toggleLike}>
@@ -54,8 +56,8 @@ const PhotoDetailPage = (props: any) => {
             </View>
           )}
         </View>
-      </SafeAreaView>
-    </ScrollView>
+      </ScrollView>
+    </>
   );
 };
 

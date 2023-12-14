@@ -1,6 +1,6 @@
 import React from "react";
+import { Platform, Text, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import { Platform, View, Text } from "react-native";
 import CustomMapStyle from "../pages/MapviewPage/styling.json";
 
 interface MapProps {

@@ -1,8 +1,8 @@
-import { View, Text, Image } from "react-native";
 import React from "react";
-import { ImageObject } from "../hooks/useFeedImages";
-import useCustomNavigation from "../hooks/Navigation/useCustomNavigation";
+import { Image, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import useCustomNavigation from "../hooks/Navigation/useCustomNavigation";
+import { ImageObject } from "../hooks/useFeedImages";
 
 type SearchImageCardProps = {
   image: ImageObject;

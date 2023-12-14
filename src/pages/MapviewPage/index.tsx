@@ -1,9 +1,9 @@
 import React, { useState } from "react";
+import { Image, Platform, StyleSheet, Text, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import { Text, View, Platform, StyleSheet, Image } from "react-native";
-import customMapStyles from "./styling.json";
-import ImageModal from "../../components/ImageModalMap";
 import Assets from "../../Assets";
+import ImageModal from "../../components/ImageModalMap";
+import customMapStyles from "./styling.json";
 
 const markersData = [
   {

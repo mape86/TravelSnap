@@ -1,15 +1,15 @@
-import { useState, useEffect } from "react";
-import {
-  getFirestore,
-  doc,
-  collection,
-  query,
-  getDocs,
-  getDoc,
-  setDoc,
-  deleteDoc,
-} from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  getFirestore,
+  query,
+  setDoc,
+} from "firebase/firestore";
+import { useEffect, useState } from "react";
 import {
   runOnJS,
   useAnimatedStyle,

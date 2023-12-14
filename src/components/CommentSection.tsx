@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
-import { getFirestore, collection, addDoc, getDocs, query, where } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { addDoc, collection, getDocs, getFirestore, query, where } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 
 interface CommentItemProps {
   comment: Comment;

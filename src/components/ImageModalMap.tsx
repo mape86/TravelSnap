@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Image, StyleSheet, View, TouchableOpacity, Text } from "react-native";
+import { Image, Modal, Text, TouchableOpacity, View } from "react-native";
 
 // TODO: Add navigation to photo detail page
 
