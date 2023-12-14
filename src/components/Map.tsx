@@ -11,11 +11,11 @@ interface MapProps {
 const Map: React.FC<MapProps> = ({ latitude, longitude }) => {
   return (
     <View>
-      <Text className="text-2xl bold text-black mb-2">Location</Text>
-      <View className="border-t-[1px] border-solid border-black">
+      <Text className="text-lg  mb-2">Location</Text>
+      <View className="border-t">
         <MapView
           customMapStyle={CustomMapStyle}
-          className="rounded-xl m-2 w-screen h-80"
+          className="m-2 w-screen h-80"
           provider={Platform.OS === "ios" ? "google" : undefined}
           initialRegion={{
             latitude: Number(latitude),

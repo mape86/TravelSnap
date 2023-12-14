@@ -95,7 +95,7 @@ const UserPhotoDetailPage = (route: any) => {
                 <Text className="">{tags}</Text>
               </View>
             </View>
-            <View className="flex items-center justify-between mt-2">
+            <View className="flex items-center justify-between mb-6 mt-2">
               <TextInput
                 autoCorrect={false}
                 placeholder="Write a description"
@@ -106,7 +106,7 @@ const UserPhotoDetailPage = (route: any) => {
               />
               <TextInput
                 autoCorrect={false}
-                placeholder="Add tags"
+                placeholder="#tags"
                 onChangeText={setTags}
                 className="w-80 h-10 border rounded"
               />

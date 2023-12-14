@@ -18,7 +18,7 @@ const ImageModal: React.FC<ImageModalProps> = ({ imageUrl, locationTitle, onClos
             {locationTitle}
           </Text>
         )}
-        <View className="w-90 h-full rounded-10 overflow-hidden shadow">
+        <View className="w-90 h-full rounded-10 overflow-hidden ">
           <Image source={imageUrl} className="flex-1 w-full h-full" />
         </View>
 

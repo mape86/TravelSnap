@@ -20,7 +20,7 @@ const PhotoDetailPage = (props: any) => {
     "https://firebasestorage.googleapis.com/v0/b/travelsnap-84d7a.appspot.com/o/feed/",
     ""
   );
-  const { isLiked, toggleLike, animatedStyle } = useLikeImage({ imageIdPath });
+  const { isLiked, likeCount, toggleLike, animatedStyle } = useLikeImage({ imageIdPath });
 
   return (
     <>
@@ -40,6 +40,7 @@ const PhotoDetailPage = (props: any) => {
                 />
               </Animated.View>
             </TouchableOpacity>
+            <Text className="">{likeCount}</Text>
           </View>
         </View>
         <View className="flex-1 px-4">
