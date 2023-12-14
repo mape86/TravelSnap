@@ -27,6 +27,7 @@ const UserPhotoDetailPage = (route: any) => {
   const [userName, setUserName] = useState<string>("");
   const [image, setImage] = useState<string | null>(null);
 
+  //Using useEffect to fetch image, and metadata if it exists when the user enters the view. If metadata exists, it will be set to the states, and shown in the input fields.
   useEffect(() => {
     const fetchImageLocationData = async () => {
       const imageRef = ref(fbStorage, uri);
@@ -58,6 +59,7 @@ const UserPhotoDetailPage = (route: any) => {
     setImage(uri);
   }, [uri]);
 
+  //Uploading image to feed with metadata. If metadata is changed in the input fields, the new metadata will be uploaded. The new metadata will come from the states set in the input fields.
   const uploadImageToFeed = async () => {
     if (image) {
       try {
