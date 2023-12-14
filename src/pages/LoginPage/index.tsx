@@ -9,11 +9,7 @@ import { PasswordField } from "../../components/PasswordField";
 import useCustomNavigation, { RouteList } from "../../hooks/Navigation/useCustomNavigation";
 
 const LoginPage = () => {
-  const { navigate, goBack, pop } = useCustomNavigation();
-
-  const handleReturnClick = () => {
-    goBack();
-  };
+  const { navigate, pop } = useCustomNavigation();
 
   const handleClick = (item: keyof RouteList) => {
     navigate(item);
@@ -27,6 +23,9 @@ const LoginPage = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
+  // Checking if there is a logged in user present, and allowing navigation to HomeRoutes if that is the case.
+  // Returning unsubscribe to avoid memory leaks.
+  // Source: https://blog.stackademic.com/concept-clear-of-onauthstatechanged-e8dddd4ff5c8
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
