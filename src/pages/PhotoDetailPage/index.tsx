@@ -1,16 +1,13 @@
-import React from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { Image, Platform, ScrollView, StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import MapView from "react-native-maps";
 import Animated from "react-native-reanimated";
-import { SafeAreaView } from "react-native-safe-area-context";
-import customMapStyles from "./../MapviewPage/styling.json";
 import { BackButton } from "../../components/BackButton";
 import CommentSection from "../../components/CommentSection";
+import { Map } from "../../components/Map";
 import { ImageObject } from "../../hooks/useFeedImages";
 import { useLikeImage } from "../../hooks/useLike";
-import { Map } from "../../components/Map";
 
 interface PhotoDetailPageProps {
   location: string;
@@ -23,12 +20,15 @@ const PhotoDetailPage = (props: any) => {
     "https://firebasestorage.googleapis.com/v0/b/travelsnap-84d7a.appspot.com/o/feed/",
     ""
   );
-  const { isLiked, toggleLike, animatedStyle } = useLikeImage({ imageIdPath });
+  const { isLiked, likeCount, toggleLike, animatedStyle } = useLikeImage({ imageIdPath });
+
   return (
-    <ScrollView className="bg-brandLight">
-      <SafeAreaView>
+    <>
+      <View className="mt-12 ml-2">
+        <BackButton />
+      </View>
+      <ScrollView>
         <View className="relative">
-          <BackButton />
           <Image source={{ uri: image.uri }} className="w-full aspect-square mb-4" />
           <View className="absolute bottom-[-36] right-6 items-center justify-center w-20 h-20 bg-system-brandLight rounded-full overflow-hidden">
             <TouchableOpacity className="" onPress={toggleLike}>
@@ -40,6 +40,7 @@ const PhotoDetailPage = (props: any) => {
                 />
               </Animated.View>
             </TouchableOpacity>
+            <Text className="">{likeCount}</Text>
           </View>
         </View>
         <View className="flex-1 px-4">
@@ -56,8 +57,8 @@ const PhotoDetailPage = (props: any) => {
             </View>
           )}
         </View>
-      </SafeAreaView>
-    </ScrollView>
+      </ScrollView>
+    </>
   );
 };
 
