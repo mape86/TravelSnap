@@ -21,6 +21,9 @@ interface UseLikeImageProps {
   imageIdPath: string;
 }
 
+// Make the logic of liking an image in a hook to make it reusable
+// since it's used both on the feed page and the photo detail page.
+
 const useLikeImage = ({ imageIdPath }: UseLikeImageProps) => {
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState<number>(0);

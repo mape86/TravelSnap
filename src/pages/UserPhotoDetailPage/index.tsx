@@ -6,7 +6,6 @@ import { fbAuth, fbStorage, uploadToFeed } from "../../../firebaseConfig";
 import { BackButton } from "../../components/BackButton";
 import CustomButton from "../../components/CustomButton";
 import { Map } from "../../components/Map";
-import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
 
 interface LocationState {
   latitude: string | null;
@@ -15,7 +14,6 @@ interface LocationState {
 
 const UserPhotoDetailPage = (route: any) => {
   const auth = fbAuth.currentUser;
-  const navigation = useCustomNavigation();
 
   const { uri } = route.route.params;
   const [description, setDescription] = useState<string>("");

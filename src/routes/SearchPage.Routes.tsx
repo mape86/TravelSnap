@@ -10,6 +10,7 @@ export const SearchPageRoutes = () => {
   const noHeaderShown = {
     headerShown: false,
   };
+
   return (
     <NavigationContainer independent={true}>
       <Navigator initialRouteName="SearchPage">

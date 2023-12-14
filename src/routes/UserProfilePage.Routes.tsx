@@ -1,11 +1,8 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import UserPhotoDetailPage from "../pages/UserPhotoDetailPage";
 import UserProfilePage from "../pages/UserProfilePage";
 import UserSettingsPage from "../pages/UserSettingsPage";
-import PhotoDetailPage from "../pages/PhotoDetailPage";
-import WelcomePage from "../pages/Welcome";
-import WelcomeRoutes from "./Welcome.Routes";
-import UserPhotoDetailPage from "../pages/UserPhotoDetailPage";
 
 const { Navigator, Screen } = createStackNavigator();
 

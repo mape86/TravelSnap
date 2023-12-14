@@ -14,12 +14,17 @@ interface FeedImageCardProps {
 const FeedImageCard: React.FC<FeedImageCardProps> = ({ image }) => {
   const { navigate } = useCustomNavigation();
   const isFocused = useIsFocused();
+  //The ID's of the images in Firestore is the path excluding this first part of the url, which is therefor removed.
+
   const imageIdPath = decodeURIComponent(image.uri).replace(
     "https://firebasestorage.googleapis.com/v0/b/travelsnap-84d7a.appspot.com/o/feed/",
     ""
   );
   const { toggleLike, isLiked, animatedStyle, fetchLikes } = useLikeImage({ imageIdPath });
 
+  // If the user re-enters homepage (where FeedImageCard is used) after being in photo detail page,
+  // we want get the image likes again since they could have liked or disliked the image they were viewing.
+  // So we want to make sure we have the latest data to show this change when navigating back.
   useEffect(() => {
     if (isFocused) {
       fetchLikes();

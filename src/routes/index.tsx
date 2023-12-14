@@ -1,13 +1,11 @@
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import HomePageRoutes from "./HomePage.Routes";
-import SearchPage from "../pages/SearchPage";
-import PhotoGalleryPageRoutes from "./PhotoGalleryPage.Routes";
-import ProfilePageRoutes from "./UserProfilePage.Routes";
 import MapviewPage from "../pages/MapviewPage";
+import HomePageRoutes from "./HomePage.Routes";
+import PhotoGalleryPageRoutes from "./PhotoGalleryPage.Routes";
 import SearchPageRoutes from "./SearchPage.Routes";
+import ProfilePageRoutes from "./UserProfilePage.Routes";
 
 const Tab = createMaterialBottomTabNavigator();
 

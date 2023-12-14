@@ -1,8 +1,6 @@
 import React from "react";
 import { Image, Modal, Text, TouchableOpacity, View } from "react-native";
 
-// TODO: Add navigation to photo detail page
-
 interface ImageModalProps {
   imageUrl: any;
   locationTitle: string;

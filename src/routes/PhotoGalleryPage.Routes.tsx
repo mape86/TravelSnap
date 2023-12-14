@@ -1,7 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import PhotoGalleryPage from "../pages/PhotoGalleryPage";
-
 import CameraPage from "../pages/CameraPage";
 import UploadLibraryPhotoPage from "../pages/UploadLibraryPhotoPage";
 
@@ -11,6 +10,7 @@ export const PhotoGalleryPageRoutes = () => {
   const noHeaderShown = {
     headerShown: false,
   };
+
   return (
     <NavigationContainer independent={true}>
       <Navigator initialRouteName="PhotoGalleryPage">

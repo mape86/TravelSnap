@@ -1,10 +1,10 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
-import WelcomePage from "../pages/Welcome";
 import HomeRoutes from ".";
-import LoginPage from "../pages/LoginPage";
 import CreateUserPage from "../pages/CreateUserPage";
+import LoginPage from "../pages/LoginPage";
+import WelcomePage from "../pages/Welcome";
 
 const { Navigator, Screen } = createStackNavigator();
 
