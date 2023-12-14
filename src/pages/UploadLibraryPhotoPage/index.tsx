@@ -13,6 +13,7 @@ import { fbAuth, uploadImageToFirebase } from "../../../firebaseConfig";
 import CustomButton from "../../components/CustomButton";
 import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
 
+//Function to upload your image to firebase storage, along with your username. If image contains exif data, the latitude and longitude should in theory be uploaded as well.
 const UploadLibraryPhotoPage = (route: any) => {
   const { uri, exif } = route.route.params;
   const auth = fbAuth.currentUser;
