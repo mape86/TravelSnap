@@ -1,9 +1,9 @@
 import React, { useState } from "react";
+import { Image, Platform, StyleSheet, Text, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import { Text, View, Platform, StyleSheet, Image } from "react-native";
-import customMapStyles from "./styling.json";
-import ImageModal from "../../components/ImageModalMap";
 import Assets from "../../Assets";
+import ImageModal from "../../components/ImageModalMap";
+import customMapStyles from "./styling.json";
 
 const markersData = [
   {
@@ -50,6 +50,8 @@ const markersData = [
   },
 ];
 
+//TODO: REmove mockdata
+
 const MapviewPage: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedTitle, setSelectedTitle] = useState<string | null>(null);
@@ -83,7 +85,7 @@ const MapviewPage: React.FC = () => {
       </MapView>
 
       <View className="absolute top-20 left-5">
-        <Text className="text-3xl font-bold">Travel Memoir</Text>
+        <Text className="text-3xl font-bold">My travels</Text>
       </View>
 
       <ImageModal

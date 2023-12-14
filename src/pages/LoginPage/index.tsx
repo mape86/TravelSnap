@@ -1,21 +1,15 @@
-import { View, TextInput, Text, SafeAreaView } from "react-native";
-import React, { useEffect, useState } from "react";
-import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
-import CustomButton from "../../components/CustomButton";
-import { fbAuth } from "../../../firebaseConfig";
-import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
-import { RouteList } from "../../hooks/Navigation/useCustomNavigation";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
-import PhotoDetailPage from "../PhotoDetailPage";
+import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import React, { useEffect, useState } from "react";
+import { SafeAreaView, Text, TextInput, View } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { fbAuth } from "../../../firebaseConfig";
+import CustomButton from "../../components/CustomButton";
 import { PasswordField } from "../../components/PasswordField";
+import useCustomNavigation, { RouteList } from "../../hooks/Navigation/useCustomNavigation";
 
 const LoginPage = () => {
-  const { navigate, goBack, pop } = useCustomNavigation();
-
-  const handleReturnClick = () => {
-    goBack();
-  };
+  const { navigate, pop } = useCustomNavigation();
 
   const handleClick = (item: keyof RouteList) => {
     navigate(item);
@@ -29,6 +23,9 @@ const LoginPage = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
+  // Checking if there is a logged in user present, and allowing navigation to HomeRoutes if that is the case.
+  // Returning unsubscribe to avoid memory leaks.
+  // Source: https://blog.stackademic.com/concept-clear-of-onauthstatechanged-e8dddd4ff5c8
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -66,6 +63,7 @@ const LoginPage = () => {
               <TextInput
                 className="border rounded-md p-4"
                 placeholder="email"
+                autoCorrect={false}
                 value={email}
                 autoCapitalize="none"
                 onChangeText={(text) => setEmail(text)}

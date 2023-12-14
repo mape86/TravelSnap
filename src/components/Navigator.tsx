@@ -1,5 +1,3 @@
-import { View, Text } from "react-native";
-import React from "react";
 import useCustomNavigation, { RouteList } from "../hooks/Navigation/useCustomNavigation";
 
 const Navigator = (item: keyof RouteList) => {

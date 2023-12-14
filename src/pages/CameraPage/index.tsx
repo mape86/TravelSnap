@@ -1,3 +1,4 @@
+import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   Camera,
@@ -9,11 +10,10 @@ import * as Location from "expo-location";
 import * as MediaLibrary from "expo-media-library";
 import React, { useEffect, useRef, useState } from "react";
 import { Alert, Image, Text, View } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { uploadImageToFirebase } from "../../../firebaseConfig";
 import CameraButtons from "../../components/CameraButtons";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { Ionicons } from "@expo/vector-icons";
 import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
 
 interface LocationInfo {

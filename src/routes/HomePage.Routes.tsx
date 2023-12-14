@@ -14,7 +14,7 @@ export const HomePageRoutes = () => {
     <NavigationContainer independent={true}>
       <Navigator initialRouteName="HomePage">
         <Screen name="HomePage" component={HomePage} options={noHeaderShown} />
-        <Screen name="PhotoDetailPage" component={PhotoDetailPage} />
+        <Screen name="PhotoDetailPage" component={PhotoDetailPage} options={noHeaderShown} />
         <Screen name="UserProfilePage" component={UserProfilePage} />
       </Navigator>
     </NavigationContainer>

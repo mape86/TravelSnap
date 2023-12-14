@@ -1,6 +1,7 @@
+import { Entypo } from "@expo/vector-icons";
 import React from "react";
 import { Text, View } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import FeedImageCard from "../../components/FeedImageCard";
 import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
@@ -9,13 +10,16 @@ import { useFeedImages } from "../../hooks/useFeedImages";
 const HomePage = () => {
   const { navigate } = useCustomNavigation();
 
-  const { imageObjects, isError } = useFeedImages();
+  const { imageObjects, isError, refreshList } = useFeedImages();
 
   return (
-    <SafeAreaView className="flex-1">
+    <SafeAreaView className="flex-1 pt-4">
       <ScrollView>
-        <View className="mx-5 flex-row justify-between items-center mb-10">
+        <View className="ml-5 mb-10 mr-6 flex-row justify-between items-center ">
           <Text className="font-bold text-3xl text-system-brandDark">Home</Text>
+          <TouchableOpacity onPress={refreshList}>
+            <Entypo name="cycle" size={22} color="gray" />
+          </TouchableOpacity>
         </View>
         <View>
           {isError ? (

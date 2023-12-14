@@ -1,11 +1,11 @@
-import { Ionicons } from "@expo/vector-icons";
 import { getMetadata, ref } from "firebase/storage";
 import React, { useEffect, useState } from "react";
-import { Image, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Image, Text, TextInput, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import MapView, { Marker } from "react-native-maps";
 import { fbAuth, fbStorage, uploadToFeed } from "../../../firebaseConfig";
+import { BackButton } from "../../components/BackButton";
 import CustomButton from "../../components/CustomButton";
+import { Map } from "../../components/Map";
 import useCustomNavigation from "../../hooks/Navigation/useCustomNavigation";
 
 interface LocationState {
@@ -84,10 +84,7 @@ const UserPhotoDetailPage = (route: any) => {
   return (
     <>
       <View className="mt-12 ml-2">
-        <TouchableOpacity className="flex-row items-center" onPress={navigation.goBack}>
-          <Ionicons name="arrow-back" size={28} color="black" />
-          <Text>Back</Text>
-        </TouchableOpacity>
+        <BackButton />
       </View>
       <ScrollView>
         <View className="flex-1 items-center mt-5">
@@ -100,20 +97,20 @@ const UserPhotoDetailPage = (route: any) => {
                 <Text className="">{tags}</Text>
               </View>
             </View>
-            <View className="flex items-center justify-between mt-2">
+            <View className="flex items-center justify-between mb-6 mt-2">
               <TextInput
                 autoCorrect={false}
                 placeholder="Write a description"
                 numberOfLines={10}
                 multiline={true}
                 onChangeText={setDescription}
-                className="w-80 h-16 border-2 border-gray-400 mb-1"
+                className="w-80 h-16 border rounded"
               />
               <TextInput
                 autoCorrect={false}
-                placeholder="Add tags"
+                placeholder="#tags"
                 onChangeText={setTags}
-                className="w-80 h-10 border-2 border-gray-400"
+                className="w-80 h-10 border rounded"
               />
             </View>
             <View className="mt-2">
@@ -122,22 +119,7 @@ const UserPhotoDetailPage = (route: any) => {
           </View>
           <View className="flex items-center">
             {imageLocation.latitude && imageLocation.longitude ? (
-              <MapView
-                className="rounded-xl m-2 w-screen h-80"
-                initialRegion={{
-                  latitude: Number(imageLocation.latitude),
-                  longitude: Number(imageLocation.longitude),
-                  latitudeDelta: 0.1022,
-                  longitudeDelta: 0.0521,
-                }}
-              >
-                <Marker
-                  coordinate={{
-                    latitude: Number(imageLocation.latitude),
-                    longitude: Number(imageLocation.longitude),
-                  }}
-                />
-              </MapView>
+              <Map latitude={imageLocation.latitude} longitude={imageLocation.longitude} />
             ) : (
               <Text className="pt-3 mb-2">No location available</Text>
             )}
