@@ -19,7 +19,7 @@ const Map: React.FC<MapProps> = ({ latitude, longitude }) => {
         <MapView
           customMapStyle={CustomMapStyle}
           className="m-2 w-screen h-80"
-          provider={Platform.OS === "ios" ? PROVIDER_GOOGLE : undefined}
+          //provider={Platform.OS === "ios" ? PROVIDER_GOOGLE : undefined}
           initialRegion={{
             latitude: Number(latitude),
             longitude: Number(longitude),
