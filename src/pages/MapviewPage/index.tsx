@@ -72,7 +72,7 @@ const MapviewPage: React.FC = () => {
     <View className="flex-1">
       <MapView
         style={styles.map}
-        provider={Platform.OS === "ios" ? PROVIDER_GOOGLE : undefined}
+        // provider={Platform.OS === "ios" ? PROVIDER_GOOGLE : undefined
         customMapStyle={customMapStyles}
       >
         {markersData.map((marker) => (

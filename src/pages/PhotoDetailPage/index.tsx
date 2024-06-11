@@ -35,7 +35,7 @@ const PhotoDetailPage = (props: any) => {
             <TouchableOpacity className="" onPress={toggleLike}>
               <Animated.View className="" style={animatedStyle}>
                 <Ionicons
-                  name={!isLiked ? "ios-heart-outline" : "ios-heart-sharp"}
+                  name={!isLiked ? "heart-outline" : "heart"}
                   size={40}
                   color="black"
                 />

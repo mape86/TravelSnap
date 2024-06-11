@@ -52,7 +52,7 @@ const FeedImageCard: React.FC<FeedImageCardProps> = ({ image }) => {
         <TouchableOpacity onPress={toggleLike}>
           <Animated.View style={animatedStyle}>
             <Ionicons
-              name={!isLiked ? "ios-heart-outline" : "ios-heart-sharp"}
+              name={!isLiked ? "heart-outline" : "heart"}
               size={32}
               color="black"
             />
