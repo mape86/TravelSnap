@@ -6,9 +6,11 @@ import {
   FIREBASE_PROJECT_ID,
   FIREBASE_STORAGE_BUCKET,
 } from "@env";
-import { initializeApp } from "firebase/app";
+import { initializeApp} from "firebase/app";
+// import {initializeAuth,getReactNativePersistence} from "firebase/auth";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 import {
   getDownloadURL,
   getMetadata,
@@ -17,6 +19,10 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
+
+// const auth = initializeAuth(app, {
+//   persistence: getReactNativePersistence(ReactNativeAsyncStorage)
+// });
 
 const firebaseConfig = {
   apiKey: FIREBASE_API_KEY,

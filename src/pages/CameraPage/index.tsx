@@ -3,12 +3,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   Camera,
   CameraType,
-  CameraType as ExpoCameraType,
-  FlashMode as ExpoFlashMode,
-} from "expo-camera";
+  FlashMode,
+} from "expo-camera/legacy";
 import * as Location from "expo-location";
 import * as MediaLibrary from "expo-media-library";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, ComponentType } from "react";
 import { Alert, Image, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -22,6 +21,16 @@ interface LocationInfo {
     longitude: number;
   };
 }
+// declare module 'expo-camera' {
+//   const Camera: ComponentType<{
+//       type: CameraType;
+//       flashMode: FlashMode;
+//       ref?: React.Ref<typeof Camera>;
+//       // Add other props as needed
+//     }>;
+//      export { Camera }; 
+//   }
+
 
 const CameraPage = () => {
   const [cameraPermission, setCameraPermission] = useState<boolean | null>(null);
@@ -31,11 +40,13 @@ const CameraPage = () => {
     uri: string;
     location?: LocationInfo;
   } | null>(null);
-  const [camType, setCamType] = useState<ExpoCameraType>(CameraType.back);
-  const [flashMode, setFlashMode] = useState<ExpoFlashMode>(ExpoFlashMode.off);
+  const [camType, setCamType] = useState<CameraType>(CameraType.back);
+  const [flashMode, setFlashMode] = useState<FlashMode>(FlashMode.off);
   const cameraRef = useRef<Camera | null>(null);
 
   const navigation = useCustomNavigation();
+
+  let camera;
 
   //This useEffect is used to ask for permission to use the camera, location and media library, when user first enters the view. These codelines are taken from the expo documentation. If user accepts the states are set to true, and the user can use the camera.
   useEffect(() => {
@@ -142,7 +153,8 @@ const CameraPage = () => {
       </View>
       {!imageData ? (
         <Camera
-          className="flex-1 rounded-lg"
+          // className="flex-1 rounded-lg"
+          style={{ flex: 1, borderRadius: 20}}
           type={camType}
           flashMode={flashMode}
           ref={cameraRef}
@@ -160,10 +172,10 @@ const CameraPage = () => {
               title=""
               icon="flash"
               backgroundColor="black"
-              color={flashMode === ExpoFlashMode.on ? "yellow" : "#CBD5E1"}
+              color={flashMode === FlashMode.on ? "yellow" : "#CBD5E1"}
               onPress={() => {
                 setFlashMode(
-                  flashMode === ExpoFlashMode.off ? ExpoFlashMode.on : ExpoFlashMode.off
+                  flashMode === FlashMode.off ? FlashMode.on : FlashMode.off
                 );
               }}
             />
